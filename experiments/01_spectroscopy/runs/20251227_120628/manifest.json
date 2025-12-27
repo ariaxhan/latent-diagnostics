@@ -1,0 +1,25 @@
+{
+  "experiment_type": "spectroscopy",
+  "experiment_name": "01_spectroscopy",
+  "description": "Pure spectroscopy analysis of hallucination signatures",
+  "model": "gemma-2-2b",
+  "sae_layer": 5,
+  "sae_width": "16k",
+  "total_samples": 930,
+  "domains": [
+    "entity",
+    "temporal",
+    "logical",
+    "adversarial"
+  ],
+  "metrics": [
+    "l0_norm",
+    "l2_norm",
+    "reconstruction_error",
+    "gini_coefficient",
+    "total_energy"
+  ],
+  "timestamp": "2025-12-27T12:13:49.520445",
+  "run_id": "20251227_120628",
+  "run_timestamp": "2025-12-27T12:13:49.523066"
+}
