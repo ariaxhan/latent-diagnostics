@@ -402,7 +402,7 @@ class BatchProcessor:
                 v1_norm = v1 / (v1.norm() + 1e-9)
                 v2_norm = v2 / (v2.norm() + 1e-9)
                 min_dim = min(len(v1_norm), len(v2_norm))
-                return float(torch.dot(v1_norm[:min_dim], v2_norm[:min_dim]))
+                return float(torch.dot(v1_norm[:min_dim], v2_norm[:min_dim]).detach())
             
             results["cross_layer_consistency_fact"] = cosine_similarity(feat_l12_fact, feat_l20_fact)
             results["cross_layer_consistency_hall"] = cosine_similarity(feat_l12_hall, feat_l20_hall)
