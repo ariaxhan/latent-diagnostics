@@ -269,9 +269,29 @@ def main():
     
     # Load results
     experiment_path = Path(__file__).parent / "03_ghost_features"
-    storage = ExperimentStorage(experiment_path)
+    
+    # Check for existing runs first to avoid creating a new run directory
+    runs_path = experiment_path / "runs"
+    latest_run = None
+    
+    if runs_path.exists():
+        runs = [
+            d.name for d in runs_path.iterdir()
+            if d.is_dir() and (d / "metrics.parquet").exists()
+        ]
+        runs = sorted(runs, reverse=True)
+        latest_run = runs[0] if runs else None
+    
+    if not latest_run:
+        print("Error: No experiment runs found. Run the experiment first:")
+        print("  python experiments/03_ghost_features.py")
+        return
+    
+    # Initialize storage with latest run
+    storage = ExperimentStorage(experiment_path, run_id=latest_run)
     
     print("Loading results...")
+    print(f"  Using run: {latest_run}")
     df = storage.read_metrics()
     print(f"  ✓ Loaded {len(df)} records")
     
@@ -321,6 +341,7 @@ def main():
 
 if __name__ == "__main__":
     main()
+
 
 
 
