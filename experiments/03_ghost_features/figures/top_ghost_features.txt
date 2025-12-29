@@ -1,0 +1,127 @@
+================================================================================
+TOP GHOST FEATURES - SEMANTIC INTERPRETATION
+================================================================================
+
+Total unique ghost features decoded: 2467
+
+1. Feature #8383
+   Top words: djangoproject,  Charles,  Robert,  George,  Edward,  Henry,  Michael,  James,  William,  Ed
+   Logits: 0.96, 0.82, 0.80, 0.80, 0.80
+
+2. Feature #7475
+   Top words: SPATH, LikeLiked, wpdb, woocommerce, ntax, googleapis,  consultato, gründet, 出版年, onnaissance
+   Logits: 0.67, 0.65, 0.62, 0.58, 0.54
+
+3. Feature #3728
+   Top words: ViewGroup, SerializeField, DoubleQuotes,  ViewGroup, omitempty, slf, MessageTagHelper, رت, 帐户, jetbrains
+   Logits: 1.06, 0.87, 0.62, 0.61, 0.57
+
+4. Feature #6916
+   Top words:  CreateTagHelper,  EventArgs, WriteLiteral, ViewHolder,  InputDecoration, EditText, MessageTagHelper,  protoimpl,  initComponents,  propOrder
+   Logits: 1.36, 1.33, 1.16, 1.09, 1.03
+
+5. Feature #6799
+   Top words:  ),  ],  ).,  },  ),,  kaynağından,  ):,  }{,  hObject, ArrowToggle
+   Logits: 0.64, 0.60, 0.59, 0.55, 0.49
+
+6. Feature #9167
+   Top words:  JAS,  Jamb,  Jot,  jLabel,  jc,  Jop,  Jit, JAS,  JE, JMP
+   Logits: 1.33, 1.26, 1.24, 1.22, 1.19
+
+7. Feature #14499
+   Top words: ,  recieved,  تانيه,  recieve,  ++),  childrens,  للمعارف,  thier,  loosing,  recie
+   Logits: 0.83, 0.76, 0.75, 0.71, 0.68
+
+8. Feature #5148
+   Top words:  InputDecoration, URLException,  $_", ^(@), ValueGeneration, MethodManager, HostException,  initWithFrame, jsonwebtoken,  Majefty
+   Logits: 0.36, 0.36, 0.35, 0.34, 0.33
+
+9. Feature #3608
+   Top words: hyrchwyd,  thiệu,  endregion, ayam, ("")],  ), ITATION, unhofer,  ],  kết
+   Logits: 0.58, 0.57, 0.54, 0.53, 0.53
+
+10. Feature #4892
+   Top words:  view,  views,  VIEW,  View, view,  Views,  VIEWS, VIEW, views, View
+   Logits: 2.25, 2.14, 2.13, 1.99, 1.90
+
+11. Feature #15242
+   Top words: setState,  setState, SetState,  initComponents,  useState,  StatefulWidget,  createState, useState,  getState,  initState
+   Logits: 3.82, 2.40, 1.18, 1.13, 1.00
+
+12. Feature #9646
+   Top words: CloseOperation,  într, Σε, ViewFeatures, Alike, makeText, styleType, psack,  σε,  Paglinawan
+   Logits: 0.94, 0.75, 0.73, 0.72, 0.72
+
+13. Feature #1951
+   Top words:  Switzerland,  Swiss, Switzerland,  swiss, Swiss,  Schweiz,  suisse, swiss,  Zurich, zerland
+   Logits: 1.40, 1.35, 1.25, 1.20, 1.20
+
+14. Feature #14512
+   Top words:  itſelf,  myſelf,  Majefty,  himſelf,  themſelves,  whoſe,  Jefus,  ſtate,  Reſ,  becauſe
+   Logits: 1.46, 1.41, 1.39, 1.38, 1.33
+
+15. Feature #11838
+   Top words:  CCS,  CQ,  CBR,  CCL,  Cots,  CEC,  getC,  Cey,  Cn,  Cok
+   Logits: 0.91, 0.89, 0.86, 0.83, 0.83
+
+16. Feature #5083
+   Top words:  ویکی‌پدیای, extAlignment, يميديا, ValueStyle,  nakalista,  "..\..\..\,  ComVisible,  onOptions, .*")], ."],
+   Logits: 1.01, 0.79, 0.77, 0.76, 0.76
+
+17. Feature #14778
+   Top words:  guessed, ineno, ाहरण,  SqlDbType, <?,,  doInBackground, pecified, GeoNames, prefixer,  appunto
+   Logits: 0.68, 0.60, 0.60, 0.59, 0.58
+
+18. Feature #4360
+   Top words: </blockquote>, \], findpost, .";, )";, }\], ).”, >`;, 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+, Portail
+   Logits: 2.23, 1.34, 1.32, 1.10, 1.10
+
+19. Feature #14578
+   Top words:  BoxDecoration,  TestBed, RUnlock, initComponents, TestingModule, ReusableCell, viewDidLoad, abetes, awtextra, AppCompat
+   Logits: 0.93, 0.87, 0.76, 0.74, 0.74
+
+20. Feature #9189
+   Top words: maketitle, Portail,  MonoBehaviour, ValueStyle, InputTagHelper, tvguidetime, Искәрмәләр,  estimés,  UnityEngine, OGND
+   Logits: 1.61, 1.56, 1.52, 1.05, 0.98
+
+================================================================================
+INTERPRETATION NOTES:
+================================================================================
+
+Ghost features represent semantic concepts that appear during hallucinations
+but are absent in factual completions. These features often correspond to:
+  - Conflicting semantic categories (e.g., wrong location names)
+  - Tangential associations (e.g., related but incorrect concepts)
+  - Weak or spurious correlations learned during training
+

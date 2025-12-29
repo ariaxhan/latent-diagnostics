@@ -1,0 +1,19 @@
+{
+  "experiment_type": "ghost_features",
+  "experiment_name": "03_ghost_features",
+  "description": "Identification and decoding of features unique to hallucinations",
+  "model": "gemma-2-2b",
+  "sae_layer": 5,
+  "sae_width": "16k",
+  "total_samples": 930,
+  "domains": [
+    "entity",
+    "temporal",
+    "logical",
+    "adversarial"
+  ],
+  "unique_features_decoded": 2467,
+  "timestamp": "2025-12-29T01:49:35.236112",
+  "run_id": "20251229_013356",
+  "run_timestamp": "2025-12-29T01:49:35.238801"
+}
