@@ -37,9 +37,15 @@ app = modal.App("pint-benchmark", image=image)
 volume = modal.Volume.from_name("hf-cache", create_if_missing=True)
 
 
+results_volume = modal.Volume.from_name("pint-results", create_if_missing=True)
+
+
 @app.function(
     gpu="A100",
-    volumes={"/root/.cache/huggingface": volume},
+    volumes={
+        "/root/.cache/huggingface": volume,
+        "/results": results_volume,
+    },
     secrets=[modal.Secret.from_name("huggingface-secret")],
     timeout=7200,  # 2 hours for full benchmark
 )
@@ -47,6 +53,8 @@ def compute_pint_metrics(
     n_samples: int = None,
     use_deepset: bool = True,
     pint_yaml_path: str = None,
+    max_tokens: int = 200,  # Aggressive truncation to avoid OOM
+    save_every: int = 5,  # Save checkpoint every N samples
 ):
     """
     Compute attribution metrics for PINT benchmark samples.
@@ -130,14 +138,25 @@ def compute_pint_metrics(
 
     results = []
     failed = 0
+    checkpoint_path = "/results/pint_checkpoint.json"
 
     for i, sample in enumerate(samples):
         if (i + 1) % 10 == 0:
             print(f"  Progress: {i + 1}/{len(samples)} ({100 * (i + 1) / len(samples):.1f}%)")
 
+        # Save checkpoint periodically
+        if (i + 1) % save_every == 0 and results:
+            with open(checkpoint_path, 'w') as f:
+                json.dump({"samples": results, "processed": i + 1}, f)
+            results_volume.commit()
+            print(f"  [checkpoint] Saved {len(results)} results to volume")
+
         try:
-            # Truncate long inputs
-            text = sample["text"][:512]
+            # Aggressive truncation to avoid OOM
+            text = sample["text"][:max_tokens * 4]  # ~4 chars per token estimate
+
+            # Clear CUDA cache before each sample
+            torch.cuda.empty_cache()
 
             graph = attribute(text, model, verbose=False)
 
@@ -187,8 +206,10 @@ def compute_pint_metrics(
 
         except Exception as e:
             failed += 1
-            if failed <= 5:
+            if failed <= 10:
                 print(f"  Failed on sample {i}: {str(e)[:50]}")
+            # Clear cache on failure
+            torch.cuda.empty_cache()
 
     print(f"\n  Completed: {len(results)} / {len(samples)} ({failed} failed)")
 
@@ -218,6 +239,13 @@ def compute_pint_metrics(
         "samples": results,
     }
 
+    # Save final results to volume
+    final_path = "/results/pint_metrics.json"
+    with open(final_path, 'w') as f:
+        json.dump(output, f, indent=2)
+    results_volume.commit()
+    print(f"\n✓ Final results saved to Modal volume: {final_path}")
+
     print("\n" + "=" * 70)
     print("DONE - Return metrics for local analysis")
     print("=" * 70)
@@ -225,10 +253,27 @@ def compute_pint_metrics(
     return output
 
 
+@app.function(volumes={"/results": results_volume})
+def download_results():
+    """Download results from Modal volume."""
+    import os
+
+    files = []
+    for f in os.listdir("/results"):
+        path = f"/results/{f}"
+        with open(path, 'r') as fp:
+            content = fp.read()
+        files.append({"name": f, "content": content})
+        print(f"  Found: {f} ({len(content)} bytes)")
+
+    return files
+
+
 @app.local_entrypoint()
 def main(
     n_samples: int = None,
     full: bool = False,
+    download: bool = False,
 ):
     """
     Run PINT benchmark attribution analysis.
@@ -236,13 +281,28 @@ def main(
     Args:
         n_samples: Limit samples (default: 100 for testing)
         full: Run on all samples
+        download: Download results from Modal volume (if job ran with --detach)
     """
+    if download:
+        print("Downloading results from Modal volume...")
+        files = download_results.remote()
+        for f in files:
+            output_path = f["name"]
+            with open(output_path, 'w') as fp:
+                fp.write(f["content"])
+            print(f"✓ Downloaded: {output_path}")
+        return
+
     if full:
         n_samples = None
     elif n_samples is None:
         n_samples = 100  # Default for quick testing
 
     print(f"Running PINT benchmark with n_samples={n_samples or 'ALL'}")
+    print()
+    print("TIP: Use 'modal run --detach modal_pint_benchmark.py --full' to avoid client disconnect")
+    print("     Then 'modal run modal_pint_benchmark.py --download' to retrieve results")
+    print()
 
     result = compute_pint_metrics.remote(n_samples=n_samples)
 
