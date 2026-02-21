@@ -36,6 +36,30 @@ from .data_loader import (
 # Storage
 from .storage import ExperimentStorage
 
+# Feature extractors (injection detection)
+from .feature_extractors import (
+    SAEExtractor,
+    TranscoderExtractor,
+    AttentionExtractor,
+    extract_combined_features,
+    compute_injection_score,
+    load_model,
+)
+
+# Injection detector
+from .injection_detector import (
+    AttributionInjectionDetector,
+    InjectionMetrics,
+    DetectionResult,
+    Thresholds,
+)
+
+# PINT benchmark loader
+from .pint_loader import (
+    PINTBenchmark,
+    PINTSample,
+)
+
 __all__ = [
     # SAE utilities
     "initialize_model_and_sae",
@@ -52,5 +76,20 @@ __all__ = [
     "HB_Benchmark",
     # Storage
     "ExperimentStorage",
+    # Feature extractors (injection detection)
+    "SAEExtractor",
+    "TranscoderExtractor",
+    "AttentionExtractor",
+    "extract_combined_features",
+    "compute_injection_score",
+    "load_model",
+    # Injection detector
+    "AttributionInjectionDetector",
+    "InjectionMetrics",
+    "DetectionResult",
+    "Thresholds",
+    # PINT benchmark
+    "PINTBenchmark",
+    "PINTSample",
 ]
 
