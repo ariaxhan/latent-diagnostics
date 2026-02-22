@@ -135,77 +135,60 @@ def compute_attribution_metrics(
                 json.dump({"samples": results, "processed": i + 1}, f)
 
         try:
-            text = sample["text"]
+            # Truncate text to avoid OOM (~4 chars per token)
+            text = sample["text"][:max_tokens * 4]
 
-            # Tokenize with truncation
-            tokens = model.tokenizer.encode(text)
-            if len(tokens) > max_tokens:
-                tokens = tokens[:max_tokens]
-                text = model.tokenizer.decode(tokens)
+            # Clear CUDA cache before each sample
+            torch.cuda.empty_cache()
 
-            # Get attribution graph
-            graph = attribute(
-                model,
-                tokens,
-                max_n_logits=1,
-                verbose=False,
-            )
+            # Get attribution graph - API: attribute(text, model, ...)
+            graph = attribute(text, model, verbose=False)
 
-            # Compute metrics from graph
-            activations = graph.activations
-            edges = graph.edges
-
-            n_active = len(activations)
-            n_edges = len(edges)
-
-            edge_weights = [abs(e.weight) for e in edges] if edges else [0]
-            mean_influence = sum(edge_weights) / len(edge_weights) if edge_weights else 0
-            max_influence = max(edge_weights) if edge_weights else 0
-
-            # Top feature concentration
-            if activations:
-                act_values = sorted([abs(a.value) for a in activations], reverse=True)
-                total_act = sum(act_values)
-                top_100 = sum(act_values[:100])
-                top_100_concentration = top_100 / total_act if total_act > 0 else 0
-                mean_activation = total_act / len(act_values) if act_values else 0
-                max_activation = max(act_values)
-            else:
-                top_100_concentration = 0
-                mean_activation = 0
-                max_activation = 0
-
-            # Output logit stats
-            logits = graph.logits if hasattr(graph, 'logits') else []
-            if logits:
-                import math
-                probs = [math.exp(l.value) for l in logits]
-                total_prob = sum(probs)
-                probs = [p / total_prob for p in probs]
-                max_logit_prob = max(probs)
-                logit_entropy = -sum(p * math.log(p + 1e-10) for p in probs)
-            else:
-                max_logit_prob = 0
-                logit_entropy = 0
-
-            result = {
+            # Extract metrics (following working modal_pint_benchmark.py pattern)
+            metrics = {
                 **sample,  # Preserve original fields (idx, domain, label, etc.)
-                "n_active": n_active,
-                "n_edges": n_edges,
-                "mean_activation": mean_activation,
-                "max_activation": max_activation,
-                "mean_influence": mean_influence,
-                "max_influence": max_influence,
-                "top_100_concentration": top_100_concentration,
-                "max_logit_prob": max_logit_prob,
-                "logit_entropy": logit_entropy,
-                "n_tokens": len(tokens),
             }
-            results.append(result)
+
+            # Active features
+            if hasattr(graph, 'active_features'):
+                metrics['n_active'] = len(graph.active_features)
+
+            # Activation values
+            if hasattr(graph, 'activation_values'):
+                acts = graph.activation_values
+                if hasattr(acts, 'abs'):
+                    metrics['mean_activation'] = float(acts.abs().mean().item())
+                    metrics['max_activation'] = float(acts.abs().max().item())
+
+            # Adjacency matrix (causal influence)
+            if hasattr(graph, 'adjacency_matrix'):
+                adj = graph.adjacency_matrix
+                if hasattr(adj, 'abs'):
+                    n_edges = int((adj.abs() > 0.01).sum().item())
+                    metrics['n_edges'] = n_edges
+                    metrics['mean_influence'] = float(adj.abs().mean().item())
+                    metrics['max_influence'] = float(adj.abs().max().item())
+
+                    # Concentration metric
+                    flat = adj.abs().flatten()
+                    sorted_inf, _ = flat.sort(descending=True)
+                    total = flat.sum().item()
+                    top_100 = sorted_inf[:100].sum().item()
+                    metrics['top_100_concentration'] = float(top_100 / (total + 1e-10))
+
+            # Logit probabilities
+            if hasattr(graph, 'logit_probabilities'):
+                probs = graph.logit_probabilities
+                if hasattr(probs, 'max'):
+                    metrics['max_logit_prob'] = float(probs.max().item())
+                    metrics['logit_entropy'] = float(-(probs * (probs + 1e-10).log()).sum().item())
+
+            results.append(metrics)
 
         except Exception as e:
             print(f"  [FAIL] Sample {sample.get('idx', i)}: {str(e)[:80]}")
             failed += 1
+            torch.cuda.empty_cache()
             continue
 
     print(f"\n  Completed: {len(results)}/{len(samples)} (failed: {failed})")
