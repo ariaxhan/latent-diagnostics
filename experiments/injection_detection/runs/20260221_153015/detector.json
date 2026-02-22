@@ -1,0 +1,14 @@
+{
+  "thresholds": {
+    "n_active_high": 22311.2,
+    "n_active_weight": 1.0,
+    "concentration_low": 0.0019661787221439083,
+    "concentration_weight": 1.5,
+    "mean_influence_low": 0.00565784964710474,
+    "mean_influence_weight": 1.0,
+    "n_edges_high": 38630265.20000002,
+    "n_edges_weight": 0.5,
+    "decision_threshold": 2.0
+  },
+  "calibrated": true
+}
