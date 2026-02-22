@@ -1,0 +1,8 @@
+torch>=2.0.0
+transformer-lens>=1.16.0
+sae-lens>=3.0.0
+numpy>=1.24.0
+fastapi>=0.100.0
+uvicorn>=0.23.0
+pydantic>=2.0.0
+datasets>=2.14.0

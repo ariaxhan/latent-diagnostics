@@ -1,6 +1,30 @@
 # Neural Polygraph
 
-Detecting hallucinations in language models using Sparse Autoencoder (SAE) spectral signatures and geometric analysis.
+Interpretability-based detection for language models: hallucinations and prompt injection.
+
+## Prompt Injection Detection (NEW)
+
+**Breakthrough:** Attribution graphs strongly discriminate injection from benign (Cohen's d > 1.0).
+
+```bash
+# Run on Modal GPU
+modal run modal_attribution.py
+```
+
+| Metric | Cohen's d | Pattern |
+|--------|-----------|---------|
+| Top-100 Concentration | 1.30 | Injection LOWER |
+| N Active Features | 1.07 | Injection HIGHER |
+| N Edges | 1.03 | Injection HIGHER |
+| Mean Influence | 1.12 | Injection LOWER |
+
+**Key insight:** Injection creates diffuse, scattered causal graphs. Benign prompts have focused pathways.
+
+See `_meta/handoffs/2026-02-21-attribution-breakthrough.md` for details.
+
+---
+
+## Hallucination Detection (Original)
 
 ## Quick Start
 
