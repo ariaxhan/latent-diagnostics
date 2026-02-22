@@ -15,7 +15,7 @@ from pathlib import Path
 # Add src to path
 sys.path.insert(0, str(Path(__file__).parent.parent / "src"))
 
-from hallucination_detector import ExperimentStorage
+from neural_polygraph import ExperimentStorage
 import polars as pl
 
 
@@ -170,7 +170,7 @@ Examples:
         print("=" * 80)
         print("""
 from pathlib import Path
-from hallucination_detector import ExperimentStorage
+from neural_polygraph import ExperimentStorage
 
 storage = ExperimentStorage(Path("experiments/01_spectroscopy"))
 df = storage.read_metrics()

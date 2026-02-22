@@ -1,7 +1,7 @@
 [project]
-name = "hallucination-detector"
-version = "0.1.0"
-description = "Detecting hallucinations via SAE spectral signatures"
+name = "neural-polygraph"
+version = "0.2.0"
+description = "Adversarial geometry: detecting malicious prompts via causal graph topology"
 requires-python = ">=3.10"
 dependencies = [
     "torch>=2.0.0",
@@ -33,6 +33,6 @@ requires = ["setuptools>=61.0"]
 build-backend = "setuptools.build_meta"
 
 [tool.setuptools]
-packages = ["hallucination_detector"]
+packages = ["neural_polygraph"]
 package-dir = {"" = "src"}
 

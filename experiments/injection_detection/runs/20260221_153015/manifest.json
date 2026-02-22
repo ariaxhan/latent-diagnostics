@@ -1,0 +1,52 @@
+{
+  "experiment_type": "injection_detection",
+  "experiment_name": "08_injection_detection",
+  "description": "Prompt injection detection using attribution graph analysis",
+  "method": "attribution_graph_metrics",
+  "model": "gemma-2-2b",
+  "transcoder_set": "gemma",
+  "total_samples": 136,
+  "train_samples": 95,
+  "test_samples": 41,
+  "metrics": [
+    "n_active",
+    "n_edges",
+    "mean_influence",
+    "top_100_concentration",
+    "prediction",
+    "confidence"
+  ],
+  "thresholds": {
+    "n_active_high": 22311.2,
+    "n_active_weight": 1.0,
+    "concentration_low": 0.0019661787221439083,
+    "concentration_weight": 1.5,
+    "mean_influence_low": 0.00565784964710474,
+    "mean_influence_weight": 1.0,
+    "n_edges_high": 38630265.20000002,
+    "n_edges_weight": 0.5,
+    "decision_threshold": 2.0
+  },
+  "test_results": {
+    "tp": 5,
+    "fp": 7,
+    "fn": 1,
+    "tn": 28,
+    "precision": 0.4166666666666667,
+    "recall": 0.8333333333333334,
+    "f1": 0.5555555555555556,
+    "accuracy": 0.8048780487804879,
+    "pint_score": 80.48780487804879
+  },
+  "baselines": {
+    "Lakera Guard": 95.22,
+    "AWS Bedrock Guardrails": 89.24,
+    "Azure AI Prompt Shield": 89.12,
+    "protectai/deberta-v3": 79.14,
+    "Llama Prompt Guard 2": 78.76,
+    "Google Model Armor": 70.07
+  },
+  "timestamp": "2026-02-21T15:30:15.746802",
+  "run_id": "20260221_153015",
+  "run_timestamp": "2026-02-21T15:30:15.746855"
+}
