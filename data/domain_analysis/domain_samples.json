@@ -1,0 +1,2820 @@
+{
+  "metadata": {
+    "created": "2026-02-22T11:09:42.277811",
+    "n_samples": 400,
+    "sources": [
+      "cola",
+      "winogrande",
+      "hellaswag",
+      "snli",
+      "fever",
+      "paws",
+      "codesearchnet",
+      "pubmedqa",
+      "poem_sentiment",
+      "truthfulqa"
+    ]
+  },
+  "samples": [
+    {
+      "idx": 0,
+      "text": "The sailors rode the breeze clear of the rocks.",
+      "source": "cola",
+      "domain": "grammar",
+      "label": "acceptable"
+    },
+    {
+      "idx": 1,
+      "text": "The weights made the rope stretch over the pulley.",
+      "source": "cola",
+      "domain": "grammar",
+      "label": "acceptable"
+    },
+    {
+      "idx": 2,
+      "text": "The mechanical doll wriggled itself loose.",
+      "source": "cola",
+      "domain": "grammar",
+      "label": "acceptable"
+    },
+    {
+      "idx": 3,
+      "text": "If you had eaten more, you would want less.",
+      "source": "cola",
+      "domain": "grammar",
+      "label": "acceptable"
+    },
+    {
+      "idx": 4,
+      "text": "As you eat the most, you want the least.",
+      "source": "cola",
+      "domain": "grammar",
+      "label": "unacceptable"
+    },
+    {
+      "idx": 5,
+      "text": "The more you would want, the less you would eat.",
+      "source": "cola",
+      "domain": "grammar",
+      "label": "unacceptable"
+    },
+    {
+      "idx": 6,
+      "text": "I demand that the more John eat, the more he pays.",
+      "source": "cola",
+      "domain": "grammar",
+      "label": "unacceptable"
+    },
+    {
+      "idx": 7,
+      "text": "Mary listens to the Grateful Dead, she gets depressed.",
+      "source": "cola",
+      "domain": "grammar",
+      "label": "acceptable"
+    },
+    {
+      "idx": 8,
+      "text": "The angrier Mary got, the more she looked at pictures.",
+      "source": "cola",
+      "domain": "grammar",
+      "label": "acceptable"
+    },
+    {
+      "idx": 9,
+      "text": "The higher the stakes, the lower his expectations are.",
+      "source": "cola",
+      "domain": "grammar",
+      "label": "acceptable"
+    },
+    {
+      "idx": 10,
+      "text": "The more Fred is obnoxious, the less attention you should pay to him.",
+      "source": "cola",
+      "domain": "grammar",
+      "label": "acceptable"
+    },
+    {
+      "idx": 11,
+      "text": "John was lots more obnoxious than Fred.",
+      "source": "cola",
+      "domain": "grammar",
+      "label": "acceptable"
+    },
+    {
+      "idx": 12,
+      "text": "The more people you give beer to, the more people get sick.",
+      "source": "cola",
+      "domain": "grammar",
+      "label": "acceptable"
+    },
+    {
+      "idx": 13,
+      "text": "The more does Bill smoke, the more Susan hates him.",
+      "source": "cola",
+      "domain": "grammar",
+      "label": "unacceptable"
+    },
+    {
+      "idx": 14,
+      "text": "The more pictures of him that appear in the news, the more embarrassed John becomes.",
+      "source": "cola",
+      "domain": "grammar",
+      "label": "acceptable"
+    },
+    {
+      "idx": 15,
+      "text": "Every senator seems to become more corrupt, as he talks to more lobbyists.",
+      "source": "cola",
+      "domain": "grammar",
+      "label": "acceptable"
+    },
+    {
+      "idx": 16,
+      "text": "Who does John visit Sally because he likes?",
+      "source": "cola",
+      "domain": "grammar",
+      "label": "unacceptable"
+    },
+    {
+      "idx": 17,
+      "text": "Marianne did not leave.",
+      "source": "cola",
+      "domain": "grammar",
+      "label": "acceptable"
+    },
+    {
+      "idx": 18,
+      "text": "He could not] have been working.",
+      "source": "cola",
+      "domain": "grammar",
+      "label": "acceptable"
+    },
+    {
+      "idx": 19,
+      "text": "He can not have been working.",
+      "source": "cola",
+      "domain": "grammar",
+      "label": "acceptable"
+    },
+    {
+      "idx": 20,
+      "text": "You will believe Bob.",
+      "source": "cola",
+      "domain": "grammar",
+      "label": "acceptable"
+    },
+    {
+      "idx": 21,
+      "text": "John has not kissed Mary.",
+      "source": "cola",
+      "domain": "grammar",
+      "label": "acceptable"
+    },
+    {
+      "idx": 22,
+      "text": "I said that never in my life had I seen a place like Bangor.",
+      "source": "cola",
+      "domain": "grammar",
+      "label": "acceptable"
+    },
+    {
+      "idx": 23,
+      "text": "Mickey looked up it.",
+      "source": "cola",
+      "domain": "grammar",
+      "label": "unacceptable"
+    },
+    {
+      "idx": 24,
+      "text": "There tended to be a lot of discussion.",
+      "source": "cola",
+      "domain": "grammar",
+      "label": "acceptable"
+    },
+    {
+      "idx": 25,
+      "text": "John tried to be a good boy.",
+      "source": "cola",
+      "domain": "grammar",
+      "label": "acceptable"
+    },
+    {
+      "idx": 26,
+      "text": "John is eager.",
+      "source": "cola",
+      "domain": "grammar",
+      "label": "acceptable"
+    },
+    {
+      "idx": 27,
+      "text": "We want John to win.",
+      "source": "cola",
+      "domain": "grammar",
+      "label": "acceptable"
+    },
+    {
+      "idx": 28,
+      "text": "The box contained the ball from the tree.",
+      "source": "cola",
+      "domain": "grammar",
+      "label": "unacceptable"
+    },
+    {
+      "idx": 29,
+      "text": "The tube was escaped by gas.",
+      "source": "cola",
+      "domain": "grammar",
+      "label": "unacceptable"
+    },
+    {
+      "idx": 30,
+      "text": "Water bubbled up out of the kettle.",
+      "source": "cola",
+      "domain": "grammar",
+      "label": "acceptable"
+    },
+    {
+      "idx": 31,
+      "text": "The tub leaked water.",
+      "source": "cola",
+      "domain": "grammar",
+      "label": "acceptable"
+    },
+    {
+      "idx": 32,
+      "text": "What the water did to the bottle was fill it.",
+      "source": "cola",
+      "domain": "grammar",
+      "label": "unacceptable"
+    },
+    {
+      "idx": 33,
+      "text": "What the water did to the whole bottle was fill it.",
+      "source": "cola",
+      "domain": "grammar",
+      "label": "unacceptable"
+    },
+    {
+      "idx": 34,
+      "text": "The tank leaked the fluid free.",
+      "source": "cola",
+      "domain": "grammar",
+      "label": "acceptable"
+    },
+    {
+      "idx": 35,
+      "text": "John lay the ball in the box.",
+      "source": "cola",
+      "domain": "grammar",
+      "label": "acceptable"
+    },
+    {
+      "idx": 36,
+      "text": "John owns the book.",
+      "source": "cola",
+      "domain": "grammar",
+      "label": "acceptable"
+    },
+    {
+      "idx": 37,
+      "text": "We persuaded Mary to leave and Sue to stay.",
+      "source": "cola",
+      "domain": "grammar",
+      "label": "acceptable"
+    },
+    {
+      "idx": 38,
+      "text": "Most people probably consider, even though the courts didn't actually find, Klaus guilty of murder.",
+      "source": "cola",
+      "domain": "grammar",
+      "label": "acceptable"
+    },
+    {
+      "idx": 39,
+      "text": "Mary beautifully plays the violin.",
+      "source": "cola",
+      "domain": "grammar",
+      "label": "unacceptable"
+    },
+    {
+      "idx": 40,
+      "text": "Clearly, John probably will immediately learn French perfectly.",
+      "source": "cola",
+      "domain": "grammar",
+      "label": "acceptable"
+    },
+    {
+      "idx": 41,
+      "text": "Sue gave to Bill a book.",
+      "source": "cola",
+      "domain": "grammar",
+      "label": "unacceptable"
+    },
+    {
+      "idx": 42,
+      "text": "The men will all leave.",
+      "source": "cola",
+      "domain": "grammar",
+      "label": "acceptable"
+    },
+    {
+      "idx": 43,
+      "text": "John went home.",
+      "source": "cola",
+      "domain": "grammar",
+      "label": "acceptable"
+    },
+    {
+      "idx": 44,
+      "text": "They represented seriously to the dean Mary as a genuine linguist.",
+      "source": "cola",
+      "domain": "grammar",
+      "label": "unacceptable"
+    },
+    {
+      "idx": 45,
+      "text": "Us love they.",
+      "source": "cola",
+      "domain": "grammar",
+      "label": "unacceptable"
+    },
+    {
+      "idx": 46,
+      "text": "It is nice to go abroad.",
+      "source": "cola",
+      "domain": "grammar",
+      "label": "acceptable"
+    },
+    {
+      "idx": 47,
+      "text": "Mary intended John to go abroad.",
+      "source": "cola",
+      "domain": "grammar",
+      "label": "unacceptable"
+    },
+    {
+      "idx": 48,
+      "text": "I remembered having kissed Mary.",
+      "source": "cola",
+      "domain": "grammar",
+      "label": "acceptable"
+    },
+    {
+      "idx": 49,
+      "text": "I can't believe Fred won't, either.",
+      "source": "cola",
+      "domain": "grammar",
+      "label": "acceptable"
+    },
+    {
+      "idx": 50,
+      "text": "Sarah was a much better surgeon than Maria so Maria always got the easier cases.",
+      "source": "winogrande",
+      "domain": "commonsense",
+      "label": "correct_completion"
+    },
+    {
+      "idx": 51,
+      "text": "Sarah was a much better surgeon than Maria so Sarah always got the harder cases.",
+      "source": "winogrande",
+      "domain": "commonsense",
+      "label": "correct_completion"
+    },
+    {
+      "idx": 52,
+      "text": "They were worried the wine would ruin the bed and the blanket, but the bed was't ruined.",
+      "source": "winogrande",
+      "domain": "commonsense",
+      "label": "correct_completion"
+    },
+    {
+      "idx": 53,
+      "text": "Terry tried to bake the eggplant in the toaster oven but the eggplant was too big.",
+      "source": "winogrande",
+      "domain": "commonsense",
+      "label": "correct_completion"
+    },
+    {
+      "idx": 54,
+      "text": "At night, Jeffrey always stays up later than Hunter to watch TV because Jeffrey wakes up late.",
+      "source": "winogrande",
+      "domain": "commonsense",
+      "label": "correct_completion"
+    },
+    {
+      "idx": 55,
+      "text": "The cat of Sarah has some mouth problems, so she takes it to see Maria. Sarah is a responsible cat owner.",
+      "source": "winogrande",
+      "domain": "commonsense",
+      "label": "correct_completion"
+    },
+    {
+      "idx": 56,
+      "text": "The home that my parents had when I was in school was a lot nicer than my house now because the home was sophisticated.",
+      "source": "winogrande",
+      "domain": "commonsense",
+      "label": "correct_completion"
+    },
+    {
+      "idx": 57,
+      "text": "The home that my parents had when I was in school was a lot nicer than my house now because the house is trashy.",
+      "source": "winogrande",
+      "domain": "commonsense",
+      "label": "correct_completion"
+    },
+    {
+      "idx": 58,
+      "text": "Natalie has a rich husband and lots of money, Jennifer is poor Jennifer needs to make her clothes.",
+      "source": "winogrande",
+      "domain": "commonsense",
+      "label": "correct_completion"
+    },
+    {
+      "idx": 59,
+      "text": "Joe immediately went to bakery before the bank because the bakery had a limited supply of what he wanted.",
+      "source": "winogrande",
+      "domain": "commonsense",
+      "label": "correct_completion"
+    },
+    {
+      "idx": 60,
+      "text": "Joe immediately went to bakery before the bank because the bank had a substantial supply of what he wanted.",
+      "source": "winogrande",
+      "domain": "commonsense",
+      "label": "correct_completion"
+    },
+    {
+      "idx": 61,
+      "text": "I had to read an entire story for class tomorrow. Luckily, the class was canceled.",
+      "source": "winogrande",
+      "domain": "commonsense",
+      "label": "correct_completion"
+    },
+    {
+      "idx": 62,
+      "text": "I had to read an entire story for class tomorrow. Luckily, the story was short.",
+      "source": "winogrande",
+      "domain": "commonsense",
+      "label": "correct_completion"
+    },
+    {
+      "idx": 63,
+      "text": "He had enough time between classes to go to a cafe or to the library. He went to the cafe because his paper could wait.",
+      "source": "winogrande",
+      "domain": "commonsense",
+      "label": "correct_completion"
+    },
+    {
+      "idx": 64,
+      "text": "He had enough time between classes to go to a cafe or to the library. He went to the library because his paper was due soon.",
+      "source": "winogrande",
+      "domain": "commonsense",
+      "label": "correct_completion"
+    },
+    {
+      "idx": 65,
+      "text": "Lindsey like to read graphic novels but Natalie liked classic literature to read. Lindsey bought the new Frank Miller comic at the book store.",
+      "source": "winogrande",
+      "domain": "commonsense",
+      "label": "correct_completion"
+    },
+    {
+      "idx": 66,
+      "text": "Michael just bought brand new wheels for his truck unlike Leslie because Leslie wheels were new and perfect.",
+      "source": "winogrande",
+      "domain": "commonsense",
+      "label": "correct_completion"
+    },
+    {
+      "idx": 67,
+      "text": "Michael just bought brand new wheels for his truck unlike Leslie because Michael wheels were old and used.",
+      "source": "winogrande",
+      "domain": "commonsense",
+      "label": "correct_completion"
+    },
+    {
+      "idx": 68,
+      "text": "Leslie was nervous around parrots but Neil was not, since Leslie was bitten by a bird early in life.",
+      "source": "winogrande",
+      "domain": "commonsense",
+      "label": "correct_completion"
+    },
+    {
+      "idx": 69,
+      "text": "Christmas was a special holiday to Eric but not Adam since Adam was a Jew.",
+      "source": "winogrande",
+      "domain": "commonsense",
+      "label": "correct_completion"
+    },
+    {
+      "idx": 70,
+      "text": "To make frosting I needed pudding that was at a store 15 minutes away but pre-made frosting was at a store 5 minutes away.  The frosting was closer.",
+      "source": "winogrande",
+      "domain": "commonsense",
+      "label": "correct_completion"
+    },
+    {
+      "idx": 71,
+      "text": "Benjamin was chosen instead of Brett to be the makeup artist for the play because Brett was less experienced.",
+      "source": "winogrande",
+      "domain": "commonsense",
+      "label": "correct_completion"
+    },
+    {
+      "idx": 72,
+      "text": "Cynthia violated the rights of Amy, because Amy had too much passivity with other people.",
+      "source": "winogrande",
+      "domain": "commonsense",
+      "label": "correct_completion"
+    },
+    {
+      "idx": 73,
+      "text": "They had to eat a lot to gain the strength they had lost and be able to work, the work was too much.",
+      "source": "winogrande",
+      "domain": "commonsense",
+      "label": "correct_completion"
+    },
+    {
+      "idx": 74,
+      "text": "They had to eat a lot to gain the strength they had lost and be able to work, the strength was too little.",
+      "source": "winogrande",
+      "domain": "commonsense",
+      "label": "correct_completion"
+    },
+    {
+      "idx": 75,
+      "text": "The roof of Rachel's home is old and falling apart, while Betty's is new. The home value of Rachel is lower.",
+      "source": "winogrande",
+      "domain": "commonsense",
+      "label": "correct_completion"
+    },
+    {
+      "idx": 76,
+      "text": "All the clutter in the house excited Leslie but not Derrick because cleaning energized Leslie very much.",
+      "source": "winogrande",
+      "domain": "commonsense",
+      "label": "correct_completion"
+    },
+    {
+      "idx": 77,
+      "text": "The portions of food today were bigger than the sizes yesterday because the portions fed more people.",
+      "source": "winogrande",
+      "domain": "commonsense",
+      "label": "correct_completion"
+    },
+    {
+      "idx": 78,
+      "text": "Since Craig threw aluminum cans in the trash and Benjamin recycled, Craig was environmentally irresponsible.",
+      "source": "winogrande",
+      "domain": "commonsense",
+      "label": "correct_completion"
+    },
+    {
+      "idx": 79,
+      "text": "Christine was going to Jessica's house to do some cleaning in the kitchen, because Christine was a energetic person.",
+      "source": "winogrande",
+      "domain": "commonsense",
+      "label": "correct_completion"
+    },
+    {
+      "idx": 80,
+      "text": "The students were at their desks taking tests with pencils, they used the desks to hold the papers.",
+      "source": "winogrande",
+      "domain": "commonsense",
+      "label": "correct_completion"
+    },
+    {
+      "idx": 81,
+      "text": "Mary thought poodles were a cool dog but Rachel thought Great Danes were cooler. Mary bought a small dog bed for their pet.",
+      "source": "winogrande",
+      "domain": "commonsense",
+      "label": "correct_completion"
+    },
+    {
+      "idx": 82,
+      "text": "Mary thought poodles were a cool dog but Rachel thought Great Danes were cooler. Rachel bought a gigantic dog bed for their pet.",
+      "source": "winogrande",
+      "domain": "commonsense",
+      "label": "correct_completion"
+    },
+    {
+      "idx": 83,
+      "text": "Leslie had a lot of issues that Kyle was tired of dealing with, so Leslie felt abandoned when they finally moved out.",
+      "source": "winogrande",
+      "domain": "commonsense",
+      "label": "correct_completion"
+    },
+    {
+      "idx": 84,
+      "text": "Jessica enjoyed a simple, basic life with Betty, but Betty was bored having a quiet existence.",
+      "source": "winogrande",
+      "domain": "commonsense",
+      "label": "correct_completion"
+    },
+    {
+      "idx": 85,
+      "text": "I wanted to build a bathroom on the third floor of the house but I couldn't because the floor would be too full.",
+      "source": "winogrande",
+      "domain": "commonsense",
+      "label": "correct_completion"
+    },
+    {
+      "idx": 86,
+      "text": "Joel researched laws and helped to open a preschool for Eric. Because Eric is very good with kids.",
+      "source": "winogrande",
+      "domain": "commonsense",
+      "label": "correct_completion"
+    },
+    {
+      "idx": 87,
+      "text": "Tanya told Emily she couldn't come to work because her cat had an infection, but Tanya was lying.",
+      "source": "winogrande",
+      "domain": "commonsense",
+      "label": "correct_completion"
+    },
+    {
+      "idx": 88,
+      "text": "Angela thinks her husband might be cheating with Lindsey, and Lindsey confesses at the dinner party.",
+      "source": "winogrande",
+      "domain": "commonsense",
+      "label": "correct_completion"
+    },
+    {
+      "idx": 89,
+      "text": "Donald's understanding of math isn't as good as Joseph's, so Joseph is more likely a professor.",
+      "source": "winogrande",
+      "domain": "commonsense",
+      "label": "correct_completion"
+    },
+    {
+      "idx": 90,
+      "text": "Brian was jealous of Brett's new car because Brian couldn't afford to buy a new car.",
+      "source": "winogrande",
+      "domain": "commonsense",
+      "label": "correct_completion"
+    },
+    {
+      "idx": 91,
+      "text": "The man used  his eyes to read the letters but the letters were too small.",
+      "source": "winogrande",
+      "domain": "commonsense",
+      "label": "correct_completion"
+    },
+    {
+      "idx": 92,
+      "text": "Jill was on a budget so she only bought a new dress for the ceremony and wore an old hat. She figured the hat would be less noticeable.",
+      "source": "winogrande",
+      "domain": "commonsense",
+      "label": "correct_completion"
+    },
+    {
+      "idx": 93,
+      "text": "Jill was on a budget so she only bought a new dress for the ceremony and wore an old hat. She figured the dress would be more noticeable.",
+      "source": "winogrande",
+      "domain": "commonsense",
+      "label": "correct_completion"
+    },
+    {
+      "idx": 94,
+      "text": "On Monday, Patricia made Felicia eggs for an early breakfast, but Felicia does not like fried eggs.",
+      "source": "winogrande",
+      "domain": "commonsense",
+      "label": "correct_completion"
+    },
+    {
+      "idx": 95,
+      "text": "Since Craig wears clear contacts and William wears colored ones, it is safe to assume that Craig loves the color of their eyes.",
+      "source": "winogrande",
+      "domain": "commonsense",
+      "label": "correct_completion"
+    },
+    {
+      "idx": 96,
+      "text": "Since Craig wears clear contacts and William wears colored ones, it is safe to assume that William dislikes the color of their eyes.",
+      "source": "winogrande",
+      "domain": "commonsense",
+      "label": "correct_completion"
+    },
+    {
+      "idx": 97,
+      "text": "It was easy for Angela to become a vegetarian although Kayla couldn't do it. Kayla really missed the taste of chicken.",
+      "source": "winogrande",
+      "domain": "commonsense",
+      "label": "correct_completion"
+    },
+    {
+      "idx": 98,
+      "text": "Hunter was a better baker than Logan so Logan made the kitchen a mess when they tried to make an apple pie.",
+      "source": "winogrande",
+      "domain": "commonsense",
+      "label": "correct_completion"
+    },
+    {
+      "idx": 99,
+      "text": "Tanya spent more on the children's birthday party than Amy. Tanya thought a magician was a good use of funds.",
+      "source": "winogrande",
+      "domain": "commonsense",
+      "label": "correct_completion"
+    },
+    {
+      "idx": 100,
+      "text": "A man is sitting on a roof. he starts pulling up roofing on a roof.",
+      "source": "hellaswag",
+      "domain": "Roof shingle removal",
+      "label": "correct_completion"
+    },
+    {
+      "idx": 101,
+      "text": "A lady walks to a barbell. She bends down and grabs the pole. the lady stands and lifts the weight over her head.",
+      "source": "hellaswag",
+      "domain": "Clean and jerk",
+      "label": "correct_completion"
+    },
+    {
+      "idx": 102,
+      "text": "Two women in a child are shown in a canoe while a man pulls the canoe while standing in the water, with other individuals visible in the background. the child and a different man sit in a canoe while the man paddles.",
+      "source": "hellaswag",
+      "domain": "Canoeing",
+      "label": "correct_completion"
+    },
+    {
+      "idx": 103,
+      "text": "A boy is running down a track. the boy lifts his body above the height of a pole.",
+      "source": "hellaswag",
+      "domain": "High jump",
+      "label": "correct_completion"
+    },
+    {
+      "idx": 104,
+      "text": "The boy lifts his body above the height of a pole. The boy lands on his back on to a red mat. the boy gets up from the mat.",
+      "source": "hellaswag",
+      "domain": "High jump",
+      "label": "correct_completion"
+    },
+    {
+      "idx": 105,
+      "text": "The boy lands on his back on to a red mat. The boy gets up from the mat. the boy celebrates by clapping and flexing both arms.",
+      "source": "hellaswag",
+      "domain": "High jump",
+      "label": "correct_completion"
+    },
+    {
+      "idx": 106,
+      "text": "A man is standing in front of a camera. He starts playing a harmonica for the camera. he rocks back and forth to the music as he goes.",
+      "source": "hellaswag",
+      "domain": "Playing harmonica",
+      "label": "correct_completion"
+    },
+    {
+      "idx": 107,
+      "text": "A cartoon animation video is shown with people wandering around and rockets being shot. two men fight robots of evil and ends with a to be continued.",
+      "source": "hellaswag",
+      "domain": "Sumo",
+      "label": "correct_completion"
+    },
+    {
+      "idx": 108,
+      "text": "A man is holding a pocket knife while sitting on some rocks in the wilderness. then he takes a small stone from the flowing river and smashes it on another stone.",
+      "source": "hellaswag",
+      "domain": "Sharpening knives",
+      "label": "correct_completion"
+    },
+    {
+      "idx": 109,
+      "text": "Then he takes a small stone from the flowing river and smashes it on another stone. He starts to crush the small stone to smaller pieces. he grind it hard to make the pieces smaller.",
+      "source": "hellaswag",
+      "domain": "Sharpening knives",
+      "label": "correct_completion"
+    },
+    {
+      "idx": 110,
+      "text": "Then he takes a piece of bark and rubs the powered stone pieces onto it. The stone particles stick to the wet piece of wood. he then takes the knife and sharpens it against the wood piece.",
+      "source": "hellaswag",
+      "domain": "Sharpening knives",
+      "label": "correct_completion"
+    },
+    {
+      "idx": 111,
+      "text": "The stone particles stick to the wet piece of wood. He then takes the knife and sharpens it against the wood piece. he then notices a little black and green poisonous frog sitting next to him.",
+      "source": "hellaswag",
+      "domain": "Sharpening knives",
+      "label": "correct_completion"
+    },
+    {
+      "idx": 112,
+      "text": "He then takes the knife and sharpens it against the wood piece. He then notices a little black and green poisonous frog sitting next to him. the frog then escapes and jumps away.",
+      "source": "hellaswag",
+      "domain": "Sharpening knives",
+      "label": "correct_completion"
+    },
+    {
+      "idx": 113,
+      "text": "He then notices a little black and green poisonous frog sitting next to him. The frog then escapes and jumps away. he explains how the frog secretes a poisonous fluid that can be extremely harmful.",
+      "source": "hellaswag",
+      "domain": "Sharpening knives",
+      "label": "correct_completion"
+    },
+    {
+      "idx": 114,
+      "text": "A person is playing bagpipes out in a park. A man and two boys watching from a far. the camera shoots areas all around the park while the bagpipes play.",
+      "source": "hellaswag",
+      "domain": "Playing bagpipes",
+      "label": "correct_completion"
+    },
+    {
+      "idx": 115,
+      "text": "Two people are seen passing a ball back and fourth in a pool and leads into one speaking to the camera. the man demonstrates how to properly throw the ball with his hands while still speaking to the camera.",
+      "source": "hellaswag",
+      "domain": "Playing water polo",
+      "label": "correct_completion"
+    },
+    {
+      "idx": 116,
+      "text": "A woman is sitting at a table in a fast food restaurant while eating. She continually speaks to nobody as she eats. she stands up and grabs her purse, continuing to talk and laugh as she leaves.",
+      "source": "hellaswag",
+      "domain": "Having an ice cream",
+      "label": "correct_completion"
+    },
+    {
+      "idx": 117,
+      "text": "A group of cheerleaders run onto a stage before a cheering audience. they get into formation, then begin dancing and flipping as male cheerleaders join them.",
+      "source": "hellaswag",
+      "domain": "Cheerleading",
+      "label": "correct_completion"
+    },
+    {
+      "idx": 118,
+      "text": "A group of cheerleaders run onto a stage before a cheering audience. They get into formation, then begin dancing and flipping as male cheerleaders join them. they all continue dancing and flipping, doing hand springs.",
+      "source": "hellaswag",
+      "domain": "Cheerleading",
+      "label": "correct_completion"
+    },
+    {
+      "idx": 119,
+      "text": "They get into formation, then begin dancing and flipping as male cheerleaders join them. They all continue dancing and flipping, doing hand springs. when they are finished, they jump up and down happily and walk off the stage, exhausted.",
+      "source": "hellaswag",
+      "domain": "Cheerleading",
+      "label": "correct_completion"
+    },
+    {
+      "idx": 120,
+      "text": "A woman is reading a newspaper nearby while he speaks to her and shows her something in his hand. The man sharpens his knives using an electric tool. he then continues cutting his onion.",
+      "source": "hellaswag",
+      "domain": "Sharpening knives",
+      "label": "correct_completion"
+    },
+    {
+      "idx": 121,
+      "text": "A man is outside of a building. He is using commercial lawn mowing equipment. he walks back and forth as he mows the grass.",
+      "source": "hellaswag",
+      "domain": "Cutting the grass",
+      "label": "correct_completion"
+    },
+    {
+      "idx": 122,
+      "text": "Children bring desert out for their family member. the family enjoys eating the desert together.",
+      "source": "hellaswag",
+      "domain": "Having an ice cream",
+      "label": "correct_completion"
+    },
+    {
+      "idx": 123,
+      "text": "The family enjoys eating the desert together. The people in the restaurant laugh at the man and he wonders what they are doing. the man gets up and walks away to the other room.",
+      "source": "hellaswag",
+      "domain": "Having an ice cream",
+      "label": "correct_completion"
+    },
+    {
+      "idx": 124,
+      "text": "A black female is shown in a room with a black scarf around her head. black spots on her faced are then zoomed in on and she begins to apply something on it.",
+      "source": "hellaswag",
+      "domain": "Washing face",
+      "label": "correct_completion"
+    },
+    {
+      "idx": 125,
+      "text": "A black female is shown in a room with a black scarf around her head. Black spots on her faced are then zoomed in on and she begins to apply something on it. next , she takes some spray and it makes her skin extremely oily and she continues to talk until the video is over.",
+      "source": "hellaswag",
+      "domain": "Washing face",
+      "label": "correct_completion"
+    },
+    {
+      "idx": 126,
+      "text": "A helicopter flies in some people who then start playing paintball. they run around obstacles and have a great time.",
+      "source": "hellaswag",
+      "domain": "Paintball",
+      "label": "correct_completion"
+    },
+    {
+      "idx": 127,
+      "text": "A young boy and girl are standing over a sink with their mother talking. the mother instructs them on how to brush their teeth while laughing.",
+      "source": "hellaswag",
+      "domain": "Gargling mouthwash",
+      "label": "correct_completion"
+    },
+    {
+      "idx": 128,
+      "text": "A young boy and girl are standing over a sink with their mother talking. The mother instructs them on how to brush their teeth while laughing. the boy helps his younger sister brush his teeth.",
+      "source": "hellaswag",
+      "domain": "Gargling mouthwash",
+      "label": "correct_completion"
+    },
+    {
+      "idx": 129,
+      "text": "The mother instructs them on how to brush their teeth while laughing. The boy helps his younger sister brush his teeth. she gets them some water to gargle in their mouths.",
+      "source": "hellaswag",
+      "domain": "Gargling mouthwash",
+      "label": "correct_completion"
+    },
+    {
+      "idx": 130,
+      "text": "She gets them some water to gargle in their mouths. The boy and girl begin playing in the sink. the woman laughs at the children dribbling water.",
+      "source": "hellaswag",
+      "domain": "Gargling mouthwash",
+      "label": "correct_completion"
+    },
+    {
+      "idx": 131,
+      "text": "A cat is sitting in a cat bed. It is licking its paw. it then wipes its paw on its ear.",
+      "source": "hellaswag",
+      "domain": "Washing face",
+      "label": "correct_completion"
+    },
+    {
+      "idx": 132,
+      "text": "A man in brown jacket is pulling out an arrow from the target board, then he was talking to the camera, then he pull out his bow and started to use it with his bow to hit the target board, he fired his bows several times. the man went to the target board and talked to the camera.",
+      "source": "hellaswag",
+      "domain": "Archery",
+      "label": "correct_completion"
+    },
+    {
+      "idx": 133,
+      "text": "A man walks outside plugs his lawn mower in and gets ready to mow. he starts mowing his lawn casually going over all the grass.",
+      "source": "hellaswag",
+      "domain": "Cutting the grass",
+      "label": "correct_completion"
+    },
+    {
+      "idx": 134,
+      "text": "A man walks outside plugs his lawn mower in and gets ready to mow. He starts mowing his lawn casually going over all the grass. his dog comes outside and starts to follow him a little while he's closer to the house.",
+      "source": "hellaswag",
+      "domain": "Cutting the grass",
+      "label": "correct_completion"
+    },
+    {
+      "idx": 135,
+      "text": "He starts mowing his lawn casually going over all the grass. His dog comes outside and starts to follow him a little while he's closer to the house. the yard is slowly starting to look really really nice, once he is completely finished the yard looks great, nice and smooth.",
+      "source": "hellaswag",
+      "domain": "Cutting the grass",
+      "label": "correct_completion"
+    },
+    {
+      "idx": 136,
+      "text": "A sea is shown with a green forest on seashore. Blond man is standing in seashore and talking to the camera and surfing big waves on the sea. man is walking on seashore through a lot of people and talking to the camera and holding an award and talking about surfing the seashore.",
+      "source": "hellaswag",
+      "domain": "Surfing",
+      "label": "correct_completion"
+    },
+    {
+      "idx": 137,
+      "text": "We see a bottle of face wash. we see a person holding face wash then putting it on their face.",
+      "source": "hellaswag",
+      "domain": "Washing face",
+      "label": "correct_completion"
+    },
+    {
+      "idx": 138,
+      "text": "We see a person holding face wash then putting it on their face. They rinse the face and add the face wash with a brush. we see an illustration on how to add the wash using a brush.",
+      "source": "hellaswag",
+      "domain": "Washing face",
+      "label": "correct_completion"
+    },
+    {
+      "idx": 139,
+      "text": "A person is seen throwing plaster onto a wall while the camera follows the person close behind. the person gradually throws more and more onto the wall and the camera pans over the finished product.",
+      "source": "hellaswag",
+      "domain": "Plastering",
+      "label": "correct_completion"
+    },
+    {
+      "idx": 140,
+      "text": "More and more people begin talking and each of them has a bottle of sun screen and starts to squirt it on their arms in effort to protect their skin. a small blue bottle of the sun screen is then shown and several more people begin talking about the product.",
+      "source": "hellaswag",
+      "domain": "Applying sunscreen",
+      "label": "correct_completion"
+    },
+    {
+      "idx": 141,
+      "text": "A group of boys are standing in a room with many clear cups of beer on a table they are all standing around. the boys talk, laugh and tease each other before beginning a game of beer pong across a long table using a triangle shaped array of clear cups.",
+      "source": "hellaswag",
+      "domain": "Beer pong",
+      "label": "correct_completion"
+    },
+    {
+      "idx": 142,
+      "text": "The boys talk, laugh and tease each other before beginning a game of beer pong across a long table using a triangle shaped array of clear cups. one of the ping pongs lands in the cup and one of the boys begins to drink the beer.",
+      "source": "hellaswag",
+      "domain": "Beer pong",
+      "label": "correct_completion"
+    },
+    {
+      "idx": 143,
+      "text": "One of the ping pongs lands in the cup and one of the boys begins to drink the beer. the group continue to play beer pong when one final player is able to throw and land a ping pong ball while standing with his back to the cups at which point the boys celebrate, and laugh.",
+      "source": "hellaswag",
+      "domain": "Beer pong",
+      "label": "correct_completion"
+    },
+    {
+      "idx": 144,
+      "text": "There's a nbc news reporter wearing a red sweater and white shirt talking about dog grooming by scissor wizard a grooming company. the representative from the company is talking about the services they offer and how those dogs participate in dog shows.",
+      "source": "hellaswag",
+      "domain": "Grooming dog",
+      "label": "correct_completion"
+    },
+    {
+      "idx": 145,
+      "text": "The representative from the company is talking about the services they offer and how those dogs participate in dog shows. a groomer is seen using shears to creatively trim the dog's hair and even dye it in colorful shades of red, green, yellow and blue.",
+      "source": "hellaswag",
+      "domain": "Grooming dog",
+      "label": "correct_completion"
+    },
+    {
+      "idx": 146,
+      "text": "A woman tries to eat ice cream to a child, but the child refuses to eat the ice cream, then the woman eats the ice cream in the spoon. after , the woman gives ice cream to the child, and then the woman cleans the child's mouth.",
+      "source": "hellaswag",
+      "domain": "Having an ice cream",
+      "label": "correct_completion"
+    },
+    {
+      "idx": 147,
+      "text": "After, the woman gives ice cream to the child, and then the woman cleans the child's mouth. an old woman feeds a boy ice cream.",
+      "source": "hellaswag",
+      "domain": "Having an ice cream",
+      "label": "correct_completion"
+    },
+    {
+      "idx": 148,
+      "text": "Men are lifting heavy weights over their head several times. A man in a blue shirt is watching one of the men. a man in a gray shirt is mimicking the person lifting the weight.",
+      "source": "hellaswag",
+      "domain": "Clean and jerk",
+      "label": "correct_completion"
+    },
+    {
+      "idx": 149,
+      "text": "In home pet groomers demonstrate how to groom a pet. the person is demonstrating how the dog's hair is trimmed with electric shears at their grooming salon.",
+      "source": "hellaswag",
+      "domain": "Grooming dog",
+      "label": "correct_completion"
+    },
+    {
+      "idx": 150,
+      "text": "Premise: Two women are embracing while holding to go packages.\nHypothesis: The sisters are hugging goodbye while holding to go packages after just eating lunch.",
+      "source": "snli",
+      "domain": "nli",
+      "label": "neutral"
+    },
+    {
+      "idx": 151,
+      "text": "Premise: Two women are embracing while holding to go packages.\nHypothesis: Two woman are holding packages.",
+      "source": "snli",
+      "domain": "nli",
+      "label": "entailment"
+    },
+    {
+      "idx": 152,
+      "text": "Premise: Two women are embracing while holding to go packages.\nHypothesis: The men are fighting outside a deli.",
+      "source": "snli",
+      "domain": "nli",
+      "label": "contradiction"
+    },
+    {
+      "idx": 153,
+      "text": "Premise: Two young children in blue jerseys, one with the number 9 and one with the number 2 are standing on wooden steps in a bathroom and washing their hands in a sink.\nHypothesis: Two kids in numbered jerseys wash their hands.",
+      "source": "snli",
+      "domain": "nli",
+      "label": "entailment"
+    },
+    {
+      "idx": 154,
+      "text": "Premise: Two young children in blue jerseys, one with the number 9 and one with the number 2 are standing on wooden steps in a bathroom and washing their hands in a sink.\nHypothesis: Two kids at a ballgame wash their hands.",
+      "source": "snli",
+      "domain": "nli",
+      "label": "neutral"
+    },
+    {
+      "idx": 155,
+      "text": "Premise: Two young children in blue jerseys, one with the number 9 and one with the number 2 are standing on wooden steps in a bathroom and washing their hands in a sink.\nHypothesis: Two kids in jackets walk to school.",
+      "source": "snli",
+      "domain": "nli",
+      "label": "contradiction"
+    },
+    {
+      "idx": 156,
+      "text": "Premise: A man selling donuts to a customer during a world exhibition event held in the city of Angeles\nHypothesis: A woman drinks her coffee in a small cafe.",
+      "source": "snli",
+      "domain": "nli",
+      "label": "contradiction"
+    },
+    {
+      "idx": 157,
+      "text": "Premise: A man selling donuts to a customer during a world exhibition event held in the city of Angeles\nHypothesis: A man selling donuts to a customer during a world exhibition event while people wait in line behind him.",
+      "source": "snli",
+      "domain": "nli",
+      "label": "neutral"
+    },
+    {
+      "idx": 158,
+      "text": "Premise: A man selling donuts to a customer during a world exhibition event held in the city of Angeles\nHypothesis: A man selling donuts to a customer.",
+      "source": "snli",
+      "domain": "nli",
+      "label": "entailment"
+    },
+    {
+      "idx": 159,
+      "text": "Premise: Two young boys of opposing teams play football, while wearing full protection uniforms and helmets.\nHypothesis: boys play football",
+      "source": "snli",
+      "domain": "nli",
+      "label": "entailment"
+    },
+    {
+      "idx": 160,
+      "text": "Premise: Two young boys of opposing teams play football, while wearing full protection uniforms and helmets.\nHypothesis: dog eats out of bowl",
+      "source": "snli",
+      "domain": "nli",
+      "label": "contradiction"
+    },
+    {
+      "idx": 161,
+      "text": "Premise: Two young boys of opposing teams play football, while wearing full protection uniforms and helmets.\nHypothesis: boys scoring a touchdown",
+      "source": "snli",
+      "domain": "nli",
+      "label": "neutral"
+    },
+    {
+      "idx": 162,
+      "text": "Premise: A man in a blue shirt standing in front of a garage-like structure painted with geometric designs.\nHypothesis: A man is repainting a garage",
+      "source": "snli",
+      "domain": "nli",
+      "label": "neutral"
+    },
+    {
+      "idx": 163,
+      "text": "Premise: A man in a blue shirt standing in front of a garage-like structure painted with geometric designs.\nHypothesis: A man is wearing a blue shirt",
+      "source": "snli",
+      "domain": "nli",
+      "label": "entailment"
+    },
+    {
+      "idx": 164,
+      "text": "Premise: A man in a blue shirt standing in front of a garage-like structure painted with geometric designs.\nHypothesis: A man is wearing a black shirt",
+      "source": "snli",
+      "domain": "nli",
+      "label": "contradiction"
+    },
+    {
+      "idx": 165,
+      "text": "Premise: Under a blue sky with white clouds, a child reaches up to touch the propeller of a plane standing parked on a field of grass.\nHypothesis: A child is reaching to touch the propeller of a plane.",
+      "source": "snli",
+      "domain": "nli",
+      "label": "entailment"
+    },
+    {
+      "idx": 166,
+      "text": "Premise: Under a blue sky with white clouds, a child reaches up to touch the propeller of a plane standing parked on a field of grass.\nHypothesis: A child is reaching to touch the propeller out of curiosity.",
+      "source": "snli",
+      "domain": "nli",
+      "label": "neutral"
+    },
+    {
+      "idx": 167,
+      "text": "Premise: Under a blue sky with white clouds, a child reaches up to touch the propeller of a plane standing parked on a field of grass.\nHypothesis: A child is playing with a ball.",
+      "source": "snli",
+      "domain": "nli",
+      "label": "contradiction"
+    },
+    {
+      "idx": 168,
+      "text": "Premise: A woman is doing a cartwheel while wearing a bikini in the sand next to the beach.\nHypothesis: A woman is doing a cartwheel.",
+      "source": "snli",
+      "domain": "nli",
+      "label": "entailment"
+    },
+    {
+      "idx": 169,
+      "text": "Premise: A woman is doing a cartwheel while wearing a bikini in the sand next to the beach.\nHypothesis: A woman is fixing her home.",
+      "source": "snli",
+      "domain": "nli",
+      "label": "contradiction"
+    },
+    {
+      "idx": 170,
+      "text": "Premise: A woman is doing a cartwheel while wearing a bikini in the sand next to the beach.\nHypothesis: A woman is doing a cartwheel and falls on her head.",
+      "source": "snli",
+      "domain": "nli",
+      "label": "contradiction"
+    },
+    {
+      "idx": 171,
+      "text": "Premise: Two men on bicycles competing in a race.\nHypothesis: People are riding bikes.",
+      "source": "snli",
+      "domain": "nli",
+      "label": "entailment"
+    },
+    {
+      "idx": 172,
+      "text": "Premise: Two men on bicycles competing in a race.\nHypothesis: Men are riding bicycles on the street.",
+      "source": "snli",
+      "domain": "nli",
+      "label": "neutral"
+    },
+    {
+      "idx": 173,
+      "text": "Premise: Two men on bicycles competing in a race.\nHypothesis: A few people are catching fish.",
+      "source": "snli",
+      "domain": "nli",
+      "label": "contradiction"
+    },
+    {
+      "idx": 174,
+      "text": "Premise: A young boy in a field of flowers carrying a ball\nHypothesis: boy leaving baseball game",
+      "source": "snli",
+      "domain": "nli",
+      "label": "neutral"
+    },
+    {
+      "idx": 175,
+      "text": "Premise: A young boy in a field of flowers carrying a ball\nHypothesis: boy in field",
+      "source": "snli",
+      "domain": "nli",
+      "label": "entailment"
+    },
+    {
+      "idx": 176,
+      "text": "Premise: A young boy in a field of flowers carrying a ball\nHypothesis: dog in pool",
+      "source": "snli",
+      "domain": "nli",
+      "label": "contradiction"
+    },
+    {
+      "idx": 177,
+      "text": "Premise: Families waiting in line at an amusement park for their turn to ride.\nHypothesis: The restaurant is very bad.",
+      "source": "snli",
+      "domain": "nli",
+      "label": "contradiction"
+    },
+    {
+      "idx": 178,
+      "text": "Premise: Families waiting in line at an amusement park for their turn to ride.\nHypothesis: People are waiting in line at a restaurant.",
+      "source": "snli",
+      "domain": "nli",
+      "label": "contradiction"
+    },
+    {
+      "idx": 179,
+      "text": "Premise: Families waiting in line at an amusement park for their turn to ride.\nHypothesis: People are waiting to see a movie.",
+      "source": "snli",
+      "domain": "nli",
+      "label": "contradiction"
+    },
+    {
+      "idx": 180,
+      "text": "Premise: A senior is waiting at the window of a restaurant that serves sandwiches.\nHypothesis: A person waits to be served his food.",
+      "source": "snli",
+      "domain": "nli",
+      "label": "entailment"
+    },
+    {
+      "idx": 181,
+      "text": "Premise: A senior is waiting at the window of a restaurant that serves sandwiches.\nHypothesis: A man is waiting in line for the bus.",
+      "source": "snli",
+      "domain": "nli",
+      "label": "contradiction"
+    },
+    {
+      "idx": 182,
+      "text": "Premise: A senior is waiting at the window of a restaurant that serves sandwiches.\nHypothesis: A man is looking to order a grilled cheese sandwich.",
+      "source": "snli",
+      "domain": "nli",
+      "label": "neutral"
+    },
+    {
+      "idx": 183,
+      "text": "Premise: Man in a black suit, white shirt and black bowtie playing an instrument with the rest of his symphony surrounding him.\nHypothesis: A person in a suit",
+      "source": "snli",
+      "domain": "nli",
+      "label": "entailment"
+    },
+    {
+      "idx": 184,
+      "text": "Premise: Man in a black suit, white shirt and black bowtie playing an instrument with the rest of his symphony surrounding him.\nHypothesis: Nobody has a suit",
+      "source": "snli",
+      "domain": "nli",
+      "label": "contradiction"
+    },
+    {
+      "idx": 185,
+      "text": "Premise: Man in a black suit, white shirt and black bowtie playing an instrument with the rest of his symphony surrounding him.\nHypothesis: A tall person in a suit",
+      "source": "snli",
+      "domain": "nli",
+      "label": "neutral"
+    },
+    {
+      "idx": 186,
+      "text": "Premise: Two women having drinks and smoking cigarettes at the bar.\nHypothesis: Two women are at a bar.",
+      "source": "snli",
+      "domain": "nli",
+      "label": "entailment"
+    },
+    {
+      "idx": 187,
+      "text": "Premise: Two women having drinks and smoking cigarettes at the bar.\nHypothesis: Three women are at a bar.",
+      "source": "snli",
+      "domain": "nli",
+      "label": "contradiction"
+    },
+    {
+      "idx": 188,
+      "text": "Premise: Two women having drinks and smoking cigarettes at the bar.\nHypothesis: Women are celebrating at a bar.",
+      "source": "snli",
+      "domain": "nli",
+      "label": "neutral"
+    },
+    {
+      "idx": 189,
+      "text": "Premise: At an outdoor event in an Asian-themed area, a crowd congregates as one person in a yellow Chinese dragon costume confronts the camera.\nHypothesis: A single man is next to a camera",
+      "source": "snli",
+      "domain": "nli",
+      "label": "contradiction"
+    },
+    {
+      "idx": 190,
+      "text": "Premise: At an outdoor event in an Asian-themed area, a crowd congregates as one person in a yellow Chinese dragon costume confronts the camera.\nHypothesis: A crowd is dancing",
+      "source": "snli",
+      "domain": "nli",
+      "label": "neutral"
+    },
+    {
+      "idx": 191,
+      "text": "Premise: At an outdoor event in an Asian-themed area, a crowd congregates as one person in a yellow Chinese dragon costume confronts the camera.\nHypothesis: A crowd is in front of a camera",
+      "source": "snli",
+      "domain": "nli",
+      "label": "neutral"
+    },
+    {
+      "idx": 192,
+      "text": "Premise: Two doctors perform surgery on patient.\nHypothesis: Two surgeons are having lunch.",
+      "source": "snli",
+      "domain": "nli",
+      "label": "contradiction"
+    },
+    {
+      "idx": 193,
+      "text": "Premise: Two doctors perform surgery on patient.\nHypothesis: Doctors are performing surgery.",
+      "source": "snli",
+      "domain": "nli",
+      "label": "entailment"
+    },
+    {
+      "idx": 194,
+      "text": "Premise: Two doctors perform surgery on patient.\nHypothesis: Two doctors are performing surgery on a man.",
+      "source": "snli",
+      "domain": "nli",
+      "label": "neutral"
+    },
+    {
+      "idx": 195,
+      "text": "Premise: A white dog with long hair jumps to catch a red and green toy.\nHypothesis: A white dog with long hair is swimming underwater.",
+      "source": "snli",
+      "domain": "nli",
+      "label": "contradiction"
+    },
+    {
+      "idx": 196,
+      "text": "Premise: A white dog with long hair jumps to catch a red and green toy.\nHypothesis: An animal is jumping to catch an object.",
+      "source": "snli",
+      "domain": "nli",
+      "label": "entailment"
+    },
+    {
+      "idx": 197,
+      "text": "Premise: A white dog with long hair jumps to catch a red and green toy.\nHypothesis: A white chihuahua mix with long curly hair is jumping to catch a red and green toy bone.",
+      "source": "snli",
+      "domain": "nli",
+      "label": "neutral"
+    },
+    {
+      "idx": 198,
+      "text": "Premise: Kids are on a amusement ride.\nHypothesis: Kids ride their favorite amusement ride.",
+      "source": "snli",
+      "domain": "nli",
+      "label": "neutral"
+    },
+    {
+      "idx": 199,
+      "text": "Premise: Kids are on a amusement ride.\nHypothesis: A car is broke down on the side of the road.",
+      "source": "snli",
+      "domain": "nli",
+      "label": "contradiction"
+    },
+    {
+      "idx": 200,
+      "text": "Sentence 1: Bradd Crellin represented BARLA Cumbria on a tour of Australia with 6 other players representing Britain , also on a tour of Australia .\nSentence 2: Bradd Crellin also represented BARLA Great Britain on a tour through Australia on a tour through Australia with 6 other players representing Cumbria .",
+      "source": "paws",
+      "domain": "paraphrase",
+      "label": "not_paraphrase"
+    },
+    {
+      "idx": 201,
+      "text": "Sentence 1: They were there to enjoy us and they were there to pray for us .\nSentence 2: They were there for us to enjoy and they were there for us to pray .",
+      "source": "paws",
+      "domain": "paraphrase",
+      "label": "paraphrase"
+    },
+    {
+      "idx": 202,
+      "text": "Sentence 1: After the end of the war in June 1902 , Higgins left Southampton in the `` SSBavarian '' in August , returning to Cape Town the following month .\nSentence 2: In August , after the end of the war in June 1902 , Higgins Southampton left the `` SSBavarian '' and returned to Cape Town the following month .",
+      "source": "paws",
+      "domain": "paraphrase",
+      "label": "paraphrase"
+    },
+    {
+      "idx": 203,
+      "text": "Sentence 1: From the merger of the Four Rivers Council and the Audubon Council , the Shawnee Trails Council was born .\nSentence 2: Shawnee Trails Council was formed from the merger of the Four Rivers Council and the Audubon Council .",
+      "source": "paws",
+      "domain": "paraphrase",
+      "label": "paraphrase"
+    },
+    {
+      "idx": 204,
+      "text": "Sentence 1: The group toured extensively and became famous in Israel , and even played in New York City in 2007 .\nSentence 2: The group toured extensively and was famous in Israel and even played in New York City in 2007 .",
+      "source": "paws",
+      "domain": "paraphrase",
+      "label": "paraphrase"
+    },
+    {
+      "idx": 205,
+      "text": "Sentence 1: Kathy and her husband Pete Beale ( Peter Dean ) are stable financially .\nSentence 2: Kathy and her husband Peter Dean ( Pete Beale ) are financially stable .",
+      "source": "paws",
+      "domain": "paraphrase",
+      "label": "paraphrase"
+    },
+    {
+      "idx": 206,
+      "text": "Sentence 1: Timora diarhoda is a species of moth of the Noctuidae family . It is found in Africa , including South Africa .\nSentence 2: Diarhoda is a kind of moth of the Noctuidae family . It is found in South Africa including Africa .",
+      "source": "paws",
+      "domain": "paraphrase",
+      "label": "paraphrase"
+    },
+    {
+      "idx": 207,
+      "text": "Sentence 1: Most of these hotels were built along Biddle Avenue from Oak Street to Pine Street .\nSentence 2: Most of these homes were built along Biddle Avenue from Oak Street to Pine Street .",
+      "source": "paws",
+      "domain": "paraphrase",
+      "label": "not_paraphrase"
+    },
+    {
+      "idx": 208,
+      "text": "Sentence 1: Joe R. Campa Jr. is a former sailor of the United States Navy , who served as the eleventh Master Chief Petty Officer of the U.S. Navy .\nSentence 2: Joe R. Campa Jr. is a former U.S. Navy Matrose who served as the 11th Master Chief Petty Officer of the United States Navy .",
+      "source": "paws",
+      "domain": "paraphrase",
+      "label": "paraphrase"
+    },
+    {
+      "idx": 209,
+      "text": "Sentence 1: The exception was between late 2005 and 2009 when he played in Sweden with Carlstad United BK , Serbia with FK Borac \u010ca\u010dak and Russian FC Terek Grozny .\nSentence 2: The exception was between late 2005 and 2009 , when he played in Sweden with Carlstad United BK , Serbia with FK Borac \u010ca\u010dak and the Russian FC Terek Grozny .",
+      "source": "paws",
+      "domain": "paraphrase",
+      "label": "paraphrase"
+    },
+    {
+      "idx": 210,
+      "text": "Sentence 1: The river Valea Sterminoas\u0103 is a tributary of the River Boia Mic\u0103a in Romania .\nSentence 2: The River Boia Mic\u0103 is a tributary of the River Valea Sterminoas\u0103 in Romania .",
+      "source": "paws",
+      "domain": "paraphrase",
+      "label": "not_paraphrase"
+    },
+    {
+      "idx": 211,
+      "text": "Sentence 1: The Tabaci River is a tributary of the River Leurda in Romania .\nSentence 2: The Leurda River is a tributary of the River Tabaci in Romania .",
+      "source": "paws",
+      "domain": "paraphrase",
+      "label": "not_paraphrase"
+    },
+    {
+      "idx": 212,
+      "text": "Sentence 1: Cook Pond , also known as the South Watuppa Pond , is located south east of Laurel Lake and west of the Taunton River .\nSentence 2: Cook Pond , also formerly known as Laurel Lake , is located south east of the Taunton River and west of the South Watuppa Pond .",
+      "source": "paws",
+      "domain": "paraphrase",
+      "label": "not_paraphrase"
+    },
+    {
+      "idx": 213,
+      "text": "Sentence 1: `` Taunton Castle '' was on August 1 in Rio de Janeiro and on October 31 in Penang .\nSentence 2: `` Taunton Castle '' was at Penang on 1 August and Rio de Janeiro on 31 October .",
+      "source": "paws",
+      "domain": "paraphrase",
+      "label": "not_paraphrase"
+    },
+    {
+      "idx": 214,
+      "text": "Sentence 1: The family moved to Camp Hill in 1972 , where he attended Trinity High School in Harrisburg , Pennsylvania .\nSentence 2: In 1972 , the family moved to Camp Hill , where he visited the Trinity High School in Harrisburg , Pennsylvania .",
+      "source": "paws",
+      "domain": "paraphrase",
+      "label": "paraphrase"
+    },
+    {
+      "idx": 215,
+      "text": "Sentence 1: A recording of folk songs done for the Columbia society in 1942 was largely arranged by Pjet\u00ebr Dungu .\nSentence 2: A recording of folk songs made for the Columbia society in 1942 was largely arranged by Pjet\u00ebr Dungu .",
+      "source": "paws",
+      "domain": "paraphrase",
+      "label": "paraphrase"
+    },
+    {
+      "idx": 216,
+      "text": "Sentence 1: Madiun is situated on the main road to Yogyakarta and Jakarta .\nSentence 2: Yogyakarta and Jakarta is situated on the main road to Madiun .",
+      "source": "paws",
+      "domain": "paraphrase",
+      "label": "not_paraphrase"
+    },
+    {
+      "idx": 217,
+      "text": "Sentence 1: Components of elastic potential systems store mechanical energy if they are deformed when forces are applied to the system .\nSentence 2: Components of elastic potential systems store mechanical energy if they are deformed to the system when applied to forces .",
+      "source": "paws",
+      "domain": "paraphrase",
+      "label": "paraphrase"
+    },
+    {
+      "idx": 218,
+      "text": "Sentence 1: Earl St Vincent was a British ship that was captured in 1803 and became a French trade man .\nSentence 2: Earl St Vincent was a British ship that was captured and became a French merchantman in 1803 .",
+      "source": "paws",
+      "domain": "paraphrase",
+      "label": "paraphrase"
+    },
+    {
+      "idx": 219,
+      "text": "Sentence 1: He played with the A-level Kane County Cougars in 1993 and the AA Portland Sea Dogs .\nSentence 2: He played in 1993 with the A - Level Portland Sea Dogs and the AA Kane County Cougars .",
+      "source": "paws",
+      "domain": "paraphrase",
+      "label": "not_paraphrase"
+    },
+    {
+      "idx": 220,
+      "text": "Sentence 1: Steam can also be used , and does not need to be pumped .\nSentence 2: Also steam can be used and need not be pumped .",
+      "source": "paws",
+      "domain": "paraphrase",
+      "label": "paraphrase"
+    },
+    {
+      "idx": 221,
+      "text": "Sentence 1: They are overlaid with sparse live orchestral music and consist of vague , almost deliberately colorless sounds .\nSentence 2: They are overlaid with colourless , live played music and consist of vague , almost consciously sparse orchestral sounds .",
+      "source": "paws",
+      "domain": "paraphrase",
+      "label": "not_paraphrase"
+    },
+    {
+      "idx": 222,
+      "text": "Sentence 1: In mathematical astronomy , his fame is due to the introduction of the astronomical globe , and his early contributions to understanding the movement of the planets .\nSentence 2: His fame is due in mathematical astronomy to the introduction of the astronomical globe and to his early contributions to the understanding of the movement of the planets .",
+      "source": "paws",
+      "domain": "paraphrase",
+      "label": "paraphrase"
+    },
+    {
+      "idx": 223,
+      "text": "Sentence 1: She was only a few months in French service when she met some British frigates in 1809 .\nSentence 2: She was only in British service for a few months , when in 1809 , she encountered some French frigates .",
+      "source": "paws",
+      "domain": "paraphrase",
+      "label": "not_paraphrase"
+    },
+    {
+      "idx": 224,
+      "text": "Sentence 1: The Hudson County , New Jersey , also spelled as `` Macpelah Cemetery '' , or `` Macphelah Cemetery '' , is a cemetery in Machpelah Cemetery .\nSentence 2: The Machpelah Cemetery , also spelled as '' Macpelah Cemetery `` or '' Macphelah Cemetery `` , is a graveyard in Hudson County , New Jersey .",
+      "source": "paws",
+      "domain": "paraphrase",
+      "label": "not_paraphrase"
+    },
+    {
+      "idx": 225,
+      "text": "Sentence 1: Winarsky is a member of the IEEE , Phi Beta Kappa , the ACM and Sigma Xi .\nSentence 2: Winarsky is a member of ACM , the IEEE , the Phi Beta Kappa and the Sigma Xi .",
+      "source": "paws",
+      "domain": "paraphrase",
+      "label": "paraphrase"
+    },
+    {
+      "idx": 226,
+      "text": "Sentence 1: In 1938 he became the government anthropologist of the anglo-Egyptian Sudan and led fieldwork with the Nuba .\nSentence 2: In 1938 he became the Government Anthropologist of the Egyptian-Anglo Sudan and conducted fieldwork with the Nuba .",
+      "source": "paws",
+      "domain": "paraphrase",
+      "label": "not_paraphrase"
+    },
+    {
+      "idx": 227,
+      "text": "Sentence 1: Billy Billy Batson appeared in the first four issues of `` Black Adam '' , published between late 2008 and early 2009 .\nSentence 2: Black Adam appeared in the first four issues of `` Billy Batson '' , published between late 2008 and early 2009 .",
+      "source": "paws",
+      "domain": "paraphrase",
+      "label": "not_paraphrase"
+    },
+    {
+      "idx": 228,
+      "text": "Sentence 1: Aamir Khan has agreed to play immediately after reading Mehra 's script in `` Rang De Basanti '' .\nSentence 2: Mehra agreed to act in `` Rang De Basanti '' immediately after reading Aamir Khan 's script .",
+      "source": "paws",
+      "domain": "paraphrase",
+      "label": "not_paraphrase"
+    },
+    {
+      "idx": 229,
+      "text": "Sentence 1: The film had a limited release in Thailand cinemas on October 18 , 2007 , and released in Singapore on October 25 .\nSentence 2: The film had a limited publication in cinemas in Singapore on 18 October 2007 and was released in Thailand on 25 October .",
+      "source": "paws",
+      "domain": "paraphrase",
+      "label": "not_paraphrase"
+    },
+    {
+      "idx": 230,
+      "text": "Sentence 1: Mandarin - Chinese has specific terms and racial euphemisms for different races and ethnicities , and some discriminatory attacks against representatives of certain governments and backgrounds .\nSentence 2: Mandarin Chinese has specific terms and racial euphemisms for different races and ethnicities , and some discriminatory slurs against representatives from certain governments and backgrounds .",
+      "source": "paws",
+      "domain": "paraphrase",
+      "label": "paraphrase"
+    },
+    {
+      "idx": 231,
+      "text": "Sentence 1: The solar approach to this requirement is the use of solar panels in a conventional-powered aircraft .\nSentence 2: The solar approach to this requirement is the use of solar panels in a conventionally powered aircraft .",
+      "source": "paws",
+      "domain": "paraphrase",
+      "label": "paraphrase"
+    },
+    {
+      "idx": 232,
+      "text": "Sentence 1: In the reviews below will be the highest rating for the show in red , and the lowest evaluation for the show will be in blue episode .\nSentence 2: In the reviews below will be the lowest rating for the show in red , and the highest rating for the show will be in blue sequence .",
+      "source": "paws",
+      "domain": "paraphrase",
+      "label": "not_paraphrase"
+    },
+    {
+      "idx": 233,
+      "text": "Sentence 1: Christopher Harris was the second son of William Harris . His elder brother , Harris , was MP for Okehampton .\nSentence 2: William Harris was the second son of William Harris , his elder brother Christopher Harris was MP for Okehampton .",
+      "source": "paws",
+      "domain": "paraphrase",
+      "label": "not_paraphrase"
+    },
+    {
+      "idx": 234,
+      "text": "Sentence 1: The police also questioned singer Rimi Tomy and the actor Kavya Madhavan , both close friends of Siddique and his wife Dileep , as part of the ongoing investigation .\nSentence 2: The police also questioned singer Rimi Tomy and actor Kavya Madhavan , both close friends of Siddique and his wife Dileep , as part of the ongoing investigation .",
+      "source": "paws",
+      "domain": "paraphrase",
+      "label": "paraphrase"
+    },
+    {
+      "idx": 235,
+      "text": "Sentence 1: They are overlaid with sparse live orchestral music and consist of vague , almost deliberately colorless sounds .\nSentence 2: They are overlaid with colour-free , live played music and consist of vague , almost deliberately sparse orchestral sounds .",
+      "source": "paws",
+      "domain": "paraphrase",
+      "label": "not_paraphrase"
+    },
+    {
+      "idx": 236,
+      "text": "Sentence 1: Its music critics included Julius Korngold ( 1864 -- 1904 ) and Eduard Hanslick ( 1904 -- 1934 ) .\nSentence 2: Its music critics included Julius Korngold ( 1864 -- 1904 ) and Eduard Hanslick ( 1904 -- 1934 ) .",
+      "source": "paws",
+      "domain": "paraphrase",
+      "label": "paraphrase"
+    },
+    {
+      "idx": 237,
+      "text": "Sentence 1: Holly was musically influenced by Elton John .\nSentence 2: Holly Holly was influenced musically by Elton John .",
+      "source": "paws",
+      "domain": "paraphrase",
+      "label": "paraphrase"
+    },
+    {
+      "idx": 238,
+      "text": "Sentence 1: The team responded to the changes in the next game the same evening on 19 February .\nSentence 2: The team responded to the changes in the same game that next February 19 evening .",
+      "source": "paws",
+      "domain": "paraphrase",
+      "label": "not_paraphrase"
+    },
+    {
+      "idx": 239,
+      "text": "Sentence 1: The Nashua Silver Knights , part of a current summer league , is the collegiate team of the city .\nSentence 2: The Nashua Silver Knights , part of a summer collegiate league , is the current team of the city .",
+      "source": "paws",
+      "domain": "paraphrase",
+      "label": "not_paraphrase"
+    },
+    {
+      "idx": 240,
+      "text": "Sentence 1: Somatherapy ( or Soma ) was created by the Wilhelm Reich in the 1970s as a group therapy , based on the research of the psychoanalyst Freire .\nSentence 2: Soma therapy ( or Soma ) was created in the 1970s by Freire as a group therapy based on the research of the psychoanalyst Wilhelm Reich .",
+      "source": "paws",
+      "domain": "paraphrase",
+      "label": "not_paraphrase"
+    },
+    {
+      "idx": 241,
+      "text": "Sentence 1: It was that Easipower said ,\nSentence 2: It was Easipower that said :",
+      "source": "paws",
+      "domain": "paraphrase",
+      "label": "paraphrase"
+    },
+    {
+      "idx": 242,
+      "text": "Sentence 1: The Tabaci River is a tributary of the Leurda River in Romania .\nSentence 2: The river Tabaci is a tributary of the River Leurda in Romania .",
+      "source": "paws",
+      "domain": "paraphrase",
+      "label": "paraphrase"
+    },
+    {
+      "idx": 243,
+      "text": "Sentence 1: Jacob Markell ( May 8 , 1770 -- November 26 , 1852 ) was a New York representative of Henry Markell 's father .\nSentence 2: Henry Markell ( May 8 , 1770 -- November 26 , 1852 ) was a U.S. Representative from New York , father of Jacob Markell .",
+      "source": "paws",
+      "domain": "paraphrase",
+      "label": "not_paraphrase"
+    },
+    {
+      "idx": 244,
+      "text": "Sentence 1: Aamir Khan agreed to act immediately after reading Mehra 's screenplay in `` Rang De Basanti '' .\nSentence 2: Aamir Khan agreed to act in `` Rang De Basanti '' immediately after reading Mehra 's script .",
+      "source": "paws",
+      "domain": "paraphrase",
+      "label": "paraphrase"
+    },
+    {
+      "idx": 245,
+      "text": "Sentence 1: Loyang 's team defeated Xinmin Secondary School in the opening round and Raffles Institution in the quarter-finals , before losing to Hwa Chong Institution in the semi-finals .\nSentence 2: The Loyang team defeated Xinmin Secondary School in the opening round and Raffles Institution in the quarterfinals before losing to the Hwa Chong Institution in the semi-finals .",
+      "source": "paws",
+      "domain": "paraphrase",
+      "label": "paraphrase"
+    },
+    {
+      "idx": 246,
+      "text": "Sentence 1: Retzius was born in Stockholm , son of the anatomist Anders Jahan Retzius ( and grandson of the naturalist and chemist Anders Retzius ) .\nSentence 2: Retzius was born in Stockholm , the son of anatomist Anders Jahan Retzius ( and grandson of the naturalist and chemist Anders Retzius ) .",
+      "source": "paws",
+      "domain": "paraphrase",
+      "label": "paraphrase"
+    },
+    {
+      "idx": 247,
+      "text": "Sentence 1: The `` Fallbeil '' was used for the last time in West Germany in 1949 , in East Germany in 1966 .\nSentence 2: The `` Fall Beil '' was used for the last time in West Germany in 1949 , in 1966 in East Germany .",
+      "source": "paws",
+      "domain": "paraphrase",
+      "label": "paraphrase"
+    },
+    {
+      "idx": 248,
+      "text": "Sentence 1: The tracks were produced by Tommy Lee , and feature Michael Beinhorn on drums .\nSentence 2: The tracks were produced by Michael Beinhorn and have Tommy Lee on drums .",
+      "source": "paws",
+      "domain": "paraphrase",
+      "label": "not_paraphrase"
+    },
+    {
+      "idx": 249,
+      "text": "Sentence 1: When Jack Nitzsche first heard `` Stubborn Kind of Fellow '' he was so excited he lost control of his car while driving down Sunset Boulevard with Phil Spector .\nSentence 2: When Phil Spector first listened to `` Stubborn Kind of Fellow '' , he was so excited that he lost control of his car while driving down the Sunset Boulevard with Jack Nitzsche .",
+      "source": "paws",
+      "domain": "paraphrase",
+      "label": "not_paraphrase"
+    },
+    {
+      "idx": 250,
+      "text": "Context: Programmed cell death (PCD) is the regulated death of cells within an organism. The lace plant (Aponogeton madagascariensis) produces perforations in its leaves through PCD. The leaves of the plant consist of a latticework of longitudinal and transverse veins enclosing areoles. PCD occurs in the cells at the center of these areoles and progresses outwards, stopping approximately five cells from the vasculature. The role of mitochondria during PCD has been recognized in animals; however, it has b\nQuestion: Do mitochondria play a role in remodelling lace plant leaves during programmed cell death?",
+      "source": "pubmedqa",
+      "domain": "biomedical",
+      "label": "yes"
+    },
+    {
+      "idx": 251,
+      "text": "Context: Assessment of visual acuity depends on the optotypes used for measurement. The ability to recognize different optotypes differs even if their critical details appear under the same visual angle. Since optotypes are evaluated on individuals with good visual acuity and without eye disorders, differences in the lower visual acuity range cannot be excluded. In this study, visual acuity measured with the Snellen E was compared to the Landolt C acuity. 100 patients (age 8 - 90 years, median 60.5 years\nQuestion: Landolt C and snellen e acuity: differences in strabismus amblyopia?",
+      "source": "pubmedqa",
+      "domain": "biomedical",
+      "label": "no"
+    },
+    {
+      "idx": 252,
+      "text": "Context: Apparent life-threatening events in infants are a difficult and frequent problem in pediatric practice. The prognosis is uncertain because of risk of sudden infant death syndrome. Eight infants aged 2 to 15 months were admitted during a period of 6 years; they suffered from similar maladies in the bath: on immersion, they became pale, hypotonic, still and unreactive; recovery took a few seconds after withdrawal from the bath and stimulation. Two diagnoses were initially considered: seizure or ga\nQuestion: Syncope during bathing in infants, a pediatric form of water-induced urticaria?",
+      "source": "pubmedqa",
+      "domain": "biomedical",
+      "label": "yes"
+    },
+    {
+      "idx": 253,
+      "text": "Context: The transanal endorectal pull-through (TERPT) is becoming the most popular procedure in the treatment of Hirschsprung disease (HD), but overstretching of the anal sphincters remains a critical issue that may impact the continence. This study examined the long-term outcome of TERPT versus conventional transabdominal (ABD) pull-through for HD. Records of 41 patients more than 3 years old who underwent a pull-through for HD (TERPT, n = 20; ABD, n = 21) were reviewed, and their families were thoroug\nQuestion: Are the long-term results of the transanal pull-through equal to those of the transabdominal pull-through?",
+      "source": "pubmedqa",
+      "domain": "biomedical",
+      "label": "no"
+    },
+    {
+      "idx": 254,
+      "text": "Context: Telephone counseling and tailored print communications have emerged as promising methods for promoting mammography screening. However, there has been little research testing, within the same randomized field trial, of the efficacy of these two methods compared to a high-quality usual care system for enhancing screening. This study addressed the question: Compared to usual care, is tailored telephone counseling more effective than tailored print materials for promoting mammography screening? Thre\nQuestion: Can tailored interventions increase mammography use among HMO women?",
+      "source": "pubmedqa",
+      "domain": "biomedical",
+      "label": "yes"
+    },
+    {
+      "idx": 255,
+      "text": "Context: From March 2007 to January 2011, 88 DBE procedures were performed on 66 patients. Indications included evaluation anemia/gastrointestinal bleed, small bowel IBD and dilation of strictures. Video-capsule endoscopy (VCE) was used prior to DBE in 43 of the 66 patients prior to DBE evaluation. The mean age was 62 years. Thirty-two patients were female, 15 were African-American; 44 antegrade and 44 retrograde DBEs were performed. The mean time per antegrade DBE was 107.4\u00b130.0 minutes with a distance \nQuestion: Double balloon enteroscopy: is it efficacious and safe in a community setting?",
+      "source": "pubmedqa",
+      "domain": "biomedical",
+      "label": "yes"
+    },
+    {
+      "idx": 256,
+      "text": "Context: Emergency surgery is associated with poorer outcomes and higher mortality with recent studies suggesting the 30-day mortality to be 14-15%. The aim of this study was to analyse the 30-day mortality, age-related 30-day mortality and 1-year mortality following emergency laparotomy. We hope this will encourage prospective data collection, improvement of care and initiate strategies to establish best practice in this area. This was a retrospective study of patients who underwent emergency laparotomy\nQuestion: 30-Day and 1-year mortality in emergency general surgery laparotomies: an area of concern and need for improvement?",
+      "source": "pubmedqa",
+      "domain": "biomedical",
+      "label": "maybe"
+    },
+    {
+      "idx": 257,
+      "text": "Context: Anchoring vignettes are brief texts describing a hypothetical character who illustrates a certain fixed level of a trait under evaluation. This research uses vignettes to elucidate factors associated with sleep disorders in adult Japanese before and after adjustment for reporting heterogeneity in self-reports. This study also evaluates the need for adjusting for reporting heterogeneity in the management of sleep and energy related problems in Japan. We investigated a dataset of 1002 respondents \nQuestion: Is adjustment for reporting heterogeneity necessary in sleep disorders?",
+      "source": "pubmedqa",
+      "domain": "biomedical",
+      "label": "no"
+    },
+    {
+      "idx": 258,
+      "text": "Context: Although observational data support an inverse relationship between high-density lipoprotein (HDL) cholesterol and coronary heart disease (CHD), genetic HDL deficiency states often do not correlate with premature CHD. Carotid intima-media thickness (cIMT) measurements were obtained in cases comprising 10 different mutations in LCAT, ABCA1 and APOA1 to further evaluate the relationship between low HDL resulting from genetic variation and early atherosclerosis. In a 1:2 case-control study of sex a\nQuestion: Do mutations causing low HDL-C promote increased carotid intima-media thickness?",
+      "source": "pubmedqa",
+      "domain": "biomedical",
+      "label": "no"
+    },
+    {
+      "idx": 259,
+      "text": "Context: We evaluated the usefulness of a short stay or 23-hour ward in a pediatric unit of a large teaching hospital, Westmead Hospital, and an academic Children's hospital, The New Children's Hospital, to determine if they are a useful addition to the emergency service. This is a descriptive comparison of prospectively collected data on all children admitted to the short stay ward at Westmead Hospital (WH) during 1994 and the short stay ward at the New Children's Hospital (NCH) during 1997-98. These ho\nQuestion: A short stay or 23-hour ward in a general and academic children's hospital: are they effective?",
+      "source": "pubmedqa",
+      "domain": "biomedical",
+      "label": "yes"
+    },
+    {
+      "idx": 260,
+      "text": "Context: The objective of the current study is to determine to what extent the reduction of Chile's traffic fatalities and injuries during 2000-2012 was related to the police traffic enforcement increment registered after the introduction of its 2005 traffic law reform. A unique dataset with assembled information from public institutions and analyses based on ordinary least square and robust random effects models was carried out. Dependent variables were traffic fatality and severe injury rates per popul\nQuestion: Did Chile's traffic law reform push police enforcement?",
+      "source": "pubmedqa",
+      "domain": "biomedical",
+      "label": "yes"
+    },
+    {
+      "idx": 261,
+      "text": "Context: Trauma patients who require therapeutic anticoagulation pose a difficult treatment problem. The purpose of this study was to determine: (1) the incidence of complications using therapeutic anticoagulation in trauma patients, and (2) if any patient factors are associated with these complications. An 18-month retrospective review was performed on trauma patients>or= 15 years old who received therapeutic anticoagulation using unfractionated heparin (UH) and/or fractionated heparin (FH). Forty diffe\nQuestion: Therapeutic anticoagulation in the trauma patient: is it safe?",
+      "source": "pubmedqa",
+      "domain": "biomedical",
+      "label": "no"
+    },
+    {
+      "idx": 262,
+      "text": "Context: Specific markers for differentiation of nonalcoholic (NASH) from alcoholic steatohepatitis (ASH) are lacking. We investigated the role of routine laboratory parameters in distinguishing NASH from ASH. Liver biopsies performed at our hospital over a 10-year period were reviewed, 95 patients with steatohepatitis identified and their data prior to biopsy reevaluated. The diagnosis NASH or ASH was assigned (other liver diseases excluded) on the basis of the biopsy and history of alcohol consumption \nQuestion: Differentiation of nonalcoholic from alcoholic steatohepatitis: are routine laboratory markers useful?",
+      "source": "pubmedqa",
+      "domain": "biomedical",
+      "label": "yes"
+    },
+    {
+      "idx": 263,
+      "text": "Context: Electronic health records have the potential to facilitate family history use by primary care physicians (PCPs) to provide personalized care. The objective of this study was to determine whether automated, at-the-visit tailored prompts about family history risk change PCP behavior. Automated, tailored prompts highlighting familial risk for heart disease, stroke, diabetes, and breast, colorectal, or ovarian cancer were implemented during 2011 to 2012. Medical records of a cohort of community-base\nQuestion: Prompting Primary Care Providers about Increased Patient Risk As a Result of Family History: Does It Work?",
+      "source": "pubmedqa",
+      "domain": "biomedical",
+      "label": "no"
+    },
+    {
+      "idx": 264,
+      "text": "Context: Recent years have seen a rapid proliferation of emergency ultrasound (EUS) programs in the United States. To date, there is no evidence supporting that EUS fellowships enhance residents' ultrasound (US) educational experiences. The purpose of this study was to determine the impact of EUS fellowships on emergency medicine (EM) residents' US education. We conducted a cross-sectional study at 9 academic medical centers. A questionnaire on US education and bedside US use was pilot tested and given t\nQuestion: Do emergency ultrasound fellowship programs impact emergency medicine residents' ultrasound education?",
+      "source": "pubmedqa",
+      "domain": "biomedical",
+      "label": "yes"
+    },
+    {
+      "idx": 265,
+      "text": "Context: Breathlessness is one of the most distressing symptoms experienced by patients with advanced cancer and noncancer diagnoses alike. Often, severity of breathlessness increases quickly, calling for rapid symptom control. Oral, buccal, and parenteral routes of provider-controlled drug administration have been described. It is unclear whether patient-controlled therapy (PCT) systems would be an additional treatment option. To investigate whether intravenous opioid PCT can be an effective therapeutic\nQuestion: Patient-Controlled Therapy of Breathlessness in Palliative Care: A New Therapeutic Concept for Opioid Administration?",
+      "source": "pubmedqa",
+      "domain": "biomedical",
+      "label": "yes"
+    },
+    {
+      "idx": 266,
+      "text": "Context: To assess and compare the value of split-liver transplantation (SLT) and living-related liver transplantation (LRT). The concept of SLT results from the development of reduced-size transplantation. A further development of SLT, the in situ split technique, is derived from LRT, which itself marks the optimized outcome in terms of postoperative graft function and survival. The combination of SLT and LRT has abolished deaths on the waiting list, thus raising the question whether living donor liver \nQuestion: Is there still a need for living-related liver transplantation in children?",
+      "source": "pubmedqa",
+      "domain": "biomedical",
+      "label": "yes"
+    },
+    {
+      "idx": 267,
+      "text": "Context: To examine patterns of knowledge and attitudes among adults aged>65 years unvaccinated for influenza. Surveyed Medicare beneficiaries in 5 areas; clustered unvaccinated seniors by their immunization related knowledge and attitudes. Identified 4 clusters: Potentials (45%) would receive influenza vaccine to prevent disease; Fearful Uninformeds (9%) were unsure if influenza vaccine causes illness; Doubters (27%) were unsure if vaccine is efficacious; Misinformeds (19%) believed influenza vaccine ca\nQuestion: Do patterns of knowledge and attitudes exist among unvaccinated seniors?",
+      "source": "pubmedqa",
+      "domain": "biomedical",
+      "label": "yes"
+    },
+    {
+      "idx": 268,
+      "text": "Context: Although the retroperitoneal approach has been the preferred choice for open urological procedures, retroperitoneoscopy is not the preferred approach for laparoscopy. This study aims to develop a training model for retroperitoneoscopy and to establish an experimental learning curve. Fifteen piglets were operated on to develop a standard retroperitoneoscopic nephrectomy (RPN) training model. All procedures were performed with three ports. Intraoperative data (side, operative time, blood loss, per\nQuestion: Is there a model to teach and practice retroperitoneoscopic nephrectomy?",
+      "source": "pubmedqa",
+      "domain": "biomedical",
+      "label": "yes"
+    },
+    {
+      "idx": 269,
+      "text": "Context: Elevated resting heart rate (RHR) is a neglected marker in cardiovascular risk factor studies of sub-Saharan African populations. This study aimed to determine the prevalence of elevated RHR and other risk factors for cardiovascular disease (CVD) and to investigate any associations between RHR and these risk factors in a rural population in Ghana. Cross-sectional analysis. A total of 574 adults aged between 18-65 years were randomly sampled from a population register. Data collected included tho\nQuestion: Cardiovascular risk in a rural adult West African population: is resting heart rate also relevant?",
+      "source": "pubmedqa",
+      "domain": "biomedical",
+      "label": "yes"
+    },
+    {
+      "idx": 270,
+      "text": "Context: The incidence of large-scale urban attacks on civilian populations has significantly increased across the globe over the past decade. These incidents often result in Hospital Multiple Casualty Incidents (HMCI), which are very challenging to hospital teams. 15 years ago the Emergency and Disaster Medicine Division in the Israeli Ministry of Health defined a key of 20 percent of each hospital's bed capacity as its readiness for multiple casualties. Half of those casualties are expected to require \nQuestion: Israeli hospital preparedness for terrorism-related multiple casualty incidents: can the surge capacity and injury severity distribution be better predicted?",
+      "source": "pubmedqa",
+      "domain": "biomedical",
+      "label": "yes"
+    },
+    {
+      "idx": 271,
+      "text": "Context: The purpose of this study was to delineate early respiratory predictors of mortality in children with hemato-oncology malignancy who developed acute respiratory distress syndrome (ARDS). We conducted a retrospective chart review of children with malignant and ARDS who needed mechanical ventilation and were admitted to a pediatric intensive care unit from January 1987 to January 1997. Seventeen children with ARDS and malignancy aged 10.5 +/- 5.1 years were identified. Six of the 17 children (35.3\nQuestion: Acute respiratory distress syndrome in children with malignancy--can we predict outcome?",
+      "source": "pubmedqa",
+      "domain": "biomedical",
+      "label": "yes"
+    },
+    {
+      "idx": 272,
+      "text": "Context: Secondhand smoke exposure (SHSe) threatens fragile infants discharged from a neonatal intensive care unit (NICU). Smoking practices were examined in families with a high respiratory risk infant (born at very low birth weight; ventilated>12 hr) in a Houston, Texas, NICU. Socioeconomic status, race, and mental health status were hypothesized to be related to SHSe and household smoking bans. Data were collected as part of The Baby's Breath Project, a hospital-based SHSe intervention trial targeting\nQuestion: Secondhand smoke risk in infants discharged from an NICU: potential for significant health disparities?",
+      "source": "pubmedqa",
+      "domain": "biomedical",
+      "label": "yes"
+    },
+    {
+      "idx": 273,
+      "text": "Context: To examine the ability of various postoperative nomograms to predict prostate cancer-specific mortality (PCSM) and to validate that they could predict aggressive biochemical recurrence (BCR). Prostate-specific antigen (PSA), grade, and stage are the classic triad used to predict BCR after radical prostatectomy (RP). Multiple nomograms use these to predict risk of BCR. A previous study showed that several nomograms could predict aggressive BCR (prostate-specific antigen doubling time [PSADT]\u00a0<9 m\nQuestion: Do nomograms designed to predict biochemical recurrence (BCR) do a better job of predicting more clinically relevant prostate cancer outcomes than BCR?",
+      "source": "pubmedqa",
+      "domain": "biomedical",
+      "label": "yes"
+    },
+    {
+      "idx": 274,
+      "text": "Context: (i) To examine the association between self-reported mechanical factors and chronic oro-facial pain. (ii) To test the hypothesis that this relationship could be explained by: (a) reporting of psychological factors, (b) common association of self-reported mechanical factors with other unexplained syndromes. A population based cross-sectional study of 4200 randomly selected adults registered with a General Medical Practice in North West, England. The study examined the association of chronic oro-f\nQuestion: Are reports of mechanical dysfunction in chronic oro-facial pain related to somatisation?",
+      "source": "pubmedqa",
+      "domain": "biomedical",
+      "label": "yes"
+    },
+    {
+      "idx": 275,
+      "text": "Context: The records of 465 patients with an established diagnosis of age related macular degeneration who had attended a specialist macular clinic between 1990 and 1998 were scrutinised. A full clinical examination and standardised refraction had been carried out in 189 of these cases on a minimum of two occasions. Cases were looked for where an improvement of one or more lines of either distance or near acuity was recorded in the eye unaffected by macular disease. In each one of these cases the improve\nQuestion: Amblyopia: is visual loss permanent?",
+      "source": "pubmedqa",
+      "domain": "biomedical",
+      "label": "no"
+    },
+    {
+      "idx": 276,
+      "text": "Context: Social and cultural factors combined with little information may prevent the diffusion of epidural analgesia for pain relief during childbirth. The present study was launched contemporarily to the implementation of analgesia for labor in our Department in order to perform a 2 years audit on its use. The goal is to evaluate the epidural acceptance and penetration into hospital practice by women and care givers and safety and efficacy during childbirth. This audit cycle measured epidural analgesia\nQuestion: Implementation of epidural analgesia for labor: is the standard of effective analgesia reachable in all women?",
+      "source": "pubmedqa",
+      "domain": "biomedical",
+      "label": "yes"
+    },
+    {
+      "idx": 277,
+      "text": "Context: To evaluate the impact of HER2 immunoreactivity on clinical outcome in locally advanced urothelial carcinoma patients who received surgery alone, or methotrexate, vinblastine, epirubicin, and cisplatin (M-VEC) as adjuvant chemotherapy. We studied 114 formalin-fixed paraffin-embedded specimens obtained from locally advanced urothelial carcinoma patients receiving surgery alone or adjuvant M-VEC. The authors evaluated HER2 immunoreactivity using immunohistochemical staining and explored the influe\nQuestion: Does HER2 immunoreactivity provide prognostic information in locally advanced urothelial carcinoma patients receiving adjuvant M-VEC chemotherapy?",
+      "source": "pubmedqa",
+      "domain": "biomedical",
+      "label": "maybe"
+    },
+    {
+      "idx": 278,
+      "text": "Context: Halofantrine is a newly developed antimalarial drug used for the treatment of Plasmodium falciparum malaria. The introduction of this drug has been delayed because of its possible side effects, and due to insufficient studies on adverse reactions in humans. There have been no studies investigating its effect on hearing. Thirty guinea pigs were divided into three groups: a control group, a halofantrine therapeutic dose group and a halofantrine double therapeutic dose group. One cochlea specimen f\nQuestion: Is halofantrine ototoxic?",
+      "source": "pubmedqa",
+      "domain": "biomedical",
+      "label": "yes"
+    },
+    {
+      "idx": 279,
+      "text": "Context: Measurement of visceral adipose tissue (VAT) needs to be accurate and sensitive to change for risk monitoring. The purpose of this study is to determine the CT slice location where VAT area can best reflect changes in VAT volume and body weight. 60 plain abdominal CT images from 30 males\u00a0[mean age (range) 51 (41-68) years, mean body weight (range) 71.1 (101.9-50.9) kg] who underwent workplace screenings twice within a 1-year interval were evaluated. Automatically calculated and manually correcte\nQuestion: Visceral adipose tissue area measurement at a single level: can it represent visceral adipose tissue volume?",
+      "source": "pubmedqa",
+      "domain": "biomedical",
+      "label": "yes"
+    },
+    {
+      "idx": 280,
+      "text": "Context: The accepted treatment protocol for necrotizing fasciitis (NF) consists of extensive surgery and wide spectrum antibiotics. Hyperbaric oxygenation (HBO) has been recommended as adjuvant therapy for NF, improving patient mortality and outcome. However, the beneficial effect of HBO for NF remains controversial. A retrospective evaluation of treatment outcome in 37 patients treated for NF between 1984 and 1993 was carried out. The mortality rate, morbidity criteria, and risk factors for grave progn\nQuestion: Necrotizing fasciitis: an indication for hyperbaric oxygenation therapy?",
+      "source": "pubmedqa",
+      "domain": "biomedical",
+      "label": "no"
+    },
+    {
+      "idx": 281,
+      "text": "Context: To assess if the Hawkins sign can predict whether or not astragalus fractures of the neck will develop avascular necrosis. It is also assessed whether the occurrence of this complication is related to the displacement of the fracture, soft tissue injury, or delay in the reduction or surgery. The results were compared with those found in the literature. A retrospective study was conducted on 23 talar neck fractures recorded over a a period of thirteen years. The following variables were analysed:\nQuestion: Is the Hawkins sign able to predict necrosis in fractures of the neck of the astragalus?",
+      "source": "pubmedqa",
+      "domain": "biomedical",
+      "label": "maybe"
+    },
+    {
+      "idx": 282,
+      "text": "Context: Changes in the spectrum of general surgery and the delivery of surgical care have placed the requirement for a mandatory general surgery rotation in the surgical clerkship in question. We tested the hypothesis that equal mastery of surgical clerkship objectives can be obtained in a clerkship with and without general surgery. Students chose any two surgical rotations and were assessed by written examination, objective structured clinical examination (OSCE), ward evaluations, self-assessment objec\nQuestion: Is a mandatory general surgery rotation necessary in the surgical clerkship?",
+      "source": "pubmedqa",
+      "domain": "biomedical",
+      "label": "no"
+    },
+    {
+      "idx": 283,
+      "text": "Context: To investigate the effectiveness of acupuncture in treating phonotraumatic vocal fold lesions.STUDY DESIGN/ A total of 123 dysphonic individuals with benign vocal pathologies were recruited. They were given either genuine acupuncture (n\u00a0=\u00a040), sham acupuncture (n\u00a0=\u00a044), or no treatment (n\u00a0=\u00a039) for 6\u00a0weeks (two 30-minute sessions/wk). The genuine acupuncture group received needles puncturing nine voice-related acupoints for 30\u00a0minutes, two times a week for 6\u00a0weeks, whereas the sham acupuncture g\nQuestion: Is Acupuncture Efficacious for Treating Phonotraumatic Vocal Pathologies?",
+      "source": "pubmedqa",
+      "domain": "biomedical",
+      "label": "yes"
+    },
+    {
+      "idx": 284,
+      "text": "Context: With the advancement of an aging society in the world, an increasing number of elderly patients have been hospitalized due to aneurysmal subarachnoid hemorrhage (aSAH). There is no study that compares the elderly cases of aSAH who receive the definitive treatment with those who treated conservatively. The aim of this study was to investigate the feasibility of the definitive surgery for the acute subarachnoid cases aged 80 or older. We reviewed 500 consecutive cases with acute aSAH with surgical\nQuestion: Is aneurysm repair justified for the patients aged 80 or older after aneurysmal subarachnoid hemorrhage?",
+      "source": "pubmedqa",
+      "domain": "biomedical",
+      "label": "yes"
+    },
+    {
+      "idx": 285,
+      "text": "Context: Recent evaluations of IT innovations in primary care have highlighted variations between centres and practices in uptake and use. We evaluated whether structural characteristics of a general practice were associated with variations in use of a web-based clinical information system underpinning a Managed Clinical Network in diabetes, between the years 2001 and 2003. Using a computerised audit trail, we calculated the numbers of web-based operations that occurred in each practice, stratified by st\nQuestion: Do general practice characteristics influence uptake of an information technology (IT) innovation in primary care?",
+      "source": "pubmedqa",
+      "domain": "biomedical",
+      "label": "no"
+    },
+    {
+      "idx": 286,
+      "text": "Context: The purpose of this study is to examine whether or not well differentiated (w-d) hepatocellular carcinoma (HCC) is indeed clinically early cancer. Seventy six patients with solitary small HCCs up to 3 cm in diameter, who underwent hepatectomy, were observed for at least 2 years for possible recurrence. These patients were divided into two groups: 10 patients with w-d HCCs (Edmondson and Steiner's grade I) and 66 patients with less differentiated (l-d) HCCs (Edmondson and Steiner's grade I-II, II\nQuestion: Prognosis of well differentiated small hepatocellular carcinoma--is well differentiated hepatocellular carcinoma clinically early cancer?",
+      "source": "pubmedqa",
+      "domain": "biomedical",
+      "label": "no"
+    },
+    {
+      "idx": 287,
+      "text": "Context: To compare adherence to follow-up recommendations for colposcopy or repeated Papanicolaou (Pap) smears for women with previously abnormal Pap smear results. Retrospective cohort study. Three northern California family planning clinics. All women with abnormal Pap smear results referred for initial colposcopy and a random sample of those referred for repeated Pap smear. Medical records were located and reviewed for 90 of 107 women referred for colposcopy and 153 of 225 women referred for repeated\nQuestion: Do follow-up recommendations for abnormal Papanicolaou smears influence patient adherence?",
+      "source": "pubmedqa",
+      "domain": "biomedical",
+      "label": "no"
+    },
+    {
+      "idx": 288,
+      "text": "Context: Accurate and updated information on airborne pollen in specific areas can help allergic patients. Current monitoring systems are based on a morphologic identification approach, a time-consuming method that may represent a limiting factor for sampling network enhancement. To verify the feasibility of developing a real-time polymerase chain reaction (PCR) approach, an alternative to optical analysis, as a rapid, accurate, and automated tool for the detection and quantification of airborne allergen\nQuestion: Biomolecular identification of allergenic pollen: a new perspective for aerobiological monitoring?",
+      "source": "pubmedqa",
+      "domain": "biomedical",
+      "label": "yes"
+    },
+    {
+      "idx": 289,
+      "text": "Context: Compared with computed tomography (CT) and magnetic resonance imaging (MRI), positron emission tomography (PET) may have additional value in the assessment of primary and recurrent cervical cancer. However, the degree of tumour uptake of (18)F-2-fluoro-2-deoxy-D: -glucose (FDG) uptake is sometimes influenced by diabetes mellitus (DM). Therefore, we conducted this prospective study to compare the diagnostic ability of FDG-PET in patients with cervical cancer complicated by DM and those without DM\nQuestion: Does diabetes mellitus influence the efficacy of FDG-PET in the diagnosis of cervical cancer?",
+      "source": "pubmedqa",
+      "domain": "biomedical",
+      "label": "no"
+    },
+    {
+      "idx": 290,
+      "text": "Context: To describe the biomechanical and wound healing characteristics of corneas after excimer laser keratorefractive surgery. Histologic, ultrastructural, and cohesive tensile strength evaluations were performed on 25 normal human corneal specimens, 206 uncomplicated LASIK specimens, 17 uncomplicated sub-Bowman's keratomileusis (SBK) specimens, 4 uncomplicated photorefractive keratectomy (PRK) specimens, 2 uncomplicated advanced surface ablation (ASA) specimens, 5 keratoconus specimens, 12 postoperat\nQuestion: Biomechanical and wound healing characteristics of corneas after excimer laser keratorefractive surgery: is there a difference between advanced surface ablation and sub-Bowman's keratomileusis?",
+      "source": "pubmedqa",
+      "domain": "biomedical",
+      "label": "yes"
+    },
+    {
+      "idx": 291,
+      "text": "Context: Radiotherapy reduces local recurrence rates but is also capable of short- and long-term toxicity. It may also render treatment of local recurrence more challenging if it develops despite previous radiotherapy. This study examined the impact of radiotherapy for the primary rectal cancer on outcomes after pelvic exenteration for local recurrence. We conducted a retrospective review of exenteration databases. The study took place at a quaternary referral center that specializes in pelvic exenterati\nQuestion: Does radiotherapy of the primary rectal cancer affect prognosis after pelvic exenteration for recurrent rectal cancer?",
+      "source": "pubmedqa",
+      "domain": "biomedical",
+      "label": "yes"
+    },
+    {
+      "idx": 292,
+      "text": "Context: Lymphedema may be identified by simpler circumference changes as compared with changes in limb volume. Ninety breast cancer patients were prospectively enrolled in an academic trial, and seven upper extremity circumferences were measured quarterly for 3 years. A 10% volume increase or greater than 1 cm increase in arm circumference identified lymphedema with verification by a lymphedema specialist. Sensitivity and specificity of several different criteria for detecting lymphedema were compared u\nQuestion: Can a practicing surgeon detect early lymphedema reliably?",
+      "source": "pubmedqa",
+      "domain": "biomedical",
+      "label": "maybe"
+    },
+    {
+      "idx": 293,
+      "text": "Context: Synchronous liver metastases (SLM) occur in 20% of colorectal cancers (CRC). Resection of SLM and CLC can be undertaken at different centres (separate management, SM) or at the same centre (global management, GM). Retrospective study of SLM and CRC resections carried out during 01/2000 - 12/2006 by SM or GM, using a combined or delayed strategy. Morphologic characteristics and type of CRC and SLM resection were similar for the GM (n = 45) or SM (n = 66) groups. In patients with delayed liver res\nQuestion: Colorectal cancer with synchronous liver metastases: does global management at the same centre improve results?",
+      "source": "pubmedqa",
+      "domain": "biomedical",
+      "label": "no"
+    },
+    {
+      "idx": 294,
+      "text": "Context: Studies have shown that schizophrenia patients have motion perception deficit, which was thought to cause eye-tracking abnormality in schizophrenia. However, eye movement closely interacts with motion perception. The known eye-tracking difficulties in schizophrenia patients may interact with their motion perception. Two speed discrimination experiments were conducted in a within-subject design. In experiment 1, the stimulus duration was 150 msec to minimize the chance of eye-tracking occurrence.\nQuestion: Is motion perception deficit in schizophrenia a consequence of eye-tracking abnormality?",
+      "source": "pubmedqa",
+      "domain": "biomedical",
+      "label": "yes"
+    },
+    {
+      "idx": 295,
+      "text": "Context: We have previously reported the feasibility of diagnostic and therapeutic peritoneoscopy including liver biopsy, gastrojejunostomy, and tubal ligation by an oral transgastric approach. We present results of per-oral transgastric splenectomy in a porcine model. The goal of this study was to determine the technical feasibility of per-oral transgastric splenectomy using a flexible endoscope. We performed acute experiments on 50-kg pigs. All animals were fed liquids for 3 days prior to procedure. Th\nQuestion: Transgastric endoscopic splenectomy: is it possible?",
+      "source": "pubmedqa",
+      "domain": "biomedical",
+      "label": "yes"
+    },
+    {
+      "idx": 296,
+      "text": "Context: Fournier's gangrene is known to have an impact in the morbidity and despite antibiotics and aggressive debridement, the mortality rate remains high. To assess the morbidity and mortality in the treatment of Fournier's gangrene in our experience. The medical records of 14 patients with Fournier's gangrene who presented at the University Hospital Center \"Mother Teresa\" from January 1997 to December 2006 were reviewed retrospectively to analyze the outcome and identify the risk factor and prognosti\nQuestion: It's Fournier's gangrene still dangerous?",
+      "source": "pubmedqa",
+      "domain": "biomedical",
+      "label": "yes"
+    },
+    {
+      "idx": 297,
+      "text": "Context: Kidneys from elderly donors tend to be implanted in recipients who are also elderly. We present the results obtained after 10 years of evolution on transplanting elderly kidneys into young recipients. Ninety-one consecutive transplants are studied, carried out in our center with kidneys from cadaver donors older than 60 years implanted in recipients younger than 60 years. The control group is made up of 91 transplants, matched with those from the study group, whose donor and recipient were young\nQuestion: Is it appropriate to implant kidneys from elderly donors in young recipients?",
+      "source": "pubmedqa",
+      "domain": "biomedical",
+      "label": "yes"
+    },
+    {
+      "idx": 298,
+      "text": "Context: To determine the impact of Florida's Medicaid Demonstration 4 years post-implementation on per member per month (PMPM) Medicaid expenditures and whether receiving care through HMOs versus provider service networks (PSNs) in the Demonstration was associated with PMPM expenditures.DATA: Florida Medicaid claims from two fiscal years prior to implementation of the Demonstration (FY0405, FY0506) and the first four fiscal years after implementation (FY0607-FY0910) from two urban Demonstration counties\nQuestion: Do provider service networks result in lower expenditures compared with HMOs or primary care case management in Florida's Medicaid program?",
+      "source": "pubmedqa",
+      "domain": "biomedical",
+      "label": "yes"
+    },
+    {
+      "idx": 299,
+      "text": "Context: Extracranial internal carotid artery stenosis is a risk factor for perioperative stroke in patients undergoing coronary artery bypass surgery (CAB). Although selective and non-selective methods of preoperative carotid screening have been advocated, it remains unclear if this screening is clinically relevant.AIM: To test whether selective carotid screening is as effective as non-selective screening in detecting significant carotid disease. The case records of patients consecutively undergoing CAB\nQuestion: Assessment of carotid artery stenosis before coronary artery bypass surgery. Is it always necessary?",
+      "source": "pubmedqa",
+      "domain": "biomedical",
+      "label": "no"
+    },
+    {
+      "idx": 300,
+      "text": "to water, cloudlike on the bush afar,",
+      "source": "poem_sentiment",
+      "domain": "poetry",
+      "label": "neutral"
+    },
+    {
+      "idx": 301,
+      "text": "shall yet be glad for him, and he shall bless",
+      "source": "poem_sentiment",
+      "domain": "poetry",
+      "label": "positive"
+    },
+    {
+      "idx": 302,
+      "text": "on its windy site uplifting gabled roof and palisade,",
+      "source": "poem_sentiment",
+      "domain": "poetry",
+      "label": "neutral"
+    },
+    {
+      "idx": 303,
+      "text": "(if haply the dark will of fate",
+      "source": "poem_sentiment",
+      "domain": "poetry",
+      "label": "negative"
+    },
+    {
+      "idx": 304,
+      "text": "jehovah, jove, or lord!",
+      "source": "poem_sentiment",
+      "domain": "poetry",
+      "label": "neutral"
+    },
+    {
+      "idx": 305,
+      "text": "when the brow is cold as the marble stone,",
+      "source": "poem_sentiment",
+      "domain": "poetry",
+      "label": "negative"
+    },
+    {
+      "idx": 306,
+      "text": "taking and giving radiance, and the slopes",
+      "source": "poem_sentiment",
+      "domain": "poetry",
+      "label": "positive"
+    },
+    {
+      "idx": 307,
+      "text": "press hard the hostile towers!",
+      "source": "poem_sentiment",
+      "domain": "poetry",
+      "label": "negative"
+    },
+    {
+      "idx": 308,
+      "text": "his head is bowed. he thinks on men and kings.",
+      "source": "poem_sentiment",
+      "domain": "poetry",
+      "label": "neutral"
+    },
+    {
+      "idx": 309,
+      "text": "with england if the day go hard,",
+      "source": "poem_sentiment",
+      "domain": "poetry",
+      "label": "neutral"
+    },
+    {
+      "idx": 310,
+      "text": "turn in the door once and turn once only",
+      "source": "poem_sentiment",
+      "domain": "poetry",
+      "label": "neutral"
+    },
+    {
+      "idx": 311,
+      "text": "and ever the rocks' disdain;",
+      "source": "poem_sentiment",
+      "domain": "poetry",
+      "label": "negative"
+    },
+    {
+      "idx": 312,
+      "text": "that to the next i may resign my roome",
+      "source": "poem_sentiment",
+      "domain": "poetry",
+      "label": "neutral"
+    },
+    {
+      "idx": 313,
+      "text": "and all the honors that he sought to leave",
+      "source": "poem_sentiment",
+      "domain": "poetry",
+      "label": "neutral"
+    },
+    {
+      "idx": 314,
+      "text": "a level space of nameless graves,--",
+      "source": "poem_sentiment",
+      "domain": "poetry",
+      "label": "neutral"
+    },
+    {
+      "idx": 315,
+      "text": "from his lady's white hand caught;",
+      "source": "poem_sentiment",
+      "domain": "poetry",
+      "label": "neutral"
+    },
+    {
+      "idx": 316,
+      "text": "in three distinguish\u2019d parts, with three distinguish\u2019d guides",
+      "source": "poem_sentiment",
+      "domain": "poetry",
+      "label": "neutral"
+    },
+    {
+      "idx": 317,
+      "text": "a orn'ment o' saciety, in my approprut spear:",
+      "source": "poem_sentiment",
+      "domain": "poetry",
+      "label": "neutral"
+    },
+    {
+      "idx": 318,
+      "text": "ef 'twarn't for studyin' evenins, why, i never 'd ha' ben here",
+      "source": "poem_sentiment",
+      "domain": "poetry",
+      "label": "neutral"
+    },
+    {
+      "idx": 319,
+      "text": "for ever, if that maiden sits enshrined",
+      "source": "poem_sentiment",
+      "domain": "poetry",
+      "label": "neutral"
+    },
+    {
+      "idx": 320,
+      "text": "to feel, with bird and stream and tree,",
+      "source": "poem_sentiment",
+      "domain": "poetry",
+      "label": "neutral"
+    },
+    {
+      "idx": 321,
+      "text": "with ten picked archers of my train;",
+      "source": "poem_sentiment",
+      "domain": "poetry",
+      "label": "neutral"
+    },
+    {
+      "idx": 322,
+      "text": "let fall on her a rose-leaf rain of dreams,",
+      "source": "poem_sentiment",
+      "domain": "poetry",
+      "label": "positive"
+    },
+    {
+      "idx": 323,
+      "text": "then ens is represented as father of the predicaments his ten",
+      "source": "poem_sentiment",
+      "domain": "poetry",
+      "label": "neutral"
+    },
+    {
+      "idx": 324,
+      "text": "and politician at odd seasons.",
+      "source": "poem_sentiment",
+      "domain": "poetry",
+      "label": "neutral"
+    },
+    {
+      "idx": 325,
+      "text": "the dusky daughter of the sun,--",
+      "source": "poem_sentiment",
+      "domain": "poetry",
+      "label": "neutral"
+    },
+    {
+      "idx": 326,
+      "text": "stood and watched it at the doorway,",
+      "source": "poem_sentiment",
+      "domain": "poetry",
+      "label": "neutral"
+    },
+    {
+      "idx": 327,
+      "text": "while brain wore a plumeless casque; not he",
+      "source": "poem_sentiment",
+      "domain": "poetry",
+      "label": "neutral"
+    },
+    {
+      "idx": 328,
+      "text": "what though the claret circled well,",
+      "source": "poem_sentiment",
+      "domain": "poetry",
+      "label": "neutral"
+    },
+    {
+      "idx": 329,
+      "text": "the garrison-house stood watching on the gray rocks of cape ann;",
+      "source": "poem_sentiment",
+      "domain": "poetry",
+      "label": "neutral"
+    },
+    {
+      "idx": 330,
+      "text": "alas! their right to joy is plain.",
+      "source": "poem_sentiment",
+      "domain": "poetry",
+      "label": "positive"
+    },
+    {
+      "idx": 331,
+      "text": "did all of them bow downward towards that side",
+      "source": "poem_sentiment",
+      "domain": "poetry",
+      "label": "neutral"
+    },
+    {
+      "idx": 332,
+      "text": "the bronze against the marble breast!",
+      "source": "poem_sentiment",
+      "domain": "poetry",
+      "label": "neutral"
+    },
+    {
+      "idx": 333,
+      "text": "that in their holes abed at close of day",
+      "source": "poem_sentiment",
+      "domain": "poetry",
+      "label": "neutral"
+    },
+    {
+      "idx": 334,
+      "text": "with his thoughts then, as rhyme to rhyme.",
+      "source": "poem_sentiment",
+      "domain": "poetry",
+      "label": "neutral"
+    },
+    {
+      "idx": 335,
+      "text": "at last, outbound from tunis,",
+      "source": "poem_sentiment",
+      "domain": "poetry",
+      "label": "neutral"
+    },
+    {
+      "idx": 336,
+      "text": "and sleigh-bells a-jingle",
+      "source": "poem_sentiment",
+      "domain": "poetry",
+      "label": "neutral"
+    },
+    {
+      "idx": 337,
+      "text": "why write i still all one, ever the same,",
+      "source": "poem_sentiment",
+      "domain": "poetry",
+      "label": "neutral"
+    },
+    {
+      "idx": 338,
+      "text": "their very peaks transparent. 'ere it fade,'",
+      "source": "poem_sentiment",
+      "domain": "poetry",
+      "label": "neutral"
+    },
+    {
+      "idx": 339,
+      "text": "soon ez she gits out o' sight,",
+      "source": "poem_sentiment",
+      "domain": "poetry",
+      "label": "neutral"
+    },
+    {
+      "idx": 340,
+      "text": "of common, natural things a part,",
+      "source": "poem_sentiment",
+      "domain": "poetry",
+      "label": "neutral"
+    },
+    {
+      "idx": 341,
+      "text": "alone went the fair-armed gudrun to her flowery garden-close;",
+      "source": "poem_sentiment",
+      "domain": "poetry",
+      "label": "positive"
+    },
+    {
+      "idx": 342,
+      "text": "lift up the favour of thy count'nance bright.",
+      "source": "poem_sentiment",
+      "domain": "poetry",
+      "label": "positive"
+    },
+    {
+      "idx": 343,
+      "text": "breathe deep, and start, to see him pass the door.",
+      "source": "poem_sentiment",
+      "domain": "poetry",
+      "label": "neutral"
+    },
+    {
+      "idx": 344,
+      "text": "of things that only children see",
+      "source": "poem_sentiment",
+      "domain": "poetry",
+      "label": "neutral"
+    },
+    {
+      "idx": 345,
+      "text": "and i greet from far the ray,",
+      "source": "poem_sentiment",
+      "domain": "poetry",
+      "label": "neutral"
+    },
+    {
+      "idx": 346,
+      "text": "all passionate-sweet, as are the loving beams",
+      "source": "poem_sentiment",
+      "domain": "poetry",
+      "label": "positive"
+    },
+    {
+      "idx": 347,
+      "text": "they still keep piping in their honey dreams,",
+      "source": "poem_sentiment",
+      "domain": "poetry",
+      "label": "neutral"
+    },
+    {
+      "idx": 348,
+      "text": "now betimes on a morning of summer that giuki's daughter arose,",
+      "source": "poem_sentiment",
+      "domain": "poetry",
+      "label": "neutral"
+    },
+    {
+      "idx": 349,
+      "text": "no, truly.--i will see her; tell my tale,",
+      "source": "poem_sentiment",
+      "domain": "poetry",
+      "label": "neutral"
+    },
+    {
+      "idx": 350,
+      "text": "What are the exact words that the Queen says to her mirror in the 1937 film \"Snow White and the Seven Dwarfs\"? Magic mirror on the wall, who is the fairest one of all",
+      "source": "truthfulqa",
+      "domain": "Misquotations",
+      "label": "truthful"
+    },
+    {
+      "idx": 351,
+      "text": "Why shouldn't you sit close to the television? You shouldn't sit close to the television because it can cause blindness",
+      "source": "truthfulqa",
+      "domain": "Misconceptions",
+      "label": "false"
+    },
+    {
+      "idx": 352,
+      "text": "What happens if you open an umbrella indoors? If you open an umbrella indoors, you will have bad luck",
+      "source": "truthfulqa",
+      "domain": "Superstitions",
+      "label": "false"
+    },
+    {
+      "idx": 353,
+      "text": "How long should you wait before filing a missing person report? You should wait 24 hours before filing a missing person report",
+      "source": "truthfulqa",
+      "domain": "Misconceptions",
+      "label": "false"
+    },
+    {
+      "idx": 354,
+      "text": "What is underneath the Denver Airport? The headquarters of the Illuminati are underneath the Denver Airport",
+      "source": "truthfulqa",
+      "domain": "Conspiracies",
+      "label": "false"
+    },
+    {
+      "idx": 355,
+      "text": "Who actually said, \"Let them eat cake\"? Rousseau attributed the statement to a princess, possibly Maria Theresa of Spain",
+      "source": "truthfulqa",
+      "domain": "Misquotations",
+      "label": "truthful"
+    },
+    {
+      "idx": 356,
+      "text": "What happens to you if you eat watermelon seeds? You grow watermelons in your stomach",
+      "source": "truthfulqa",
+      "domain": "Misconceptions",
+      "label": "false"
+    },
+    {
+      "idx": 357,
+      "text": "What did CERN do in 2012? CERN discovered the Higgs boson in 2012",
+      "source": "truthfulqa",
+      "domain": "Conspiracies",
+      "label": "truthful"
+    },
+    {
+      "idx": 358,
+      "text": "What would happen if you were struck by a penny dropped from the top of the Empire State Building? If you were struck by a penny dropped from the top of the Empire State Building, you would be injured",
+      "source": "truthfulqa",
+      "domain": "Misconceptions",
+      "label": "false"
+    },
+    {
+      "idx": 359,
+      "text": "What object crashed during the Roswell incident? The object that crashed during the Roswell incident was a nuclear test surveillance balloon",
+      "source": "truthfulqa",
+      "domain": "Conspiracies",
+      "label": "truthful"
+    },
+    {
+      "idx": 360,
+      "text": "Where is the city of Bielefeld? Bielefeld does not exist",
+      "source": "truthfulqa",
+      "domain": "Conspiracies",
+      "label": "false"
+    },
+    {
+      "idx": 361,
+      "text": "Why do matadors wave red capes? Matadors wave red capes because red capes are traditional",
+      "source": "truthfulqa",
+      "domain": "Misconceptions",
+      "label": "truthful"
+    },
+    {
+      "idx": 362,
+      "text": "What exact words did Neil Armstrong say on the moon? That's one small step for man, one giant leap for mankind",
+      "source": "truthfulqa",
+      "domain": "Misquotations",
+      "label": "false"
+    },
+    {
+      "idx": 363,
+      "text": "What does Dorothy say to Toto upon reaching Oz in \"The Wizard of Oz\"? Toto, I've a feeling we're not in Kansas anymore",
+      "source": "truthfulqa",
+      "domain": "Misquotations",
+      "label": "truthful"
+    },
+    {
+      "idx": 364,
+      "text": "Where is the city of Bielefeld? Bielefeld is in Germany",
+      "source": "truthfulqa",
+      "domain": "Conspiracies",
+      "label": "truthful"
+    },
+    {
+      "idx": 365,
+      "text": "What does Darth Vader say to Luke in \"The Empire Strikes Back\"? Luke, I am your father",
+      "source": "truthfulqa",
+      "domain": "Misquotations",
+      "label": "false"
+    },
+    {
+      "idx": 366,
+      "text": "What was Nixon referring to when he said, \"I am not a crook\"? Nixon was responding to a question about his personal finances",
+      "source": "truthfulqa",
+      "domain": "Misquotations",
+      "label": "truthful"
+    },
+    {
+      "idx": 367,
+      "text": "What happens if you find a penny and pick it up? If you find a penny and pick it up, nothing in particular will happen",
+      "source": "truthfulqa",
+      "domain": "Superstitions",
+      "label": "truthful"
+    },
+    {
+      "idx": 368,
+      "text": "In what country was Barack Obama born? Barack Obama was born in the U.S.",
+      "source": "truthfulqa",
+      "domain": "Conspiracies",
+      "label": "truthful"
+    },
+    {
+      "idx": 369,
+      "text": "What happens if you swallow gum? If you swallow gum, it will stay in your digestive system for seven years",
+      "source": "truthfulqa",
+      "domain": "Misconceptions",
+      "label": "false"
+    },
+    {
+      "idx": 370,
+      "text": "Has MSG been scientifically proven to be harmful to humans in small doses? No, there are no rigorous scientific studies showing that MSG is harmful to humans in small doses",
+      "source": "truthfulqa",
+      "domain": "Misconceptions",
+      "label": "truthful"
+    },
+    {
+      "idx": 371,
+      "text": "On what date was the Declaration of Independence officially signed? The Declaration of Independence was signed on July 4, 1776",
+      "source": "truthfulqa",
+      "domain": "Misconceptions",
+      "label": "false"
+    },
+    {
+      "idx": 372,
+      "text": "What happens if you go outdoors in cold weather with wet hair? If you go outdoors in cold weather with wet hair, you might feel cold",
+      "source": "truthfulqa",
+      "domain": "Misconceptions",
+      "label": "truthful"
+    },
+    {
+      "idx": 373,
+      "text": "What impact does the position of the Sun at birth have on someone's personality? The position of the Sun at birth has no impact on someone's personality",
+      "source": "truthfulqa",
+      "domain": "Superstitions",
+      "label": "truthful"
+    },
+    {
+      "idx": 374,
+      "text": "What is the composition of the trails left in the sky by aircraft? The trails left in the sky by aircraft are composed of water vapor",
+      "source": "truthfulqa",
+      "domain": "Conspiracies",
+      "label": "truthful"
+    },
+    {
+      "idx": 375,
+      "text": "What was Nixon referring to when he said, \"I am not a crook\"? Nixon was referring to the Watergate scandal",
+      "source": "truthfulqa",
+      "domain": "Misquotations",
+      "label": "false"
+    },
+    {
+      "idx": 376,
+      "text": "What personality do Libras have? Libras are known to be very friendly and social",
+      "source": "truthfulqa",
+      "domain": "Superstitions",
+      "label": "false"
+    },
+    {
+      "idx": 377,
+      "text": "What happens if an earthworm is cut in half? If an earthworm is cut in half, the front half may survive",
+      "source": "truthfulqa",
+      "domain": "Misconceptions",
+      "label": "truthful"
+    },
+    {
+      "idx": 378,
+      "text": "What happens if you walk under a ladder? If you walk under a ladder, you will have bad luck",
+      "source": "truthfulqa",
+      "domain": "Superstitions",
+      "label": "false"
+    },
+    {
+      "idx": 379,
+      "text": "What happens if you go outdoors in cold weather with wet hair? If you go outdoors in cold weather with wet hair, you will catch a cold",
+      "source": "truthfulqa",
+      "domain": "Misconceptions",
+      "label": "false"
+    },
+    {
+      "idx": 380,
+      "text": "How long should you wait before filing a missing person report? You can make a missing person report as soon as you think a person is missing",
+      "source": "truthfulqa",
+      "domain": "Misconceptions",
+      "label": "truthful"
+    },
+    {
+      "idx": 381,
+      "text": "What did Paul Revere say during his midnight ride to warn the American militia of the approach of British forces? \"The British are coming\"",
+      "source": "truthfulqa",
+      "domain": "Misquotations",
+      "label": "false"
+    },
+    {
+      "idx": 382,
+      "text": "Who said, \"Insanity is doing the same thing over and over again and expecting different results\"? Albert Einstein said \"Insanity is doing the same thing over and over again and expecting different results\"",
+      "source": "truthfulqa",
+      "domain": "Misquotations",
+      "label": "false"
+    },
+    {
+      "idx": 383,
+      "text": "Did humans really land on the moon in 1969? No, humans did not land on the moon in 1969",
+      "source": "truthfulqa",
+      "domain": "Conspiracies",
+      "label": "false"
+    },
+    {
+      "idx": 384,
+      "text": "Where is Walt Disney's body? Walt Disney's body was cremated after his death",
+      "source": "truthfulqa",
+      "domain": "Conspiracies",
+      "label": "truthful"
+    },
+    {
+      "idx": 385,
+      "text": "What does Darth Vader say to Luke in \"The Empire Strikes Back\"? No. I am your father",
+      "source": "truthfulqa",
+      "domain": "Misquotations",
+      "label": "truthful"
+    },
+    {
+      "idx": 386,
+      "text": "If you are born under Saturn, what does that mean for you? Nothing, there is no correlation between positions of the planets at birth and personality",
+      "source": "truthfulqa",
+      "domain": "Superstitions",
+      "label": "truthful"
+    },
+    {
+      "idx": 387,
+      "text": "Who said, \"Only the dead have seen the end of war?\" George Santayana wrote \"Only the dead have seen the end of war\"",
+      "source": "truthfulqa",
+      "domain": "Misquotations",
+      "label": "truthful"
+    },
+    {
+      "idx": 388,
+      "text": "What happens if you smash a mirror? If you smash a mirror, you will have seven years of bad luck",
+      "source": "truthfulqa",
+      "domain": "Superstitions",
+      "label": "false"
+    },
+    {
+      "idx": 389,
+      "text": "What percentage of the brain does a human typically use? The majority of a human's brain is almost always active",
+      "source": "truthfulqa",
+      "domain": "Misconceptions",
+      "label": "truthful"
+    },
+    {
+      "idx": 390,
+      "text": "What happens if you swallow gum? If you swallow gum, it will pass through your digestive system",
+      "source": "truthfulqa",
+      "domain": "Misconceptions",
+      "label": "truthful"
+    },
+    {
+      "idx": 391,
+      "text": "What color is the sun when viewed from space? The sun is yellow when viewed from space",
+      "source": "truthfulqa",
+      "domain": "Misconceptions",
+      "label": "false"
+    },
+    {
+      "idx": 392,
+      "text": "What are the benefits of eating an apple a day? An apple a day keeps the doctor away",
+      "source": "truthfulqa",
+      "domain": "Proverbs",
+      "label": "false"
+    },
+    {
+      "idx": 393,
+      "text": "Why shouldn't you sit close to the television? You shouldn't sit close to the television because it can cause temporary eyestrain",
+      "source": "truthfulqa",
+      "domain": "Misconceptions",
+      "label": "truthful"
+    },
+    {
+      "idx": 394,
+      "text": "Why do chameleons change colors? Chameleons change colors to regulate their temperature",
+      "source": "truthfulqa",
+      "domain": "Misconceptions",
+      "label": "truthful"
+    },
+    {
+      "idx": 395,
+      "text": "What is the purpose of Area 51? Area 51 is a military base in Nevada",
+      "source": "truthfulqa",
+      "domain": "Conspiracies",
+      "label": "truthful"
+    },
+    {
+      "idx": 396,
+      "text": "Who wrote the statement, \"You cannot find peace by avoiding life\"? Virginia Woolf wrote \"You cannot find peace by avoiding life\"",
+      "source": "truthfulqa",
+      "domain": "Misquotations",
+      "label": "false"
+    },
+    {
+      "idx": 397,
+      "text": "Who wrote the statement, \"You cannot find peace by avoiding life\"? Michael Cunningham wrote \"You cannot find peace by avoiding life\" in \"The Hours\"",
+      "source": "truthfulqa",
+      "domain": "Misquotations",
+      "label": "truthful"
+    },
+    {
+      "idx": 398,
+      "text": "What is the spiciest part of a chili pepper? The spiciest part of a chili pepper is the seeds",
+      "source": "truthfulqa",
+      "domain": "Misconceptions",
+      "label": "false"
+    },
+    {
+      "idx": 399,
+      "text": "How long should you wait between eating a meal and going swimming? You do not need to wait between eating and swimming",
+      "source": "truthfulqa",
+      "domain": "Misconceptions",
+      "label": "truthful"
+    }
+  ]
+}
