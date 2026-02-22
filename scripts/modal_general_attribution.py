@@ -109,27 +109,14 @@ def compute_attribution_metrics(
     # Initialize model
     print("\n[2/3] Loading model + transcoders...")
 
-    try:
-        model = ReplacementModel.from_pretrained(
-            "google/gemma-2-2b",
-            "gemma",
-            dtype=torch.bfloat16,
-            device=torch.device("cuda"),
-            backend="transformerlens",
-        )
-        print("  Model ready!")
-    except Exception as e:
-        print(f"  [FATAL] Failed to load model: {e}")
-        return {
-            "metadata": {
-                "date": datetime.now().isoformat(),
-                "error": f"Model loading failed: {str(e)}",
-                "n_samples": len(samples),
-                "n_computed": 0,
-                "n_failed": len(samples),
-            },
-            "samples": [],
-        }
+    model = ReplacementModel.from_pretrained(
+        "google/gemma-2-2b",
+        "gemma",
+        dtype=torch.bfloat16,
+        device=torch.device("cuda"),
+        backend="transformerlens",
+    )
+    print("  Model ready!")
 
     # Compute metrics
     print("\n[3/3] Computing attribution metrics...")
@@ -140,38 +127,30 @@ def compute_attribution_metrics(
     checkpoint_path = "/results/attribution_checkpoint.json"
     start_idx = 0
 
-    # Check for existing checkpoint to resume from
+    # Resume from checkpoint if exists
     try:
         with open(checkpoint_path, 'r') as f:
             checkpoint = json.load(f)
             results = checkpoint.get("samples", [])
             start_idx = checkpoint.get("processed", 0)
             if start_idx > 0:
-                print(f"  [RESUME] Found checkpoint with {len(results)} results, resuming from sample {start_idx}")
+                print(f"  [RESUME] Found {len(results)} results, resuming from sample {start_idx}")
     except (FileNotFoundError, json.JSONDecodeError):
         pass
 
     for i, sample in enumerate(samples):
-        # Skip already processed samples
         if i < start_idx:
             continue
 
         if (i + 1) % 10 == 0:
-            print(f"  Progress: {i + 1}/{len(samples)} ({100 * (i + 1) / len(samples):.1f}%) - {len(results)} success, {failed} failed")
+            print(f"  Progress: {i + 1}/{len(samples)} ({100*(i+1)/len(samples):.1f}%) - ok:{len(results)} fail:{failed}")
 
-        # Save checkpoint and commit to volume
+        # Save checkpoint + commit to volume
         if (i + 1) % save_every == 0 and results:
-            try:
-                with open(checkpoint_path, 'w') as f:
-                    json.dump({
-                        "samples": results,
-                        "processed": i + 1,
-                        "failed_indices": failed_indices,
-                    }, f)
-                results_volume.commit()
-                print(f"  [CHECKPOINT] Saved {len(results)} results to volume")
-            except Exception as e:
-                print(f"  [CHECKPOINT WARN] Failed to save: {e}")
+            with open(checkpoint_path, 'w') as f:
+                json.dump({"samples": results, "processed": i + 1, "failed": failed_indices}, f)
+            results_volume.commit()
+            print(f"  [SAVE] {len(results)} results persisted")
 
         try:
             # Truncate text to avoid OOM (~4 chars per token)
@@ -224,34 +203,26 @@ def compute_attribution_metrics(
 
             results.append(metrics)
 
-        except torch.cuda.OutOfMemoryError as e:
-            print(f"  [OOM] Sample {sample.get('idx', i)}: text too long, skipping")
+        except torch.cuda.OutOfMemoryError:
+            print(f"  [OOM] Sample {sample.get('idx', i)}: text too long")
             failed += 1
-            failed_indices.append(sample.get('idx', i))
+            failed_indices.append(i)
             torch.cuda.empty_cache()
             continue
 
         except Exception as e:
             print(f"  [FAIL] Sample {sample.get('idx', i)}: {str(e)[:80]}")
             failed += 1
-            failed_indices.append(sample.get('idx', i))
+            failed_indices.append(i)
             torch.cuda.empty_cache()
             continue
 
-    # Final checkpoint save
+    # Final save
     print(f"\n  Completed: {len(results)}/{len(samples)} (failed: {failed})")
-    try:
-        with open(checkpoint_path, 'w') as f:
-            json.dump({
-                "samples": results,
-                "processed": len(samples),
-                "failed_indices": failed_indices,
-                "complete": True,
-            }, f)
-        results_volume.commit()
-        print(f"  [FINAL] Saved {len(results)} results to volume")
-    except Exception as e:
-        print(f"  [FINAL WARN] Failed to save final checkpoint: {e}")
+    with open(checkpoint_path, 'w') as f:
+        json.dump({"samples": results, "processed": len(samples), "failed": failed_indices, "done": True}, f)
+    results_volume.commit()
+    print(f"  [FINAL] Persisted to volume")
 
     return {
         "metadata": {
