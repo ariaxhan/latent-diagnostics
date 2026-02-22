@@ -1,8 +1,8 @@
-# MISSION: Activation Topology
+# MISSION: Latent Diagnostics
 
 **Status**: Active research → Paper
 **Started**: 2026-02-22
-**Repo**: neural-polygraph (pending rename decision)
+**Repo**: latent-diagnostics
 
 ---
 

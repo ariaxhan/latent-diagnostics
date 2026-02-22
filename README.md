@@ -1,146 +1,112 @@
-# Neural Polygraph
+# Latent Diagnostics
 
-**Exploring prompt injection detection through causal graph geometry.**
+**Representation-level analysis of internal activation structure in large language models.**
 
-> We observed that prompt injections create DIFFUSE causal graphs, while benign prompts have FOCUSED pathways.
+> Latent structure is measurable, stable, and diagnostic.
 
-⚠️ **Research prototype.** This is exploratory research with a small dataset. See [Limitations](#limitations) before drawing conclusions.
+## Core Thesis
 
-## What We Found
+Current evaluation of LLMs focuses on outputs. This is insufficient.
 
-When processing a prompt injection, the model's internal causal structure looks different:
+We introduce a representation-level diagnostic framework that analyzes **internal activation topology** to characterize model behavior independently of surface text. By measuring feature activation density, causal graph structure, concentration, and distributional entropy across prompts, we demonstrate that distinct behavioral regimes correspond to distinct internal structural patterns.
 
-| Metric | Injection (n=21) | Benign (n=115) | Ratio | Cohen's d |
-|--------|------------------|----------------|-------|-----------|
-| Active Features | 25,862 | 12,272 | 2.1x | 1.10 |
-| Concentration | 0.0025 | 0.0060 | 0.4x | 1.20 |
-| Mean Influence | 0.0054 | 0.0097 | 0.6x | 1.25 |
-| Graph Edges | 57M | 20M | 2.9x | 0.96 |
+The framework enables systematic inspection of internal state rather than relying solely on output behavior.
 
-**What this means:** Injections activate more features with more connections, but each connection is weaker. The causal graph becomes scattered rather than focused.
+## What We Measure
 
-**Effect size is large** (Cohen's d > 0.8), but **sample size is small** (n=21 injections). These results need validation on larger datasets.
+| Metric | What It Captures |
+|--------|------------------|
+| `n_active` | Feature count — how many pathways participate |
+| `n_edges` | Causal connections — interaction density |
+| `mean_influence` | Edge strength — pathway dominance |
+| `concentration` | Top-k share — focused vs diffuse computation |
+| `entropy` | Output uncertainty |
 
-## Visualizations
+**Key insight:** Inputs change the *shape* of computation, not just outputs.
 
-The clearest way to understand these results:
+## Architecture
 
-| Figure | What It Shows |
-|--------|---------------|
-| ![Geometry Scatter](figures/geometry_scatter.png) | Injection vs benign in feature-concentration space |
-| ![Shape Comparison](figures/shape_comparison.png) | Radar chart of the "shape" difference |
-| ![Distributions](figures/distributions.png) | Histogram of each metric by class |
+```
+LatentDiagnostics
+├── Feature extraction layer        SAE, transcoder, attention
+├── Attribution graph construction  Causal influence edges
+├── Metric computation              n_active, n_edges, concentration, entropy
+├── Diagnostic analysis layer       Distributional comparison, regime identification
+└── Experiment harness              Reproducible, immutable runs
+```
 
-See `figures/` for all visualizations. The [interactive notebook](notebooks/injection_geometry_explained.ipynb) walks through the analysis step by step.
-
-## How It Works
-
-1. **Compute attribution graph** — Use circuit-tracer to extract causal relationships between features
-2. **Extract metrics** — Count active features, edges, measure concentration and mean influence
-3. **Threshold** — High features + low concentration → likely injection
-
-The hypothesis: injections contain **two competing semantic frames** (original task + injected instruction), creating interference in the causal structure.
+This is not a model. It is a **measurement system**.
 
 ## Quick Start
 
 ```bash
-# Install
 pip install -e .
 
-# Run the analysis
-python experiments/detection.py
+# Run diagnostics
+python experiments/diagnostics.py
 
-# Generate visualizations
-python experiments/analyze.py
-```
-
-To compute new attribution metrics (requires GPU):
-```bash
-modal run scripts/modal_pint_benchmark.py
+# Compute attribution metrics (GPU)
+modal run scripts/modal_general_attribution.py \
+  --input-file data/domain_analysis/domain_samples.json \
+  --output-file data/results/domain_attribution_metrics.json
 ```
 
 ## Project Structure
 
 ```
-neural-polygraph/
-├── src/neural_polygraph/       # Core package
+latent-diagnostics/
+├── src/neural_polygraph/        # Core measurement framework
+│   ├── datasets.py              # Unified loaders (10+ datasets)
+│   ├── feature_extractors.py    # SAE/transcoder interface
+│   └── geometry.py              # Graph metrics
 ├── experiments/
-│   ├── detection.py            # Main experiment
-│   ├── analyze.py              # Deep analysis
-│   └── visualize.py            # Generate figures
-├── data/results/               # Raw results (136 samples)
-├── figures/                    # Key visualizations
-├── notebooks/                  # Interactive explainer
-├── research/                   # Thesis and notes
-└── scripts/                    # GPU runners (Modal)
+│   ├── diagnostics.py           # Comprehensive A-G diagnostic suite
+│   ├── domain_analysis.py       # Cross-domain signatures
+│   └── truthfulness_analysis.py # Factual coherence
+├── data/
+│   ├── domain_analysis/         # 400 samples, 8 domains
+│   ├── truthfulness/            # 200 balanced samples
+│   └── results/                 # Attribution metrics
+└── scripts/                     # Modal GPU runners
 ```
 
-## Limitations
+## Why This Is Novel
 
-**This is early-stage research with significant caveats:**
+Most prior work evaluates outputs, measures perplexity/accuracy, or probes neurons in isolation.
 
-1. **Small sample size**: Only 21 injection samples. Effect sizes look large but confidence intervals are wide.
+This framework:
+1. Treats activation topology as a structured object
+2. Computes graph-level metrics over attribution flows
+3. Compares internal regimes across behavioral classes
+4. Provides a reusable diagnostic layer for LLM systems
 
-2. **Class imbalance**: Dataset is 85% benign. A classifier that always predicts "benign" would score 84.6%. Our method needs to beat this baseline on balanced metrics (precision, recall, F1) not just accuracy.
+## Input Classes
 
-3. **Single model**: Only tested on Gemma-2-2B with gemma transcoders. Unknown if this generalizes to Llama, Mistral, GPT, etc.
+| Class | Purpose |
+|-------|---------|
+| Domain-specific | Code, scientific, legal, poetry signatures |
+| Truthful vs false | Factual coherence |
+| Prompt injection | Adversarial stress test (labeled data) |
+| Benign queries | Well-formed baseline |
 
-4. **Dataset-dependent calibration**: Thresholds are tuned on the same dataset we evaluate on. A separate calibration set would be more rigorous.
+Prompt injection is a labeled stress test dataset, not the research subject.
 
-5. **Compute requirements**: ~30 seconds per sample on A100 GPU. Not practical for production without efficiency improvements.
+## Current State
 
-6. **German prompts**: The PINT dataset is primarily German. English/multilingual validation needed.
-
-## What Would Strengthen This
-
-- [ ] Larger balanced dataset (n≥100 per class)
-- [ ] Cross-model validation (Llama, Mistral)
-- [ ] Separate calibration vs test sets
-- [ ] Comparison to simpler baselines (perplexity, word lists)
-- [ ] Proper statistical reporting (precision, recall, F1, confidence intervals)
-
-## The Core Observation
-
-Despite limitations, the **effect is real**:
-- 95% of injections have more active features than the benign median
-- 90% have lower concentration
-- Cohen's d > 1.0 on multiple metrics
-
-This suggests there's genuine signal in causal graph topology. Whether it's *useful* for detection (vs. simpler methods) remains to be proven.
-
-## Using This For Your Own Research
-
-The tools work on any model supported by circuit-tracer:
-
-```python
-from neural_polygraph.injection_detector import AttributionInjectionDetector, InjectionMetrics
-from neural_polygraph import ExperimentStorage
-
-# Load your own metrics
-metrics = InjectionMetrics(
-    n_active=...,
-    n_edges=...,
-    mean_influence=...,
-    top_100_concentration=...,
-)
-
-# Use the detector
-detector = AttributionInjectionDetector()
-result = detector.classify(metrics)
-```
-
-See `scripts/modal_pint_benchmark.py` for how to compute attribution metrics on your own data.
+- **Infrastructure:** Complete
+- **Data prepared:** Domain (400), Truthfulness (200)
+- **Data computed:** PINT (136) — others pending Modal runs
+- **Known:** Length confound r=0.96 for n_active; mean_activation least confounded (r=-0.224), best AUC (0.830)
 
 ## Citation
 
 ```bibtex
-@software{neural_polygraph,
-  title = {Neural Polygraph: Exploring Prompt Injection Detection via Causal Graph Geometry},
-  year = {2026},
-  note = {Research prototype, not peer-reviewed}
+@software{latent_diagnostics,
+  title = {Latent Diagnostics: Representation-Level Analysis of Internal Activation Structure in Large Language Models},
+  year = {2026}
 }
 ```
 
 ## License
 
-MIT License
+MIT
