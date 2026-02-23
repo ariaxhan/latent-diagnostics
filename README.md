@@ -1,52 +1,52 @@
 # Latent Diagnostics
 
-**Representation-level analysis of internal activation structure in large language models.**
+**Language models switch between different internal processing modes depending on the task type - and those modes are measurable.**
 
-> Activation topology measures *how* a model computes, not *whether* it's correct.
+## What This Does
 
-## Core Thesis
+We measure *how* a model computes, not *whether* it's correct. By extracting attribution graphs from model internals (via transcoders/SAEs), we compute metrics that characterize the computational regime: is the model doing focused grammatical processing, or diffuse multi-hop reasoning?
 
-We introduce a framework that analyzes **internal activation topology** to characterize what kind of computation an LLM is performing. By measuring causal influence distribution across features, we can distinguish between different computational regimes.
+This is like measuring heart rate and brain patterns: you can tell if someone is doing math versus poetry (different patterns), and whether they're confused (elevated activity) - but you can't tell if they got the math right.
 
-**What this detects:** The *type* and *complexity* of thinking.
-**What this doesn't detect:** Whether the output is correct.
+## Key Discovery
 
-## Key Results (Length-Controlled)
+After controlling for text length, we found:
 
-All effect sizes are **controlled for text length** via residualization.
-
-| Detection Task | Effect Size (d) | Status |
-|----------------|-----------------|--------|
-| Task type (grammar vs reasoning) | **1.08** | Works |
-| Computational complexity | **0.87** | Works |
-| Adversarial inputs | ~0.8 | Works |
-| Truthfulness | 0.05 | Doesn't work |
-
-**The pivot experiment:** After regressing out text length, influence (d=1.08) and concentration (d=0.87) still show large effects. N_active collapses to d=0.07. This is **genuine regime difference**, not length-driven scaling.
-
-## What We Measure
-
-| Metric | What It Captures | Length-Controlled d |
+| Metric | What It Measures | After Length Control |
 |--------|------------------|---------------------|
-| `mean_influence` | Causal strength between features | **1.08** (genuine) |
-| `concentration` | Focused vs diffuse computation | **0.87** (genuine) |
-| `mean_activation` | Signal strength | 0.64 (medium) |
-| `n_active` | Feature count | 0.07 (collapses) |
+| Influence | Causal strength between features | d=1.08 (genuine signal) |
+| Concentration | Focused vs diffuse computation | d=0.87 (genuine signal) |
+| N_active | Feature count | d=0.07 (COLLAPSES - was length artifact) |
 
-**Use:** influence, concentration
-**Don't use:** n_active (confounded by length, r=0.98)
+**The pattern:**
+- Grammar tasks (CoLA): High influence, high concentration = focused computation
+- Reasoning tasks (WinoGrande, HellaSwag): Low influence, low concentration = diffuse computation
+- Truthfulness (TruthfulQA): No signal (d=0.05) - true/false statements look identical internally
 
-## Use Cases
+## The Journey
 
-**Works for:**
-- Input classification (what type of task is this?)
-- Anomaly detection (is this input unusual?)
-- Complexity estimation (how hard is the model working?)
+This repo documents our research journey:
 
-**Doesn't work for:**
-- Hallucination detection
-- Fact-checking
-- Output quality assessment
+1. **Started:** Hallucination detection via feature spectroscopy (Dec 2025)
+2. **Realized:** Most "signal" was text length confounding (Jan 2026)
+3. **Pivoted:** Task-type diagnostics with length control (Feb 2026)
+4. **Found:** Genuine computational regime differences
+
+See `archive/disproved/` for our early experiments with honest disclaimers about what didn't work.
+
+## Directory Structure
+
+```
+notebooks/           # Main analysis notebooks (START HERE)
+experiments/         # Reproducible experiment scripts
+figures/             # All generated figures
+  paper/             # Publication-quality figures
+data/                # Input data and results
+  results/           # Computed metrics (JSON)
+scripts/             # Modal runners for GPU computation
+archive/             # Historical experiments
+  disproved/         # Early work superseded by length control
+```
 
 ## Quick Start
 
@@ -62,33 +62,39 @@ modal run scripts/modal_general_attribution.py \
   --output-file data/results/domain_attribution_metrics.json
 ```
 
-## Figures
+## What Works vs What Doesn't
 
-All in `figures/paper/` — every figure uses **length-controlled metrics**:
+**Works:**
+- Task type classification (grammar vs reasoning vs paraphrase)
+- Computational complexity estimation
+- Anomaly/adversarial input detection
 
-| Figure | Shows |
-|--------|-------|
-| **central_summary.png** | Main figure (8 panels) |
-| length_control_comparison.png | Before/after length control |
-| detection_summary.png | What it can/can't detect |
-| pca_clustering.png | Domains cluster after length control |
-| boxplots_significance.png | Per-domain distributions |
+**Doesn't Work:**
+- Hallucination detection
+- Truthfulness detection
+- Output correctness prediction
+
+The model processes hallucinations and false statements with the same internal structure as truthful ones. This is a fundamental limitation: we measure computation type, not output quality.
+
+## How It Works
+
+1. **Attribution Graphs:** We use circuit-tracer to extract causal graphs showing how features influence each other during inference. Each node is a feature (sparse autoencoder direction), each edge is causal influence.
+
+2. **Metrics:** From these graphs we extract:
+   - `mean_influence`: Average edge weight (how strongly features drive each other)
+   - `concentration`: How focused the influence is (Gini coefficient)
+   - `mean_activation`: Average feature activation strength
+
+3. **Length Control:** Raw feature counts correlate r=0.98 with text length - longer inputs activate more features, trivially. We residualize metrics against length to isolate genuine computational differences.
+
+4. **The Signal:** After length control, grammar tasks still show d=1.08 higher influence than reasoning tasks. This isn't length - it's genuine regime difference.
 
 ## Limitations
 
-1. **Requires model internals** — Only works on models with SAE/transcoder access
-2. **Compute intensive** — ~30 sec/sample on A100
-3. **Measures structure, not correctness** — Can't detect hallucinations
-4. **Must control for length** — Raw n_active is confounded (r=0.98)
-
-## Citation
-
-```bibtex
-@software{latent_diagnostics,
-  title = {Latent Diagnostics: Representation-Level Analysis of Internal Activation Structure in Large Language Models},
-  year = {2026}
-}
-```
+1. **Requires model internals** - Only works on models with SAE/transcoder access (currently Gemma 2 via Goodfire)
+2. **Compute intensive** - ~30 sec/sample on A100
+3. **Measures structure, not correctness** - Can't detect hallucinations or factual errors
+4. **Must control for length** - Raw n_active is confounded (r=0.98 with token count)
 
 ## License
 
