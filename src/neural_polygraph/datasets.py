@@ -61,6 +61,11 @@ class DatasetLoader:
         "pubmedqa": "Biomedical QA",
         "legalbench": "Legal reasoning tasks",
         "poem_sentiment": "Poetry with sentiment",
+
+        # Cognitive regimes (orthogonal task families)
+        "gsm8k": "Math word problems (symbolic reasoning)",
+        "humaneval": "Code synthesis (program generation)",
+        "cnn_dailymail": "Summarization (long-context abstraction)",
     }
 
     def __init__(self, cache_dir: Optional[Path] = None):
@@ -92,6 +97,10 @@ class DatasetLoader:
             "codesearchnet": self._load_codesearchnet,
             "pubmedqa": self._load_pubmedqa,
             "poem_sentiment": self._load_poem_sentiment,
+            # Cognitive regimes
+            "gsm8k": self._load_gsm8k,
+            "humaneval": self._load_humaneval,
+            "cnn_dailymail": self._load_cnn_dailymail,
         }
 
         # Handle Pile subsets
@@ -377,6 +386,76 @@ class DatasetLoader:
             "Use: https://huggingface.co/datasets/EleutherAI/pile\n"
             "Or sample via: datasets.load_dataset('EleutherAI/pile', streaming=True)"
         )
+
+    def _load_gsm8k(self, n_samples: int, split: str) -> list[Sample]:
+        """Load GSM8K - grade-school math word problems."""
+        ds = load_dataset("gsm8k", "main", split="test" if split == "validation" else split)
+        samples = []
+
+        for item in ds:
+            if len(samples) >= n_samples:
+                break
+
+            question = item["question"]
+            answer = item["answer"]
+
+            # Full chain-of-thought format
+            samples.append(Sample(
+                text=f"Problem: {question}\nSolution: {answer}",
+                source="gsm8k",
+                domain="math_reasoning",
+                label="math_problem",
+                metadata={"question": question, "answer": answer},
+            ))
+
+        return samples
+
+    def _load_humaneval(self, n_samples: int, split: str) -> list[Sample]:
+        """Load HumanEval - code synthesis problems."""
+        ds = load_dataset("openai_humaneval", split="test")
+        samples = []
+
+        for item in ds:
+            if len(samples) >= n_samples:
+                break
+
+            prompt = item["prompt"]
+            canonical = item.get("canonical_solution", "")
+            task_id = item.get("task_id", "")
+
+            # Include the function signature and docstring
+            samples.append(Sample(
+                text=f"{prompt}\n{canonical}",
+                source="humaneval",
+                domain="code_synthesis",
+                label=task_id,
+                metadata={"prompt": prompt, "solution": canonical, "task_id": task_id},
+            ))
+
+        return samples
+
+    def _load_cnn_dailymail(self, n_samples: int, split: str) -> list[Sample]:
+        """Load CNN/DailyMail - summarization (long-context abstraction)."""
+        ds = load_dataset("cnn_dailymail", "3.0.0", split=split)
+        samples = []
+
+        for item in ds:
+            if len(samples) >= n_samples:
+                break
+
+            article = item["article"]
+            highlights = item["highlights"]
+
+            # Truncate article for attribution (keep summary full)
+            samples.append(Sample(
+                text=f"Article: {article[:800]}\n\nSummary: {highlights}",
+                source="cnn_dailymail",
+                domain="summarization",
+                label="abstractive_summary",
+                metadata={"article_length": len(article), "summary_length": len(highlights)},
+            ))
+
+        return samples
 
     def load_multi(
         self,
