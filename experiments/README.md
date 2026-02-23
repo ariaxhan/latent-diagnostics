@@ -11,66 +11,90 @@
 | Adversarial inputs | d~0.8 | Yes |
 | Truthfulness | d=0.05 | No |
 
-*Note: Raw effect sizes are higher (d=3.2 for task type) but those include length confounding. After residualizing out text length, these are the genuine effects.*
+*After residualizing out text length, these are the genuine effects.*
 
-## Active Experiments
+## Directory Structure
+
+```
+experiments/
+├── core/           # Main validated analysis scripts
+├── statistics/     # Statistical tests and validation
+├── visualization/  # Figure generation
+├── utilities/      # Shared code
+├── _archive/       # Historical experiments (disproved/deprecated)
+└── _runs/          # Experiment outputs and data
+```
+
+## Core Analyses
 
 | Script | Purpose | Key Result |
 |--------|---------|------------|
-| `domain_figures.py` | Generate domain analysis figures | 5 figures in `figures/domain_analysis/` |
-| `domain_analysis.py` | Cross-domain comparison | d=1.08 grammar vs others (length-controlled) |
-| `truthfulness_analysis.py` | True vs false statements | No signal (d=0.05) |
-| `diagnostics.py` | Statistical analysis suite | Length confound analysis |
+| `core/domain_comparison.py` | Cross-domain comparison | d=1.08 grammar vs others |
+| `core/truthfulness.py` | True vs false statements | No signal (d=0.05) |
+| `core/cognitive_regimes.py` | Computational complexity analysis | d=0.87 |
 
-## Data
+## Statistics
+
+| Script | Purpose |
+|--------|---------|
+| `statistics/bootstrap_ci.py` | Bootstrap confidence intervals |
+| `statistics/shuffle_test.py` | Permutation-based validation |
+| `statistics/variance_decomposition.py` | Variance attribution |
+
+## Visualization
+
+| Script | Purpose |
+|--------|---------|
+| `visualization/generate_figures.py` | Main figure generation |
+| `visualization/domain_figures.py` | Domain analysis figures |
+| `visualization/residual_plots.py` | Residual distribution plots |
+| `visualization/pca_plots.py` | PCA attribution visualizations |
+
+## Utilities
+
+| Script | Purpose |
+|--------|---------|
+| `utilities/load_data.py` | Data loading and preprocessing |
+
+## Data Location
+
+Experiment data is stored in `_runs/data/results/`:
 
 | File | Samples | Finding |
 |------|---------|---------|
-| `data/results/domain_attribution_metrics.json` | 210 | Task type separates |
-| `data/results/truthfulness_metrics_clean.json` | 200 | No truthfulness signal |
-| `data/results/pint_attribution_metrics.json` | 136 | Injection separates |
+| `domain_attribution_metrics.json` | 210 | Task type separates |
+| `truthfulness_metrics_clean.json` | 200 | No truthfulness signal |
+| `pint_attribution_metrics.json` | 136 | Injection separates |
 
 ## Running
 
 ```bash
 # Generate domain analysis figures
-python experiments/domain_figures.py
+python experiments/visualization/domain_figures.py
 
-# Compute new attribution metrics (parallel, crash-safe)
-modal run scripts/modal_general_attribution.py \
-  --input-file data/domain_analysis/domain_samples.json \
-  --output-file data/results/domain_attribution_metrics.json
+# Run domain comparison analysis
+python experiments/core/domain_comparison.py
+
+# Run bootstrap confidence intervals
+python experiments/statistics/bootstrap_ci.py
 ```
 
 ## Robust Metrics
 
 **Use these:**
-- `mean_influence` — causal strength between features
-- `concentration` — focused vs diffuse computation
-- `mean_activation` — signal strength
+- `mean_influence` - causal strength between features
+- `concentration` - focused vs diffuse computation
+- `mean_activation` - signal strength
 
 **Don't use (confounded by length):**
-- `n_active` — r=0.98 with text length
-- `n_edges` — r=0.96 with text length
-
-## Figures
-
-All in `figures/domain_analysis/`:
-
-| Figure | Shows |
-|--------|-------|
-| fig1_domain_radar.png | Radar chart of 5 domains |
-| fig2_influence_concentration.png | Scatter plot, domain clustering |
-| fig3_influence_gradient.png | Bar chart: focused → diffuse |
-| fig4_length_control.png | Proof that influence ≠ length |
-| fig5_effect_sizes.png | Cohen's d for all metrics |
+- `n_active` - r=0.98 with text length
+- `n_edges` - r=0.96 with text length
 
 ## Archive
 
-The `archive/` directory contains historical experiments that informed the current approach:
-
-- Hallucination detection (failed, d < 0.1)
-- SAE spectroscopy (failed)
-- Various geometry approaches (limited signal)
+The `_archive/` directory contains:
+- `hallucination_detection/` - Early experiments (d < 0.1, disproved)
+- `injection_detection/` - Prompt injection work
+- `deprecated/` - Superseded scripts
 
 The breakthrough came from switching to **influence distribution** (how features affect each other) rather than **feature counts** (which just track length).
