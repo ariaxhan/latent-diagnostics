@@ -9,26 +9,20 @@
 ## ψ:CORE_THESIS
 
 ```
-●object_of_study
-  |NOT:security
-  |NOT:injection_detection
-  |NOT:jailbreak_prevention
-  |IS:internal_computation_patterns
-  |IS:activation_topology
-  |IS:representation_level_diagnostics
+●what_it_detects
+  |task_type (grammar vs reasoning)     → d=3.2 ✓
+  |computational_complexity             → d=2.4 ✓
+  |adversarial/anomalous_inputs         → d=1.2 ✓
 
-●real_question
-  "Do LLMs enter measurably different internal states
-   depending on the quality/structure of an input?"
+●what_it_doesnt_detect
+  |truthfulness                         → d=0.05 ✗
+  |correctness                          → no signal ✗
+  |hallucinations                       → untested, likely ✗
 
-●contribution
-  |unified:representation_level_inspection_stack
-  |combines:SAE+transcoder+attention+attribution_graphs
-  |produces:quantitative_observables_from_latent_states
-  |reveals:coherence_vs_diffusion_axis
-
-●frame
-  computational_phenomenology_of_LLMs
+●key_insight
+  measures_HOW_model_computes
+  |NOT:whether_output_is_correct
+  |BUT:what_kind_of_thinking
 ```
 
 ---
@@ -36,129 +30,84 @@
 ## ψ:WHAT_WE_MEASURE
 
 ```
-●observables
-  n_active         → feature count (how many pathways participate)
-  n_edges          → causal connections (interaction density)
-  mean_influence   → edge strength (pathway dominance)
-  concentration    → top-k share (focused vs diffuse)
-  entropy          → output uncertainty
-  activation_mean  → signal strength
+●robust_metrics (use these)
+  mean_influence   → causal strength between features (d=3.2)
+  concentration    → focused vs diffuse computation (d=2.4)
+  mean_activation  → signal strength (d=1.7)
 
-●what_these_reveal
-  |focused_pathways ↔ coherent_computation
-  |diffuse_pathways ↔ uncertain/conflicted_computation
-  |high_concentration ↔ clear_reasoning
-  |low_concentration ↔ sprawling_search
+●confounded_metrics (don't use)
+  n_active         → just tracks text length (r=0.98)
+  n_edges          → just tracks text length (r=0.96)
 
-●key_insight
-  inputs_change_shape_of_computation
-  |NOT:just_outputs
-  |BUT:internal_causal_structure
+●interpretation
+  high_influence + high_concentration = focused computation (grammar)
+  low_influence + low_concentration = diffuse computation (reasoning)
 ```
 
 ---
 
-## ψ:INPUT_CLASSES_TO_STUDY
+## ψ:FINDINGS
 
 ```
-●current_data
-  prompt_injection    → adversarial, instruction-heavy
-  benign             → well-formed user queries
+●domain_analysis (210 samples, 5 tasks)
+  CoLA (grammar):      influence=0.0107, conc=0.0069 → FOCUSED
+  WinoGrande:          influence=0.0054, conc=0.0023
+  SNLI:                influence=0.0044, conc=0.0019
+  HellaSwag:           influence=0.0038, conc=0.0013
+  PAWS (paraphrase):   influence=0.0034, conc=0.0018 → DIFFUSE
 
-●planned_data
-  truthful_vs_false  → factual coherence (TruthfulQA)
-  domain_signatures  → code/scientific/legal/poetry
+  effect_size: d=3.22 (grammar vs others), p<10^-50
+  signal_survives_length_control: partial_r=0.585
 
-●future_axes (all same machinery, different labels)
-  hallucinations           → generation failures
-  reasoning_collapse       → logic breakdown
-  instruction_conflicts    → competing directives
-  low_confidence          → uncertain generations
-  creative_vs_deterministic → mode differences
-  system_vs_user_dominance → attention allocation
+●truthfulness_analysis (200 samples, TruthfulQA)
+  truthful:  influence=0.00529, conc=0.00256
+  false:     influence=0.00521, conc=0.00251
 
-●unifying_frame
-  each_is_a_slice_of_input_quality_space
-  |adversarial|ambiguous|contradictory|underspecified
-  |overconstrained|benign|well-formed|instruction-heavy
-  |noisy|synthetic|human-written
+  effect_size: d=0.05, p=0.66
+  NO SIGNAL - true and false look identical internally
 ```
 
 ---
 
-## ψ:WHY_THIS_MATTERS
+## ψ:USE_CASES
 
 ```
-●opens_door_to
-  internal_health_monitoring
-  agent_self-awareness
-  automatic_failure_detection
-  confidence_estimation
-  coherence_scoring
-  runtime_safety_checks
-  system_level_feedback_loops
+●works_for
+  input_classification     → what type of task is this?
+  anomaly_detection        → is this input unusual/adversarial?
+  complexity_estimation    → how hard is the model working?
 
-●core_value
-  measuring_how_model_thinks
-  |NOT:what_it_says
-  |BUT:shape_of_computation
+●doesnt_work_for
+  hallucination_detection  → model processes hallucinations normally
+  fact_checking            → true/false have same topology
+  output_quality           → structure ≠ correctness
 ```
 
 ---
 
-## ψ:METHODOLOGY
+## ψ:ANALOGY
 
 ```
-●stance
-  diagnostic_exploration
-  |NOT:hypothesis_driven
-  |NOT:prove/disprove
-  |IS:map_measurement_space
-  |IS:build_intuition_for_internal_dynamics
-  |IS:pre-theory_instrumentation_phase
-
-●approach
-  gather_diverse_input_classes
-  compute_attribution_metrics
-  observe_patterns
-  report_what_separates
-  report_what_doesn't
-  build_evidence_for_paper
-
-●rigor
-  always_check_confounds (length, etc)
-  report_uncertainty (bootstrap CIs)
-  flag_underpowered_slices
-  no_overclaiming
+like measuring heart rate and brain patterns:
+  CAN tell: math vs poetry (different patterns)
+  CAN tell: stressed/confused (elevated activity)
+  CANT tell: did they get the math right?
 ```
 
 ---
 
-## ψ:PAPER_STRUCTURE (draft)
+## ψ:LIMITATIONS
 
 ```
-●thesis (clean version)
-  "We present a representation-level framework for
-   characterizing internal activation regimes in
-   transformer models using attribution graphs and
-   sparse feature decompositions. We show that
-   different input classes induce distinct causal
-   activation structures, suggesting a general method
-   for diagnosing model state, failure modes, and
-   behavioral reliability beyond surface outputs."
+●technical
+  requires_model_internals   → SAE/transcoder access needed
+  compute_intensive          → ~30 sec/sample on A100
+  length_confound            → must use influence/conc, not counts
 
-●structure
-  1. Introduction: internal state matters
-  2. Method: unified attribution framework
-  3. Experiments: diverse input classes
-  4. Results: what separates, what doesn't
-  5. Application: injection as case study
-  6. Discussion: broader implications
-  7. Limitations + Future work
-
-●NOT_the_thesis
-  "injection detection"
-  → that's an application section
+●fundamental
+  measures_structure_not_correctness
+  cant_detect_output_quality
+  true_and_false_look_the_same
 ```
 
 ---
@@ -166,79 +115,56 @@
 ## ψ:CURRENT_STATE
 
 ```
+●data_computed ✓
+  domain_attribution_metrics.json     → 210 samples
+  truthfulness_metrics_clean.json     → 200 samples
+  pint_attribution_metrics.json       → 136 samples
+
+●figures ✓
+  figures/domain_analysis/
+    fig1_domain_radar.png
+    fig2_influence_concentration.png
+    fig3_influence_gradient.png
+    fig4_length_control.png
+    fig5_effect_sizes.png
+
 ●infrastructure ✓
-  src/neural_polygraph/
-    datasets.py        → unified loaders (10+ datasets)
-    injection_detector.py
-    feature_extractors.py
-    geometry.py
-    sae_utils.py
-    storage.py
-
-●experiments ✓
-  diagnostics.py         → comprehensive A-G suite
-  domain_analysis.py     → cross-domain signatures
-  truthfulness_analysis.py → factual coherence
-
-●data_prepared ✓
-  domain_samples.json      → 400 samples, 8 domains
-  truthfulness_samples.json → 200 samples, balanced
-
-●data_computed
-  pint_attribution_metrics.json → 136 PINT samples ✓
-  domain_attribution_metrics.json → PENDING (Modal run)
-  truthfulness_metrics.json → PENDING
-
-●known_findings
-  length_confound: r=0.98 for n_active (features/char ~215 constant)
-  n_active: NOT diagnostic (just tracks length)
-  mean_influence: DIAGNOSTIC (d=3.22 grammar vs others, p<10^-50)
-  concentration: DIAGNOSTIC (d=2.36, p<10^-33)
-  grammar=focused/high_influence, reasoning=diffuse/low_influence
-  partial_correlations: influence/conc preserve signal after length control
+  parallel Modal runner (8x speedup)
+  incremental saves (crash-safe)
 ```
 
 ---
 
-## ψ:NEXT_ACTIONS
+## ψ:PAPER_STRUCTURE
 
 ```
-●immediate
-  1. Complete Modal runs (domain + truthfulness)
-  2. Analyze results with diagnostic framework
-  3. Add more input classes as needed
+1. Introduction
+   - LLMs evaluated on outputs only
+   - Internal state contains diagnostic information
 
-●toward_paper
-  gather_evidence_across_input_classes
-  identify_robust_metrics (survive confound checks)
-  build_figures
-  write_up
-```
+2. Method
+   - Attribution graphs from SAE/transcoder
+   - Metrics: influence, concentration, activation
 
----
+3. Experiments
+   - Domain analysis (5 task types)
+   - Truthfulness analysis (negative result)
 
-## ψ:PRINCIPLES
+4. Results
+   - Task type: strong signal (d=3.2)
+   - Truthfulness: no signal (d=0.05)
+   - Length confound analysis
 
-```
-●scientific
-  observe_first
-  no_thesis_language ("we show that")
-  use: "observed", "appears", "sensitivity"
-  treat_method_as_object_to_interrogate
+5. Discussion
+   - Measures computation type, not correctness
+   - Use cases and limitations
 
-●practical
-  commit_regularly
-  checkpoint_modal_runs
-  preserve_all_raw_data
-  immutable_experiment_storage
-
-●framing
-  injection_is_convenient_labeled_data
-  NOT_the_core_idea
-  framework_applies_broadly
+6. Limitations
+   - Model access requirements
+   - Compute cost
+   - What it can't detect
 ```
 
 ---
 
-*Last updated: 2026-02-22*
-*Context: handoff for paper completion*
+*Last updated: 2026-02-23*

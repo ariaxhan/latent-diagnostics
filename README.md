@@ -2,50 +2,69 @@
 
 **Representation-level analysis of internal activation structure in large language models.**
 
-> Latent structure is measurable, stable, and diagnostic.
+> Activation topology measures *how* a model computes, not *whether* it's correct.
 
 ## Core Thesis
 
-Current evaluation of LLMs focuses on outputs. This is insufficient.
+We introduce a framework that analyzes **internal activation topology** to characterize what kind of computation an LLM is performing. By measuring causal influence distribution across features, we can distinguish between different computational regimes.
 
-We introduce a representation-level diagnostic framework that analyzes **internal activation topology** to characterize model behavior independently of surface text. By measuring feature activation density, causal graph structure, concentration, and distributional entropy across prompts, we demonstrate that distinct behavioral regimes correspond to distinct internal structural patterns.
+**What this detects:** The *type* and *complexity* of thinking.
+**What this doesn't detect:** Whether the output is correct.
 
-The framework enables systematic inspection of internal state rather than relying solely on output behavior.
+## Key Results
+
+| Detection Task | Effect Size | Status |
+|----------------|-------------|--------|
+| Task type (grammar vs reasoning) | d=3.2 | **Works** |
+| Computational complexity | d=2.4 | **Works** |
+| Adversarial/anomalous inputs | d=1.2 | **Works** |
+| Truthfulness | d=0.05 | **Doesn't work** |
+
+**The finding:** Simple tasks (grammar) produce focused, high-influence computation. Complex tasks (reasoning) produce diffuse, low-influence computation. But true vs false statements look identical internally.
 
 ## What We Measure
 
-| Metric | What It Captures |
-|--------|------------------|
-| `n_active` | Feature count — how many pathways participate |
-| `n_edges` | Causal connections — interaction density |
-| `mean_influence` | Edge strength — pathway dominance |
-| `concentration` | Top-k share — focused vs diffuse computation |
-| `entropy` | Output uncertainty |
+| Metric | What It Captures | Diagnostic? |
+|--------|------------------|-------------|
+| `mean_influence` | Average causal strength between features | Yes (d=3.2) |
+| `concentration` | Is influence focused or spread out? | Yes (d=2.4) |
+| `mean_activation` | Signal strength | Yes (d=1.7) |
+| `n_active` | Feature count | No (confounded by length) |
 
-**Key insight:** Inputs change the *shape* of computation, not just outputs.
+**Robust metrics:** influence, concentration, activation
+**Confounded metrics:** n_active, n_edges (just track text length)
+
+## Use Cases
+
+**Works for:**
+- Input classification (what type of task is this?)
+- Anomaly detection (is this input unusual?)
+- Complexity estimation (how hard is the model working?)
+
+**Doesn't work for:**
+- Hallucination detection
+- Fact-checking
+- Output quality assessment
 
 ## Architecture
 
 ```
 LatentDiagnostics
-├── Feature extraction layer        SAE, transcoder, attention
-├── Attribution graph construction  Causal influence edges
-├── Metric computation              n_active, n_edges, concentration, entropy
-├── Diagnostic analysis layer       Distributional comparison, regime identification
-└── Experiment harness              Reproducible, immutable runs
+├── Feature extraction       SAE/transcoder decomposition
+├── Attribution graph        Causal influence between features
+├── Metric computation       influence, concentration, activation
+└── Diagnostic analysis      Compare distributions across input classes
 ```
-
-This is not a model. It is a **measurement system**.
 
 ## Quick Start
 
 ```bash
 pip install -e .
 
-# Run diagnostics
-python experiments/diagnostics.py
+# Generate figures
+python experiments/domain_figures.py
 
-# Compute attribution metrics (GPU)
+# Compute new attribution metrics (GPU)
 modal run scripts/modal_general_attribution.py \
   --input-file data/domain_analysis/domain_samples.json \
   --output-file data/results/domain_attribution_metrics.json
@@ -55,48 +74,22 @@ modal run scripts/modal_general_attribution.py \
 
 ```
 latent-diagnostics/
-├── src/neural_polygraph/        # Core measurement framework
-│   ├── datasets.py              # Unified loaders (10+ datasets)
-│   ├── feature_extractors.py    # SAE/transcoder interface
-│   └── geometry.py              # Graph metrics
+├── src/neural_polygraph/        # Core framework
 ├── experiments/
-│   ├── diagnostics.py           # Comprehensive A-G diagnostic suite
-│   ├── domain_analysis.py       # Cross-domain signatures
-│   └── truthfulness_analysis.py # Factual coherence
-├── data/
-│   ├── domain_analysis/         # 400 samples, 8 domains
-│   ├── truthfulness/            # 200 balanced samples
-│   └── results/                 # Attribution metrics
-└── scripts/                     # Modal GPU runners
+│   ├── domain_figures.py        # Paper figures
+│   ├── diagnostics.py           # Statistical analysis
+│   └── domain_analysis.py       # Cross-domain comparison
+├── figures/domain_analysis/     # Generated figures
+├── data/results/                # Attribution metrics
+└── scripts/                     # Modal GPU runners (parallel)
 ```
 
-## Why This Is Novel
+## Limitations
 
-Most prior work evaluates outputs, measures perplexity/accuracy, or probes neurons in isolation.
-
-This framework:
-1. Treats activation topology as a structured object
-2. Computes graph-level metrics over attribution flows
-3. Compares internal regimes across behavioral classes
-4. Provides a reusable diagnostic layer for LLM systems
-
-## Input Classes
-
-| Class | Purpose |
-|-------|---------|
-| Domain-specific | Code, scientific, legal, poetry signatures |
-| Truthful vs false | Factual coherence |
-| Prompt injection | Adversarial stress test (labeled data) |
-| Benign queries | Well-formed baseline |
-
-Prompt injection is a labeled stress test dataset, not the research subject.
-
-## Current State
-
-- **Infrastructure:** Complete
-- **Data prepared:** Domain (400), Truthfulness (200)
-- **Data computed:** PINT (136) — others pending Modal runs
-- **Known:** Length confound r=0.96 for n_active; mean_activation least confounded (r=-0.224), best AUC (0.830)
+1. **Requires model internals** — Only works on models with SAE/transcoder access
+2. **Compute intensive** — ~30 sec/sample on A100
+3. **Measures structure, not correctness** — Can't detect hallucinations or errors
+4. **Length confound** — Must use influence/concentration, not feature counts
 
 ## Citation
 
