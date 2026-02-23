@@ -7912,8 +7912,42 @@ a.anchor-link {
 <hr/>
 <h3 id="The-Interpretability-Stack">The Interpretability Stack<a class="anchor-link" href="#The-Interpretability-Stack">¶</a></h3><p>This research builds on a series of breakthroughs from Anthropic, Google DeepMind, and the open-source interpretability community. Here's exactly what we use:</p>
 <hr/>
-<h4 id="1.-Sparse-Autoencoders-(SAEs)">1. Sparse Autoencoders (SAEs)<a class="anchor-link" href="#1.-Sparse-Autoencoders-(SAEs)">¶</a></h4><p><strong>What they are</strong>: Neural networks that decompose a model's internal activations into interpretable "features."</p>
-<p><strong>The problem they solve</strong>: Inside a language model, individual neurons are <em>polysemantic</em>—they respond to multiple unrelated concepts. This makes it nearly impossible to understand what any single neuron "means."</p>
+<h4 id="The-Core-Problem:-Polysemanticity">The Core Problem: Polysemanticity<a class="anchor-link" href="#The-Core-Problem:-Polysemanticity">¶</a></h4><p>Inside a language model, individual neurons are <em>polysemantic</em>—they respond to multiple unrelated concepts. A single neuron might fire for "cats", "the color blue", AND "legal documents." This makes it nearly impossible to understand what any single neuron "means."</p>
+<p><strong>The solution</strong>: Decompose the model's dense activations into <em>sparse</em>, <em>interpretable</em> features where each feature corresponds to a single concept.</p>
+<hr/>
+<h4 id="Evolution-of-Interpretability-Tools">Evolution of Interpretability Tools<a class="anchor-link" href="#Evolution-of-Interpretability-Tools">¶</a></h4><table>
+<thead>
+<tr>
+<th>Generation</th>
+<th>Tool</th>
+<th>What It Does</th>
+<th>Limitation</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1st</td>
+<td><strong>Sparse Autoencoders (SAEs)</strong></td>
+<td>Decomposes activations into interpretable features</td>
+<td>Only shows <em>what</em> is active, not <em>how</em> features interact</td>
+</tr>
+<tr>
+<td>2nd</td>
+<td><strong>Cross-Layer Transcoders (CLTs)</strong></td>
+<td>Features that span multiple layers</td>
+<td>Can trace information flow</td>
+</tr>
+<tr>
+<td><strong>Current</strong></td>
+<td><strong>Circuit Tracer + Attribution Graphs</strong></td>
+<td>Full causal graph of feature interactions</td>
+<td>What we use in this project</td>
+</tr>
+</tbody>
+</table>
+<p><strong>We use the latest approach</strong>: Circuit Tracer with Cross-Layer Transcoders, which supersedes basic SAEs.</p>
+<hr/>
+<h4 id="1.-Sparse-Autoencoders-(SAEs)-%E2%80%94-The-Foundation">1. Sparse Autoencoders (SAEs) — The Foundation<a class="anchor-link" href="#1.-Sparse-Autoencoders-(SAEs)-%E2%80%94-The-Foundation">¶</a></h4><p><strong>What they are</strong>: Neural networks that decompose a model's internal activations into interpretable "features."</p>
 <p><strong>How SAEs work</strong>:</p>
 <ol>
 <li>Take a dense activation vector from inside the model (e.g., 4096 numbers)</li>
@@ -7927,107 +7961,119 @@ a.anchor-link {
 <li>Feature #12033: "simple sentence structure"</li>
 <li>Feature #8876: "spatial relationship"</li>
 </ul>
+<p><strong>Limitation</strong>: SAEs only tell you <em>what</em> features are active at each layer. They don't tell you how features <em>causally influence</em> each other or the output.</p>
 <p><strong>Key papers</strong>:</p>
 <ul>
-<li><a href="https://transformer-circuits.pub/2023/monosemantic-features">Towards Monosemanticity</a> (Anthropic, October 2023) — First demonstration that SAEs extract interpretable features from transformers</li>
-<li><a href="https://transformer-circuits.pub/2024/scaling-monosemanticity/">Scaling Monosemanticity</a> (Anthropic, May 2024) — Scaled the approach to Claude 3 Sonnet, finding millions of interpretable features including safety-relevant ones</li>
+<li><a href="https://transformer-circuits.pub/2023/monosemantic-features">Towards Monosemanticity</a> (Anthropic, October 2023) — First demonstration that SAEs extract interpretable features</li>
+<li><a href="https://transformer-circuits.pub/2024/scaling-monosemanticity/">Scaling Monosemanticity</a> (Anthropic, May 2024) — Scaled to Claude 3 Sonnet, found millions of interpretable features</li>
 </ul>
 <hr/>
-<h4 id="2.-Gemma-Scope-(Pre-trained-SAEs)">2. Gemma Scope (Pre-trained SAEs)<a class="anchor-link" href="#2.-Gemma-Scope-(Pre-trained-SAEs)">¶</a></h4><p><strong>What it is</strong>: A comprehensive, open suite of pre-trained SAEs for Google's Gemma 2 models, released by Google DeepMind.</p>
-<p><strong>Why it matters</strong>: Training SAEs requires massive compute (about 15% of Gemma 2 9B's training compute). Gemma Scope provides ready-to-use SAEs so researchers don't need to train their own.</p>
-<p><strong>Technical details</strong>:</p>
-<ul>
-<li>Uses <strong>JumpReLU architecture</strong> — improves the balance between detecting which features are present and estimating their strength</li>
-<li>SAEs trained on all layers of Gemma 2 2B, 9B, and select layers of 27B</li>
-<li>Different "widths" available (16k, 65k, 131k features) trading off granularity vs. interpretability</li>
-</ul>
-<p><strong>In this project</strong>: We use <code>gemma-scope-2b-pt-res-canonical</code> with <code>layer_5/width_16k</code> — 16,384 features at layer 5 of Gemma 2 2B.</p>
-<p><strong>Paper</strong>: <a href="https://arxiv.org/abs/2408.05147">Gemma Scope: Open Sparse Autoencoders Everywhere All At Once on Gemma 2</a> (Lieberum et al., August 2024)</p>
-<p><strong>Resources</strong>: <a href="https://huggingface.co/google/gemma-scope">Hugging Face</a> | <a href="https://deepmind.google/models/gemma/gemma-scope/">DeepMind Blog</a></p>
-<hr/>
-<h4 id="3.-Cross-Layer-Transcoders-(CLTs)-and-Circuit-Tracing">3. Cross-Layer Transcoders (CLTs) and Circuit Tracing<a class="anchor-link" href="#3.-Cross-Layer-Transcoders-(CLTs)-and-Circuit-Tracing">¶</a></h4><p><strong>What they are</strong>: A more sophisticated replacement for standard SAEs that enables tracing causal relationships between features.</p>
-<p><strong>The problem they solve</strong>: Standard SAEs tell you <em>what</em> features are active, but not <em>how</em> they influence each other or the output. We need to trace the <em>computational graph</em>.</p>
+<h4 id="2.-Cross-Layer-Transcoders-(CLTs)-%E2%80%94-The-Upgrade">2. Cross-Layer Transcoders (CLTs) — The Upgrade<a class="anchor-link" href="#2.-Cross-Layer-Transcoders-(CLTs)-%E2%80%94-The-Upgrade">¶</a></h4><p><strong>What they are</strong>: A more sophisticated architecture that replaces standard SAEs, enabling causal tracing between features.</p>
+<p><strong>The problem they solve</strong>: Standard SAEs operate at a single layer. But computation in transformers flows <em>across</em> layers. To understand circuits, we need features that span the computation.</p>
 <p><strong>How CLTs work</strong>:</p>
 <ol>
 <li>Instead of encoding/decoding at a single layer, CLTs read from the residual stream at one layer and contribute to <em>all subsequent MLP layers</em></li>
-<li>This creates a "replacement model" where we can substitute interpretable features for the original MLPs</li>
-<li>Remarkably, this matches the original model's outputs in ~50% of cases while being much more interpretable</li>
+<li>This creates a "replacement model" where we substitute interpretable CLT features for the original MLPs</li>
+<li>Remarkably, this matches the original model's outputs in ~50% of cases while being far more interpretable</li>
 </ol>
-<p><strong>Attribution Graphs</strong>: By measuring how much each upstream feature contributes to each downstream feature, we construct an <em>attribution graph</em>:</p>
+<p><strong>Why this matters</strong>: CLTs let us trace the <em>causal flow</em> of information through the model, not just observe activations.</p>
+<p><strong>Paper</strong>: <a href="https://transformer-circuits.pub/2024/crosscoders/index.html">Sparse Crosscoders for Cross-Layer Features</a> (Anthropic, 2024)</p>
+<hr/>
+<h4 id="3.-Circuit-Tracer-+-Attribution-Graphs-%E2%80%94-What-We-Actually-Use">3. Circuit Tracer + Attribution Graphs — What We Actually Use<a class="anchor-link" href="#3.-Circuit-Tracer-+-Attribution-Graphs-%E2%80%94-What-We-Actually-Use">¶</a></h4><p><strong>This is the core tool for this project.</strong></p>
+<p><strong>What it is</strong>: A library that uses CLTs to build <em>attribution graphs</em> showing how features causally influence each other.</p>
+<p><strong>How it works</strong>:</p>
+<ol>
+<li>Load a "replacement model" with pre-trained transcoders</li>
+<li>Run text through the model</li>
+<li>Compute how much each feature contributes to each downstream feature</li>
+<li>Build a graph: <strong>nodes</strong> = features, <strong>edges</strong> = causal influence</li>
+</ol>
+<div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">circuit_tracer</span><span class="w"> </span><span class="kn">import</span> <span class="n">ReplacementModel</span><span class="p">,</span> <span class="n">attribute</span>
+
+<span class="c1"># Load model with transcoders</span>
+<span class="n">model</span> <span class="o">=</span> <span class="n">ReplacementModel</span><span class="o">.</span><span class="n">from_pretrained</span><span class="p">(</span>
+    <span class="s2">"google/gemma-2-2b"</span><span class="p">,</span>
+    <span class="s2">"gemma"</span><span class="p">,</span>  <span class="c1"># transcoder set</span>
+    <span class="n">dtype</span><span class="o">=</span><span class="n">torch</span><span class="o">.</span><span class="n">bfloat16</span><span class="p">,</span>
+    <span class="n">device</span><span class="o">=</span><span class="s2">"cuda"</span>
+<span class="p">)</span>
+
+<span class="c1"># Generate attribution graph for input text</span>
+<span class="n">graph</span> <span class="o">=</span> <span class="n">attribute</span><span class="p">(</span><span class="s2">"The cat sat on the mat"</span><span class="p">,</span> <span class="n">model</span><span class="p">)</span>
+
+<span class="c1"># Extract metrics from the graph</span>
+<span class="n">n_active</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">graph</span><span class="o">.</span><span class="n">active_features</span><span class="p">)</span>
+<span class="n">mean_influence</span> <span class="o">=</span> <span class="n">graph</span><span class="o">.</span><span class="n">adjacency_matrix</span><span class="o">.</span><span class="n">abs</span><span class="p">()</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span>
+</pre></div>
+<p><strong>The attribution graph gives us</strong>:</p>
 <ul>
-<li><strong>Nodes</strong> = interpretable features</li>
-<li><strong>Edges</strong> = causal influence between features (how much does feature A contribute to feature B?)</li>
-<li><strong>Edge weights</strong> = magnitude of causal influence</li>
+<li><code>active_features</code>: Which interpretable features fired</li>
+<li><code>activation_values</code>: How strongly each feature activated</li>
+<li><code>adjacency_matrix</code>: Causal influence between every pair of features</li>
+<li><code>logit_probabilities</code>: Output distribution</li>
 </ul>
-<p><strong>Key insight</strong>: This lets us extract metrics like <code>mean_influence</code> (average edge weight) and <code>concentration</code> (how focused the influence is among top features).</p>
 <p><strong>Paper</strong>: <a href="https://transformer-circuits.pub/2025/attribution-graphs/methods.html">Circuit Tracing: Revealing Computational Graphs in Language Models</a> (Anthropic, March 2025)</p>
-<p><strong>Open-source</strong>: <a href="https://github.com/safety-research/circuit-tracer">circuit-tracer</a> library, with interactive visualization on <a href="https://www.neuronpedia.org/graph/info">Neuronpedia</a></p>
+<p><strong>Open-source</strong>: <a href="https://github.com/safety-research/circuit-tracer">circuit-tracer</a> library | Interactive explorer on <a href="https://www.neuronpedia.org/graph/info">Neuronpedia</a></p>
 <hr/>
-<h4 id="4.-Supporting-Libraries">4. Supporting Libraries<a class="anchor-link" href="#4.-Supporting-Libraries">¶</a></h4><p><strong>TransformerLens</strong> (<a href="https://github.com/TransformerLensOrg/TransformerLens">GitHub</a>)</p>
-<ul>
-<li>Created by Neel Nanda (formerly Anthropic interpretability team)</li>
-<li>Provides "hooks" to cache and modify any internal activation in a transformer</li>
-<li>Makes it easy to extract activations at specific layers for SAE analysis</li>
-<li>Loads 50+ open-source models with consistent interfaces</li>
-</ul>
-<p><strong>SAELens</strong> (<a href="https://github.com/decoderesearch/SAELens">GitHub</a>)</p>
-<ul>
-<li>Maintained by Joseph Bloom, Curt Tigges, Anthony Duong, David Chanin</li>
-<li>Library for training and loading SAEs</li>
-<li>Integrates with Gemma Scope and other pre-trained SAE releases</li>
-<li>Simple API: <code>SAE.from_pretrained(release="gemma-scope-2b-pt-res-canonical", sae_id="layer_5/width_16k/canonical")</code></li>
-</ul>
-<hr/>
-<h3 id="What-We-Measure-(The-Metrics)">What We Measure (The Metrics)<a class="anchor-link" href="#What-We-Measure-(The-Metrics)">¶</a></h3><p>From the attribution graph, we extract several metrics for each input text:</p>
-<table>
+<h4 id="4.-Our-Specific-Setup">4. Our Specific Setup<a class="anchor-link" href="#4.-Our-Specific-Setup">¶</a></h4><table>
 <thead>
 <tr>
-<th>Metric</th>
-<th>What It Measures</th>
-<th>How It's Computed</th>
+<th>Component</th>
+<th>What We Use</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td><code>n_active</code></td>
-<td>Number of active features</td>
-<td>Count of features with non-zero activation</td>
+<td><strong>Model</strong></td>
+<td>Gemma 2 2B (<code>google/gemma-2-2b</code>)</td>
 </tr>
 <tr>
-<td><code>n_edges</code></td>
-<td>Number of causal connections</td>
-<td>Count of edges in attribution graph above threshold</td>
+<td><strong>Transcoders</strong></td>
+<td><code>gemma</code> transcoder set (pre-trained CLTs for Gemma)</td>
 </tr>
 <tr>
-<td><code>mean_influence</code></td>
-<td>Average causal strength</td>
-<td>Mean absolute edge weight in the graph</td>
+<td><strong>Library</strong></td>
+<td><code>circuit-tracer</code> from Anthropic's safety-research team</td>
 </tr>
 <tr>
-<td><code>max_influence</code></td>
-<td>Peak causal strength</td>
-<td>Maximum edge weight</td>
+<td><strong>Compute</strong></td>
+<td>A100 GPUs on Modal (~30 sec/sample)</td>
 </tr>
 <tr>
-<td><code>top_100_concentration</code></td>
-<td>How focused is computation?</td>
-<td>Fraction of total influence in top 100 edges</td>
-</tr>
-<tr>
-<td><code>mean_activation</code></td>
-<td>Average feature strength</td>
-<td>Mean activation magnitude across active features</td>
-</tr>
-<tr>
-<td><code>logit_entropy</code></td>
-<td>Output uncertainty</td>
-<td>Entropy of output probability distribution</td>
+<td><strong>Backend</strong></td>
+<td>TransformerLens for activation hooks</td>
 </tr>
 </tbody>
 </table>
 <hr/>
-<h3 id="The-Research-Question">The Research Question<a class="anchor-link" href="#The-Research-Question">¶</a></h3><p><strong>Core question</strong>: Can these metrics distinguish between different types of cognitive tasks?</p>
-<p><strong>Hypothesis</strong>: Different task types (grammar checking, logical reasoning, factual recall) should produce different activation patterns because they require fundamentally different computations:</p>
+<h4 id="Supporting-Libraries">Supporting Libraries<a class="anchor-link" href="#Supporting-Libraries">¶</a></h4><p><strong>TransformerLens</strong> (<a href="https://github.com/TransformerLensOrg/TransformerLens">GitHub</a>)</p>
+<ul>
+<li>Created by Neel Nanda (formerly Anthropic interpretability team)</li>
+<li>Provides "hooks" to cache and modify any internal activation</li>
+<li>Used as the backend for circuit-tracer</li>
+<li>Loads 50+ open-source models with consistent interfaces</li>
+</ul>
+<p><strong>Gemma Scope</strong> (<a href="https://arxiv.org/abs/2408.05147">arXiv</a> | <a href="https://huggingface.co/google/gemma-scope">Hugging Face</a>)</p>
+<ul>
+<li>Google DeepMind's open suite of SAEs for Gemma 2</li>
+<li>While we use transcoders (not SAEs) for attribution, Gemma Scope provides related interpretability infrastructure</li>
+<li>Paper: Lieberum et al., August 2024</li>
+</ul>
+<hr/>
+<h3 id="What-We-Measure-(The-Metrics)">What We Measure (The Metrics)<a class="anchor-link" href="#What-We-Measure-(The-Metrics)">¶</a></h3><p>From the attribution graph, we extract metrics for each input text:</p>
+<p>| Metric | What It Measures | How It's Computed |
+|--------|------------------|-------------------|
+| <code>n_active</code> | Number of active features | Count of features with non-zero activation |
+| <code>n_edges</code> | Number of causal connections | Count of edges with influence &gt; 0.01 |
+| <code>mean_influence</code> | Average causal strength | Mean of <code>|adjacency_matrix|</code> |
+| <code>max_influence</code> | Peak causal strength | Max of <code>|adjacency_matrix|</code> |
+| <code>top_100_concentration</code> | How focused is computation? | Sum of top 100 edge weights / total |
+| <code>mean_activation</code> | Average feature strength | Mean of <code>|activation_values|</code> |
+| <code>logit_entropy</code> | Output uncertainty | <code>-sum(p * log(p))</code> over output probs |</p>
+<p><strong>Key insight</strong>: <code>mean_influence</code> and <code>concentration</code> come from the <strong>adjacency matrix</strong> (causal graph), not just feature activations. This is why transcoders + attribution matter—SAEs alone couldn't give us these metrics.</p>
+<hr/>
+<h3 id="The-Research-Question">The Research Question<a class="anchor-link" href="#The-Research-Question">¶</a></h3><p><strong>Core question</strong>: Can these causal metrics distinguish between different types of cognitive tasks?</p>
+<p><strong>Hypothesis</strong>: Different task types require fundamentally different computations:</p>
 <ul>
 <li><strong>Grammar checking</strong>: Should be focused, rule-based → high influence, high concentration</li>
 <li><strong>Reasoning</strong>: Should be diffuse, multi-step → lower influence, lower concentration</li>
@@ -8036,14 +8082,14 @@ a.anchor-link {
 <ul>
 <li><strong>YES</strong>: <code>mean_influence</code> (d=1.08) and <code>concentration</code> (d=0.87) reliably distinguish task types</li>
 <li><strong>NO</strong>: <code>n_active</code> (d=0.07 after length control) is confounded by text length</li>
-<li><strong>NO</strong>: We cannot detect truthfulness (d=0.05) — true and false statements have identical internal structure</li>
+<li><strong>NO</strong>: We cannot detect truthfulness (d=0.05) — true and false statements have identical causal structure</li>
 </ul>
 <hr/>
 <h3 id="The-Critical-Confound-(Preview)">The Critical Confound (Preview)<a class="anchor-link" href="#The-Critical-Confound-(Preview)">¶</a></h3><p><strong>Warning</strong>: The most obvious metric (<code>n_active</code> = number of active features) is nearly useless.</p>
 <p>Why? Longer text activates more features simply because there's more content to process. If grammar tasks use shorter sentences than reasoning tasks, <code>n_active</code> will show a fake "difference" that's really just measuring text length.</p>
 <p><strong>This is why we need rigorous statistical controls</strong>, developed in Sections 3-4.</p>
 <hr/>
-<h3 id="Summary:-What-Activation-Topology-Can-Detect">Summary: What Activation Topology Can Detect<a class="anchor-link" href="#Summary:-What-Activation-Topology-Can-Detect">¶</a></h3><table>
+<h3 id="Summary:-What-Attribution-Topology-Can-Detect">Summary: What Attribution Topology Can Detect<a class="anchor-link" href="#Summary:-What-Attribution-Topology-Can-Detect">¶</a></h3><table>
 <thead>
 <tr>
 <th>Detection Task</th>
@@ -8057,7 +8103,7 @@ a.anchor-link {
 <td>Task type (grammar vs reasoning)</td>
 <td><strong>1.08</strong></td>
 <td>Yes</td>
-<td>Influence patterns differ genuinely</td>
+<td>Causal influence patterns differ genuinely</td>
 </tr>
 <tr>
 <td>Computational complexity</td>
@@ -8069,17 +8115,17 @@ a.anchor-link {
 <td>Adversarial inputs</td>
 <td>~0.8</td>
 <td>Yes</td>
-<td>Unusual inputs show anomalous patterns</td>
+<td>Unusual inputs show anomalous causal structure</td>
 </tr>
 <tr>
 <td>Truthfulness</td>
 <td>0.05</td>
 <td><strong>No</strong></td>
-<td>True/false statements look identical internally</td>
+<td>True/false statements have identical circuits</td>
 </tr>
 </tbody>
 </table>
-<p><strong>Key insight</strong>: Activation topology measures <strong>how</strong> a model computes, not <strong>whether</strong> it's correct.</p>
+<p><strong>Key insight</strong>: Attribution topology measures <strong>how</strong> a model computes, not <strong>whether</strong> it's correct.</p>
 </div>
 </div>
 </div>
@@ -10260,7 +10306,7 @@ FINAL SUMMARY: What Activation Topology Can Detect (Length-Controlled)
 <div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
 <div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain" tabindex="0">
 <pre>
-Analysis completed: 2026-02-23 09:50:12
+Analysis completed: 2026-02-23 09:55:27
 All effect sizes are LENGTH-CONTROLLED via residualization.
 </pre>
 </div>
