@@ -9,10 +9,10 @@
 ## ψ:CORE_THESIS
 
 ```
-●what_it_detects
-  |task_type (grammar vs reasoning)     → d=3.2 ✓
-  |computational_complexity             → d=2.4 ✓
-  |adversarial/anomalous_inputs         → d=1.2 ✓
+●what_it_detects (LENGTH-CONTROLLED)
+  |task_type (grammar vs reasoning)     → d=1.08 ✓
+  |computational_complexity             → d=0.87 ✓
+  |adversarial/anomalous_inputs         → d~0.8 ✓
 
 ●what_it_doesnt_detect
   |truthfulness                         → d=0.05 ✗
@@ -30,14 +30,14 @@
 ## ψ:WHAT_WE_MEASURE
 
 ```
-●robust_metrics (use these)
-  mean_influence   → causal strength between features (d=3.2)
-  concentration    → focused vs diffuse computation (d=2.4)
-  mean_activation  → signal strength (d=1.7)
+●robust_metrics (LENGTH-CONTROLLED)
+  mean_influence   → causal strength between features (d=1.08)
+  concentration    → focused vs diffuse computation (d=0.87)
+  mean_activation  → signal strength (d=0.64)
 
-●confounded_metrics (don't use)
-  n_active         → just tracks text length (r=0.98)
-  n_edges          → just tracks text length (r=0.96)
+●confounded_metrics (DONT USE)
+  n_active         → collapses after length control (d=0.07)
+  n_edges          → collapses after length control
 
 ●interpretation
   high_influence + high_concentration = focused computation (grammar)

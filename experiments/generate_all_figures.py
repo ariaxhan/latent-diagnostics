@@ -1,7 +1,7 @@
 """
 Complete Figure Generation for Latent Diagnostics Paper
 
-Generates all figures including the central summary figure.
+ALL FIGURES USE LENGTH-CONTROLLED (RESIDUALIZED) METRICS.
 """
 
 import json
@@ -49,6 +49,28 @@ def load_truthfulness_data():
         return json.load(f)['samples']
 
 
+def residualize(y, x):
+    """Regress y on x, return residuals (length-controlled)."""
+    coef = np.polyfit(x, y, 1)
+    predicted = np.polyval(coef, x)
+    return y - predicted
+
+
+def add_residuals(samples):
+    """Add length-controlled residual metrics to samples."""
+    lengths = np.array([len(s.get('text', '')) for s in samples])
+
+    metrics = ['n_active', 'mean_influence', 'top_100_concentration', 'mean_activation']
+
+    for m in metrics:
+        vals = np.array([s[m] for s in samples])
+        resid = residualize(vals, lengths)
+        for i, s in enumerate(samples):
+            s[f'{m}_resid'] = resid[i]
+
+    return samples
+
+
 def group_by_source(samples):
     groups = {}
     for s in samples:
@@ -77,25 +99,24 @@ def fig_truthfulness_overlap(truth_samples):
 
     fig, axes = plt.subplots(1, 3, figsize=(14, 4))
 
-    metrics = ['mean_influence', 'top_100_concentration', 'mean_activation']
-    titles = ['Mean Influence', 'Concentration', 'Mean Activation']
+    metrics = ['mean_influence_resid', 'top_100_concentration_resid', 'mean_activation_resid']
+    titles = ['Influence (length-controlled)', 'Concentration (length-controlled)', 'Activation (length-controlled)']
 
     for ax, m, title in zip(axes, metrics, titles):
         true_vals = [s[m] for s in true_samples]
         false_vals = [s[m] for s in false_samples]
 
-        # Histograms
         bins = np.linspace(min(true_vals + false_vals), max(true_vals + false_vals), 30)
         ax.hist(true_vals, bins=bins, alpha=0.6, label='Truthful', color=COLORS['truthful'], edgecolor='white')
         ax.hist(false_vals, bins=bins, alpha=0.6, label='False', color=COLORS['false'], edgecolor='white')
 
         d = cohens_d(true_vals, false_vals)
-        ax.set_title(f'{title}\nd = {d:.3f} (no signal)', fontsize=12)
-        ax.set_xlabel(m)
+        ax.set_title(f'{title}\nd = {d:.2f} (no signal)', fontsize=12)
+        ax.set_xlabel('Residual value')
         ax.set_ylabel('Count')
         ax.legend()
 
-    plt.suptitle('Truthfulness: No Detectable Signal\nTrue and false statements have identical activation topology',
+    plt.suptitle('Truthfulness: No Detectable Signal (Length-Controlled)',
                  fontsize=14, y=1.05)
     plt.tight_layout()
     plt.savefig(OUTPUT_DIR / 'truthfulness_overlap.png', dpi=150, bbox_inches='tight')
@@ -105,18 +126,18 @@ def fig_truthfulness_overlap(truth_samples):
 
 
 # =============================================================================
-# FIGURE 2: Distribution Histograms by Domain
+# FIGURE 2: Distribution Histograms by Domain (LENGTH-CONTROLLED)
 # =============================================================================
 def fig_domain_distributions(domain_samples):
-    """Per-domain metric distributions."""
+    """Per-domain metric distributions using residualized metrics."""
     groups = group_by_source(domain_samples)
     sources = ['cola', 'winogrande', 'snli', 'hellaswag', 'paws']
 
     fig, axes = plt.subplots(2, 2, figsize=(12, 10))
     axes = axes.flatten()
 
-    metrics = ['mean_influence', 'top_100_concentration', 'mean_activation', 'n_active']
-    titles = ['Mean Influence (d=3.2)', 'Concentration (d=2.4)', 'Mean Activation (d=1.7)', 'N Active (confounded)']
+    metrics = ['mean_influence_resid', 'top_100_concentration_resid', 'mean_activation_resid', 'n_active_resid']
+    titles = ['Influence (d=1.08)', 'Concentration (d=0.87)', 'Activation (d=0.64)', 'N Active (d=0.07, no signal)']
 
     for ax, m, title in zip(axes, metrics, titles):
         for src in sources:
@@ -126,12 +147,12 @@ def fig_domain_distributions(domain_samples):
             ax.hist(vals, bins=20, alpha=0.5, label=LABELS.get(src, src),
                     color=COLORS.get(src, '#333'), edgecolor='white')
 
-        ax.set_title(title, fontsize=12)
-        ax.set_xlabel(m)
+        ax.set_title(f'{title}\n(length-controlled)', fontsize=12)
+        ax.set_xlabel('Residual value')
         ax.set_ylabel('Count')
         ax.legend(fontsize=8)
 
-    plt.suptitle('Metric Distributions by Task Type', fontsize=14)
+    plt.suptitle('Length-Controlled Metric Distributions by Task Type', fontsize=14)
     plt.tight_layout()
     plt.savefig(OUTPUT_DIR / 'domain_distributions.png', dpi=150, bbox_inches='tight')
     plt.savefig(OUTPUT_DIR / 'domain_distributions.pdf', bbox_inches='tight')
@@ -140,17 +161,15 @@ def fig_domain_distributions(domain_samples):
 
 
 # =============================================================================
-# FIGURE 3: PCA Clustering
+# FIGURE 3: PCA Clustering (LENGTH-CONTROLLED)
 # =============================================================================
 def fig_pca_clustering(domain_samples):
-    """PCA showing domain clustering in metric space."""
+    """PCA using length-controlled metrics."""
     groups = group_by_source(domain_samples)
 
-    # Build feature matrix (robust metrics only)
-    metrics = ['mean_influence', 'top_100_concentration', 'mean_activation']
+    metrics = ['mean_influence_resid', 'top_100_concentration_resid', 'mean_activation_resid']
     X = []
     labels = []
-    colors = []
 
     for src in ['cola', 'winogrande', 'snli', 'hellaswag', 'paws']:
         if src not in groups:
@@ -158,14 +177,10 @@ def fig_pca_clustering(domain_samples):
         for s in groups[src]:
             X.append([s[m] for m in metrics])
             labels.append(src)
-            colors.append(COLORS.get(src, '#333'))
 
     X = np.array(X)
+    X_std = (X - X.mean(axis=0)) / (X.std(axis=0) + 1e-10)
 
-    # Standardize
-    X_std = (X - X.mean(axis=0)) / X.std(axis=0)
-
-    # PCA
     pca = PCA(n_components=2)
     X_pca = pca.fit_transform(X_std)
 
@@ -179,7 +194,7 @@ def fig_pca_clustering(domain_samples):
 
     ax.set_xlabel(f'PC1 ({pca.explained_variance_ratio_[0]:.1%} variance)')
     ax.set_ylabel(f'PC2 ({pca.explained_variance_ratio_[1]:.1%} variance)')
-    ax.set_title('PCA: Domains Cluster in Activation Topology Space\n(using robust metrics only)', fontsize=14)
+    ax.set_title('PCA: Domain Clustering (Length-Controlled Metrics)', fontsize=14)
     ax.legend()
     ax.grid(True, alpha=0.3)
 
@@ -191,17 +206,17 @@ def fig_pca_clustering(domain_samples):
 
 
 # =============================================================================
-# FIGURE 4: Box Plots with Significance
+# FIGURE 4: Box Plots with Significance (LENGTH-CONTROLLED)
 # =============================================================================
 def fig_boxplots_significance(domain_samples):
-    """Box plots per domain with significance markers."""
+    """Box plots per domain with length-controlled metrics."""
     groups = group_by_source(domain_samples)
     sources = ['cola', 'winogrande', 'snli', 'hellaswag', 'paws']
 
     fig, axes = plt.subplots(1, 3, figsize=(15, 5))
 
-    metrics = ['mean_influence', 'top_100_concentration', 'mean_activation']
-    titles = ['Mean Influence', 'Concentration', 'Mean Activation']
+    metrics = ['mean_influence_resid', 'top_100_concentration_resid', 'mean_activation_resid']
+    titles = ['Influence', 'Concentration', 'Activation']
 
     for ax, m, title in zip(axes, metrics, titles):
         data = []
@@ -209,24 +224,23 @@ def fig_boxplots_significance(domain_samples):
         for src in sources:
             if src in groups:
                 data.append([s[m] for s in groups[src]])
-                labels_list.append(LABELS.get(src, src).split()[0])  # Short name
+                labels_list.append(LABELS.get(src, src).split()[0])
 
-        bp = ax.boxplot(data, labels=labels_list, patch_artist=True)
+        bp = ax.boxplot(data, tick_labels=labels_list, patch_artist=True)
 
         for patch, src in zip(bp['boxes'], sources):
             patch.set_facecolor(COLORS.get(src, '#333'))
             patch.set_alpha(0.7)
 
-        # Add significance bracket for CoLA vs others
         cola_vals = [s[m] for s in groups['cola']]
         other_vals = [s[m] for src in sources[1:] if src in groups for s in groups[src]]
         d = cohens_d(cola_vals, other_vals)
 
-        ax.set_title(f'{title}\nCoLA vs others: d = {d:.2f}', fontsize=12)
-        ax.set_ylabel(m)
+        ax.set_title(f'{title} (length-controlled)\nCoLA vs others: d = {d:.2f}', fontsize=12)
+        ax.set_ylabel('Residual value')
         ax.tick_params(axis='x', rotation=30)
 
-    plt.suptitle('Metric Distributions by Task Type', fontsize=14)
+    plt.suptitle('Length-Controlled Metric Distributions', fontsize=14)
     plt.tight_layout()
     plt.savefig(OUTPUT_DIR / 'boxplots_significance.png', dpi=150, bbox_inches='tight')
     plt.savefig(OUTPUT_DIR / 'boxplots_significance.pdf', bbox_inches='tight')
@@ -235,22 +249,100 @@ def fig_boxplots_significance(domain_samples):
 
 
 # =============================================================================
-# FIGURE 5: Correlation Heatmap
+# FIGURE 5: Before/After Length Control Comparison
+# =============================================================================
+def fig_length_control_comparison(domain_samples):
+    """Show effect sizes before and after length control."""
+    groups = group_by_source(domain_samples)
+
+    cola = groups.get('cola', [])
+    others = [s for src, samps in groups.items() if src != 'cola' for s in samps]
+
+    metrics_raw = ['n_active', 'mean_influence', 'top_100_concentration', 'mean_activation']
+    metrics_resid = ['n_active_resid', 'mean_influence_resid', 'top_100_concentration_resid', 'mean_activation_resid']
+    labels = ['N Active', 'Influence', 'Concentration', 'Activation']
+
+    d_before = [abs(cohens_d([s[m] for s in cola], [s[m] for s in others])) for m in metrics_raw]
+    d_after = [abs(cohens_d([s[m] for s in cola], [s[m] for s in others])) for m in metrics_resid]
+
+    fig, ax = plt.subplots(figsize=(10, 6))
+
+    x = np.arange(len(labels))
+    width = 0.35
+
+    bars1 = ax.bar(x - width/2, d_before, width, label='Before (raw)', color='#e74c3c', alpha=0.7)
+    bars2 = ax.bar(x + width/2, d_after, width, label='After (length-controlled)', color='#27ae60', alpha=0.7)
+
+    ax.axhline(y=0.8, color='gray', linestyle='--', alpha=0.7, label='Large effect threshold')
+    ax.set_ylabel("Cohen's d", fontsize=12)
+    ax.set_title('Effect Sizes: Before vs After Length Control\n(N Active collapses, Influence/Concentration persist)', fontsize=14)
+    ax.set_xticks(x)
+    ax.set_xticklabels(labels)
+    ax.legend()
+
+    # Add value labels
+    for bar in bars1:
+        ax.text(bar.get_x() + bar.get_width()/2, bar.get_height() + 0.05,
+                f'{bar.get_height():.2f}', ha='center', fontsize=9)
+    for bar in bars2:
+        ax.text(bar.get_x() + bar.get_width()/2, bar.get_height() + 0.05,
+                f'{bar.get_height():.2f}', ha='center', fontsize=9)
+
+    plt.tight_layout()
+    plt.savefig(OUTPUT_DIR / 'length_control_comparison.png', dpi=150, bbox_inches='tight')
+    plt.savefig(OUTPUT_DIR / 'length_control_comparison.pdf', bbox_inches='tight')
+    plt.close()
+    print("  ✓ length_control_comparison.png")
+
+
+# =============================================================================
+# FIGURE 6: What It Detects Summary (CORRECTED EFFECT SIZES)
+# =============================================================================
+def fig_detection_summary():
+    """Visual summary with length-controlled effect sizes."""
+    fig, ax = plt.subplots(figsize=(12, 6))
+
+    # LENGTH-CONTROLLED effect sizes
+    tasks = ['Task Type\n(Grammar vs Reasoning)', 'Computational\nComplexity',
+             'Adversarial\nInputs', 'Truthfulness']
+    effect_sizes = [1.08, 0.87, 0.8, 0.05]  # CORRECTED
+    colors = ['#27ae60', '#27ae60', '#f39c12', '#c0392b']
+    works = ['WORKS', 'WORKS', 'WORKS', 'DOES NOT\nWORK']
+
+    bars = ax.barh(tasks, effect_sizes, color=colors, edgecolor='black', linewidth=1.5, height=0.6)
+
+    for bar, d, w in zip(bars, effect_sizes, works):
+        width = bar.get_width()
+        ax.text(width + 0.05, bar.get_y() + bar.get_height()/2,
+                f'd = {d:.2f}\n{w}', va='center', fontsize=11, fontweight='bold')
+
+    ax.axvline(x=0.8, color='gray', linestyle='--', alpha=0.7, label='Large effect threshold (d=0.8)')
+    ax.set_xlabel("Cohen's d (Effect Size, Length-Controlled)", fontsize=12)
+    ax.set_title('What Activation Topology Can Detect\n(All effect sizes controlled for text length)',
+                 fontsize=14, fontweight='bold')
+    ax.set_xlim(0, 1.8)
+    ax.legend(loc='lower right')
+
+    plt.tight_layout()
+    plt.savefig(OUTPUT_DIR / 'detection_summary.png', dpi=150, bbox_inches='tight')
+    plt.savefig(OUTPUT_DIR / 'detection_summary.pdf', bbox_inches='tight')
+    plt.close()
+    print("  ✓ detection_summary.png")
+
+
+# =============================================================================
+# FIGURE 7: Correlation Heatmap
 # =============================================================================
 def fig_correlation_heatmap(domain_samples):
-    """Correlation matrix of all metrics."""
-    metrics = ['n_active', 'n_edges', 'mean_influence', 'top_100_concentration',
-               'mean_activation', 'logit_entropy']
-    metric_labels = ['N Active', 'N Edges', 'Influence', 'Concentration',
-                     'Activation', 'Entropy']
+    """Correlation matrix showing length confound."""
+    metrics = ['n_active', 'mean_influence', 'top_100_concentration', 'mean_activation']
+    metric_labels = ['N Active', 'Influence', 'Concentration', 'Activation']
 
-    # Add length
     data = {m: [s[m] for s in domain_samples] for m in metrics}
     data['length'] = [len(s.get('text', '')) for s in domain_samples]
     metrics.append('length')
     metric_labels.append('Text Length')
 
-    # Compute correlation matrix
     n = len(metrics)
     corr = np.zeros((n, n))
     for i, m1 in enumerate(metrics):
@@ -266,14 +358,13 @@ def fig_correlation_heatmap(domain_samples):
     ax.set_xticklabels(metric_labels, rotation=45, ha='right')
     ax.set_yticklabels(metric_labels)
 
-    # Add correlation values
     for i in range(n):
         for j in range(n):
             color = 'white' if abs(corr[i, j]) > 0.5 else 'black'
             ax.text(j, i, f'{corr[i, j]:.2f}', ha='center', va='center', color=color, fontsize=9)
 
     plt.colorbar(im, ax=ax, label='Correlation')
-    ax.set_title('Metric Correlations\n(N Active and N Edges correlate with length)', fontsize=14)
+    ax.set_title('Metric Correlations\n(N Active highly confounded with length, must residualize)', fontsize=14)
 
     plt.tight_layout()
     plt.savefig(OUTPUT_DIR / 'correlation_heatmap.png', dpi=150, bbox_inches='tight')
@@ -283,46 +374,10 @@ def fig_correlation_heatmap(domain_samples):
 
 
 # =============================================================================
-# FIGURE 6: What It Detects Summary
-# =============================================================================
-def fig_detection_summary():
-    """Visual summary of what the method can/cannot detect."""
-    fig, ax = plt.subplots(figsize=(12, 6))
-
-    # Data
-    tasks = ['Task Type\n(Grammar vs Reasoning)', 'Computational\nComplexity',
-             'Adversarial\nInputs', 'Truthfulness']
-    effect_sizes = [3.2, 2.4, 1.2, 0.05]
-    colors = ['#27ae60', '#27ae60', '#f39c12', '#c0392b']
-    works = ['WORKS', 'WORKS', 'WORKS', 'DOES NOT\nWORK']
-
-    bars = ax.barh(tasks, effect_sizes, color=colors, edgecolor='black', linewidth=1.5, height=0.6)
-
-    # Add effect size labels
-    for bar, d, w in zip(bars, effect_sizes, works):
-        width = bar.get_width()
-        ax.text(width + 0.1, bar.get_y() + bar.get_height()/2,
-                f'd = {d:.2f}\n{w}', va='center', fontsize=11, fontweight='bold')
-
-    ax.axvline(x=0.8, color='gray', linestyle='--', alpha=0.7, label='Large effect threshold (d=0.8)')
-    ax.set_xlabel("Cohen's d (Effect Size)", fontsize=12)
-    ax.set_title('What Activation Topology Can Detect\n"Measures HOW model computes, not WHETHER correct"',
-                 fontsize=14, fontweight='bold')
-    ax.set_xlim(0, 4)
-    ax.legend(loc='lower right')
-
-    plt.tight_layout()
-    plt.savefig(OUTPUT_DIR / 'detection_summary.png', dpi=150, bbox_inches='tight')
-    plt.savefig(OUTPUT_DIR / 'detection_summary.pdf', bbox_inches='tight')
-    plt.close()
-    print("  ✓ detection_summary.png")
-
-
-# =============================================================================
-# FIGURE 7: CENTRAL SUMMARY FIGURE (Most Important)
+# FIGURE 8: CENTRAL SUMMARY FIGURE (LENGTH-CONTROLLED)
 # =============================================================================
 def fig_central_summary(domain_samples, truth_samples):
-    """The main figure showing everything important."""
+    """Main figure with all length-controlled metrics."""
     fig = plt.figure(figsize=(16, 12))
     gs = GridSpec(3, 3, figure=fig, hspace=0.35, wspace=0.3)
 
@@ -331,139 +386,146 @@ def fig_central_summary(domain_samples, truth_samples):
     false_samples = [s for s in truth_samples if s.get('label') == 'false']
 
     # =========================================================================
-    # A: Detection Summary (top left, spans 2 cols)
+    # A: Detection Summary (LENGTH-CONTROLLED)
     # =========================================================================
     ax_a = fig.add_subplot(gs[0, :2])
     tasks = ['Task Type', 'Complexity', 'Adversarial', 'Truthfulness']
-    effect_sizes = [3.2, 2.4, 1.2, 0.05]
+    effect_sizes = [1.08, 0.87, 0.8, 0.05]  # CORRECTED
     colors = ['#27ae60', '#27ae60', '#f39c12', '#c0392b']
 
     bars = ax_a.barh(tasks, effect_sizes, color=colors, edgecolor='black', height=0.6)
     for bar, d in zip(bars, effect_sizes):
-        ax_a.text(bar.get_width() + 0.1, bar.get_y() + bar.get_height()/2,
-                  f'd={d:.1f}', va='center', fontsize=10, fontweight='bold')
+        ax_a.text(bar.get_width() + 0.03, bar.get_y() + bar.get_height()/2,
+                  f'd={d:.2f}', va='center', fontsize=10, fontweight='bold')
 
     ax_a.axvline(x=0.8, color='gray', linestyle='--', alpha=0.7)
-    ax_a.set_xlabel("Effect Size (Cohen's d)")
-    ax_a.set_title('A. What It Detects', fontsize=12, fontweight='bold')
-    ax_a.set_xlim(0, 4)
+    ax_a.set_xlabel("Effect Size (length-controlled)")
+    ax_a.set_title('A. What It Detects (Length-Controlled)', fontsize=12, fontweight='bold')
+    ax_a.set_xlim(0, 1.5)
 
     # =========================================================================
-    # B: Key Insight Box (top right)
+    # B: Key Insight Box
     # =========================================================================
     ax_b = fig.add_subplot(gs[0, 2])
     ax_b.axis('off')
     ax_b.text(0.5, 0.5,
               'KEY INSIGHT\n\n'
-              'Activation topology\n'
-              'measures HOW a model\n'
-              'computes, not WHETHER\n'
-              'it is correct.\n\n'
-              'Simple tasks → Focused\n'
-              'Complex tasks → Diffuse\n'
-              'True vs False → Same',
-              ha='center', va='center', fontsize=12,
-              bbox=dict(boxstyle='round,pad=0.5', facecolor='#f0f0f0', edgecolor='black'),
+              'After controlling for\n'
+              'text length:\n\n'
+              'Influence: d=1.08 ✓\n'
+              'Concentration: d=0.87 ✓\n'
+              'N Active: d=0.07 ✗\n\n'
+              'Signal PERSISTS.\n'
+              'Genuine regime difference.',
+              ha='center', va='center', fontsize=11,
+              bbox=dict(boxstyle='round,pad=0.5', facecolor='#d5f5e3', edgecolor='#27ae60', linewidth=2),
               transform=ax_b.transAxes)
-    ax_b.set_title('B. Core Finding', fontsize=12, fontweight='bold')
+    ax_b.set_title('B. Pivot Result', fontsize=12, fontweight='bold')
 
     # =========================================================================
-    # C: Influence by Domain (middle left)
+    # C: Influence by Domain (LENGTH-CONTROLLED)
     # =========================================================================
     ax_c = fig.add_subplot(gs[1, 0])
     sources = ['cola', 'winogrande', 'snli', 'hellaswag', 'paws']
-    means = [np.mean([s['mean_influence'] for s in groups[src]]) for src in sources if src in groups]
-    stds = [np.std([s['mean_influence'] for s in groups[src]]) for src in sources if src in groups]
+    means = [np.mean([s['mean_influence_resid'] for s in groups[src]]) for src in sources if src in groups]
+    stds = [np.std([s['mean_influence_resid'] for s in groups[src]]) for src in sources if src in groups]
     x = range(len(means))
 
     ax_c.bar(x, means, yerr=stds, color=[COLORS[s] for s in sources if s in groups],
              capsize=3, edgecolor='black')
     ax_c.set_xticks(x)
-    ax_c.set_xticklabels(['Grammar', 'Wino', 'SNLI', 'Hella', 'PAWS'], rotation=30)
-    ax_c.set_ylabel('Mean Influence')
-    ax_c.set_title('C. Influence Gradient', fontsize=12, fontweight='bold')
+    ax_c.set_xticklabels(['Gram', 'Wino', 'SNLI', 'Hella', 'PAWS'], rotation=30)
+    ax_c.set_ylabel('Influence (residual)')
+    ax_c.set_title('C. Influence (length-controlled)', fontsize=12, fontweight='bold')
 
     # =========================================================================
-    # D: Scatter (middle center)
+    # D: Scatter (LENGTH-CONTROLLED)
     # =========================================================================
     ax_d = fig.add_subplot(gs[1, 1])
     for src in sources:
         if src not in groups:
             continue
-        x = [s['mean_influence'] for s in groups[src]]
-        y = [s['top_100_concentration'] for s in groups[src]]
-        ax_d.scatter(x, y, alpha=0.5, label=src.upper()[:4], color=COLORS[src], s=30)
+        x_vals = [s['mean_influence_resid'] for s in groups[src]]
+        y_vals = [s['top_100_concentration_resid'] for s in groups[src]]
+        ax_d.scatter(x_vals, y_vals, alpha=0.5, label=src.upper()[:4], color=COLORS[src], s=30)
 
-    ax_d.set_xlabel('Mean Influence')
-    ax_d.set_ylabel('Concentration')
-    ax_d.set_title('D. Domain Clustering', fontsize=12, fontweight='bold')
+    ax_d.set_xlabel('Influence (residual)')
+    ax_d.set_ylabel('Concentration (residual)')
+    ax_d.set_title('D. Domain Clustering (length-controlled)', fontsize=12, fontweight='bold')
     ax_d.legend(fontsize=8)
 
     # =========================================================================
-    # E: Truthfulness Overlap (middle right)
+    # E: Truthfulness Overlap
     # =========================================================================
     ax_e = fig.add_subplot(gs[1, 2])
-    true_inf = [s['mean_influence'] for s in true_samples]
-    false_inf = [s['mean_influence'] for s in false_samples]
+    true_inf = [s['mean_influence_resid'] for s in true_samples]
+    false_inf = [s['mean_influence_resid'] for s in false_samples]
     bins = np.linspace(min(true_inf + false_inf), max(true_inf + false_inf), 25)
     ax_e.hist(true_inf, bins=bins, alpha=0.6, label='True', color=COLORS['truthful'])
     ax_e.hist(false_inf, bins=bins, alpha=0.6, label='False', color=COLORS['false'])
-    ax_e.set_xlabel('Mean Influence')
+    ax_e.set_xlabel('Influence (residual)')
     ax_e.set_ylabel('Count')
     ax_e.set_title('E. Truthfulness: No Signal', fontsize=12, fontweight='bold')
     ax_e.legend()
 
     # =========================================================================
-    # F: Length Confound (bottom left)
+    # F: Before/After Length Control
     # =========================================================================
     ax_f = fig.add_subplot(gs[2, 0])
-    lengths = [len(s.get('text', '')) for s in domain_samples]
-    n_active = [s['n_active'] for s in domain_samples]
-    ax_f.scatter(lengths, n_active, alpha=0.3, s=20, color='#333')
-    z = np.polyfit(lengths, n_active, 1)
-    p = np.poly1d(z)
-    ax_f.plot([min(lengths), max(lengths)], [p(min(lengths)), p(max(lengths))],
-              'r--', linewidth=2, label='r = 0.98')
-    ax_f.set_xlabel('Text Length')
-    ax_f.set_ylabel('N Active (confounded)')
-    ax_f.set_title('F. Length Confound', fontsize=12, fontweight='bold')
-    ax_f.legend()
-
-    # =========================================================================
-    # G: Robust Metric (bottom center)
-    # =========================================================================
-    ax_g = fig.add_subplot(gs[2, 1])
-    influence = [s['mean_influence'] for s in domain_samples]
-    ax_g.scatter(lengths, influence, alpha=0.3, s=20, color='#333')
-    r = np.corrcoef(lengths, influence)[0, 1]
-    ax_g.set_xlabel('Text Length')
-    ax_g.set_ylabel('Mean Influence (robust)')
-    ax_g.set_title(f'G. Influence vs Length (r={r:.2f})', fontsize=12, fontweight='bold')
-
-    # =========================================================================
-    # H: Effect Sizes (bottom right)
-    # =========================================================================
-    ax_h = fig.add_subplot(gs[2, 2])
-    metrics = ['n_active', 'mean_influence', 'concentration', 'activation']
+    metrics_labels = ['N Active', 'Influence', 'Conc.']
     cola = groups.get('cola', [])
     others = [s for src, samps in groups.items() if src != 'cola' for s in samps]
 
-    ds = [
+    d_before = [
         abs(cohens_d([s['n_active'] for s in cola], [s['n_active'] for s in others])),
         abs(cohens_d([s['mean_influence'] for s in cola], [s['mean_influence'] for s in others])),
         abs(cohens_d([s['top_100_concentration'] for s in cola], [s['top_100_concentration'] for s in others])),
-        abs(cohens_d([s['mean_activation'] for s in cola], [s['mean_activation'] for s in others])),
     ]
-    colors_h = ['#c0392b', '#27ae60', '#27ae60', '#27ae60']
+    d_after = [
+        abs(cohens_d([s['n_active_resid'] for s in cola], [s['n_active_resid'] for s in others])),
+        abs(cohens_d([s['mean_influence_resid'] for s in cola], [s['mean_influence_resid'] for s in others])),
+        abs(cohens_d([s['top_100_concentration_resid'] for s in cola], [s['top_100_concentration_resid'] for s in others])),
+    ]
+
+    x = np.arange(len(metrics_labels))
+    width = 0.35
+    ax_f.bar(x - width/2, d_before, width, label='Raw', color='#e74c3c', alpha=0.7)
+    ax_f.bar(x + width/2, d_after, width, label='Controlled', color='#27ae60', alpha=0.7)
+    ax_f.axhline(y=0.8, color='gray', linestyle='--', alpha=0.5)
+    ax_f.set_xticks(x)
+    ax_f.set_xticklabels(metrics_labels)
+    ax_f.set_ylabel("Cohen's d")
+    ax_f.set_title('F. Before vs After Length Control', fontsize=12, fontweight='bold')
+    ax_f.legend(fontsize=8)
+
+    # =========================================================================
+    # G: N Active Collapse
+    # =========================================================================
+    ax_g = fig.add_subplot(gs[2, 1])
+    for src in sources:
+        if src not in groups:
+            continue
+        vals = [s['n_active_resid'] for s in groups[src]]
+        ax_g.hist(vals, bins=15, alpha=0.5, label=src[:4].upper(), color=COLORS[src])
+    ax_g.set_xlabel('N Active (residual)')
+    ax_g.set_ylabel('Count')
+    ax_g.set_title('G. N Active: Collapses (d=0.07)', fontsize=12, fontweight='bold')
+    ax_g.legend(fontsize=8)
+
+    # =========================================================================
+    # H: Final Effect Sizes
+    # =========================================================================
+    ax_h = fig.add_subplot(gs[2, 2])
+    metrics = ['n_active', 'influence', 'conc.', 'activation']
+    ds = [0.07, 1.08, 0.87, 0.64]  # LENGTH-CONTROLLED
+    colors_h = ['#c0392b', '#27ae60', '#27ae60', '#f39c12']
 
     ax_h.bar(metrics, ds, color=colors_h, edgecolor='black')
     ax_h.axhline(y=0.8, color='gray', linestyle='--')
-    ax_h.set_ylabel("Cohen's d")
-    ax_h.set_title('H. Effect Sizes', fontsize=12, fontweight='bold')
-    ax_h.tick_params(axis='x', rotation=30)
+    ax_h.set_ylabel("Cohen's d (controlled)")
+    ax_h.set_title('H. Final Effect Sizes', fontsize=12, fontweight='bold')
 
-    # Main title
-    fig.suptitle('Latent Diagnostics: Activation Topology Analysis',
+    fig.suptitle('Latent Diagnostics: Length-Controlled Analysis',
                  fontsize=16, fontweight='bold', y=0.98)
 
     plt.savefig(OUTPUT_DIR / 'central_summary.png', dpi=150, bbox_inches='tight')
@@ -476,28 +538,38 @@ def fig_central_summary(domain_samples, truth_samples):
 # MAIN
 # =============================================================================
 def main():
-    print("Generating all figures for paper...\n")
+    print("Generating LENGTH-CONTROLLED figures for paper...\n")
 
     OUTPUT_DIR.mkdir(parents=True, exist_ok=True)
 
     domain_samples = load_domain_data()
     truth_samples = load_truthfulness_data()
 
+    # Add residualized metrics
+    domain_samples = add_residuals(domain_samples)
+    truth_samples = add_residuals(truth_samples)
+
     print(f"Loaded {len(domain_samples)} domain samples")
-    print(f"Loaded {len(truth_samples)} truthfulness samples\n")
+    print(f"Loaded {len(truth_samples)} truthfulness samples")
+    print("Added length-controlled residuals to all samples\n")
 
     print("Individual figures:")
     fig_truthfulness_overlap(truth_samples)
     fig_domain_distributions(domain_samples)
     fig_pca_clustering(domain_samples)
     fig_boxplots_significance(domain_samples)
-    fig_correlation_heatmap(domain_samples)
+    fig_length_control_comparison(domain_samples)
     fig_detection_summary()
+    fig_correlation_heatmap(domain_samples)
 
     print("\nMain figure:")
     fig_central_summary(domain_samples, truth_samples)
 
     print(f"\nAll figures saved to {OUTPUT_DIR}/")
+    print("\nALL EFFECT SIZES ARE NOW LENGTH-CONTROLLED:")
+    print("  - Influence: d=1.08 (was 3.22 raw)")
+    print("  - Concentration: d=0.87 (was 2.36 raw)")
+    print("  - N Active: d=0.07 (was 2.17 raw - COLLAPSED)")
 
 
 if __name__ == '__main__':

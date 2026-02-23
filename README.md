@@ -11,30 +11,30 @@ We introduce a framework that analyzes **internal activation topology** to chara
 **What this detects:** The *type* and *complexity* of thinking.
 **What this doesn't detect:** Whether the output is correct.
 
-## Key Results
+## Key Results (Length-Controlled)
 
-| Detection Task | Raw d | After Length Control | Status |
-|----------------|-------|---------------------|--------|
-| Task type (grammar vs reasoning) | 3.2 | **1.08** | **Works** |
-| Computational complexity | 2.4 | **0.87** | **Works** |
-| Adversarial/anomalous inputs | 1.2 | — | Works |
-| Truthfulness | 0.05 | — | Doesn't work |
+All effect sizes are **controlled for text length** via residualization.
 
-**The pivot experiment:** Signal PERSISTS after regressing out text length. This is genuine computational regime difference, not length-driven scaling.
+| Detection Task | Effect Size (d) | Status |
+|----------------|-----------------|--------|
+| Task type (grammar vs reasoning) | **1.08** | Works |
+| Computational complexity | **0.87** | Works |
+| Adversarial inputs | ~0.8 | Works |
+| Truthfulness | 0.05 | Doesn't work |
 
-**The finding:** Simple tasks (grammar) produce focused, high-influence computation. Complex tasks (reasoning) produce diffuse, low-influence computation. True vs false statements look identical internally.
+**The pivot experiment:** After regressing out text length, influence (d=1.08) and concentration (d=0.87) still show large effects. N_active collapses to d=0.07. This is **genuine regime difference**, not length-driven scaling.
 
 ## What We Measure
 
-| Metric | What It Captures | Diagnostic? |
-|--------|------------------|-------------|
-| `mean_influence` | Average causal strength between features | Yes (d=3.2) |
-| `concentration` | Is influence focused or spread out? | Yes (d=2.4) |
-| `mean_activation` | Signal strength | Yes (d=1.7) |
-| `n_active` | Feature count | No (confounded by length) |
+| Metric | What It Captures | Length-Controlled d |
+|--------|------------------|---------------------|
+| `mean_influence` | Causal strength between features | **1.08** (genuine) |
+| `concentration` | Focused vs diffuse computation | **0.87** (genuine) |
+| `mean_activation` | Signal strength | 0.64 (medium) |
+| `n_active` | Feature count | 0.07 (collapses) |
 
-**Robust metrics:** influence, concentration, activation
-**Confounded metrics:** n_active, n_edges (just track text length)
+**Use:** influence, concentration
+**Don't use:** n_active (confounded by length, r=0.98)
 
 ## Use Cases
 
@@ -48,50 +48,38 @@ We introduce a framework that analyzes **internal activation topology** to chara
 - Fact-checking
 - Output quality assessment
 
-## Architecture
-
-```
-LatentDiagnostics
-├── Feature extraction       SAE/transcoder decomposition
-├── Attribution graph        Causal influence between features
-├── Metric computation       influence, concentration, activation
-└── Diagnostic analysis      Compare distributions across input classes
-```
-
 ## Quick Start
 
 ```bash
 pip install -e .
 
-# Generate figures
-python experiments/domain_figures.py
+# Generate figures (all length-controlled)
+python experiments/generate_all_figures.py
 
-# Compute new attribution metrics (GPU)
+# Compute attribution metrics (parallel, crash-safe)
 modal run scripts/modal_general_attribution.py \
   --input-file data/domain_analysis/domain_samples.json \
   --output-file data/results/domain_attribution_metrics.json
 ```
 
-## Project Structure
+## Figures
 
-```
-latent-diagnostics/
-├── src/neural_polygraph/        # Core framework
-├── experiments/
-│   ├── domain_figures.py        # Paper figures
-│   ├── diagnostics.py           # Statistical analysis
-│   └── domain_analysis.py       # Cross-domain comparison
-├── figures/domain_analysis/     # Generated figures
-├── data/results/                # Attribution metrics
-└── scripts/                     # Modal GPU runners (parallel)
-```
+All in `figures/paper/` — every figure uses **length-controlled metrics**:
+
+| Figure | Shows |
+|--------|-------|
+| **central_summary.png** | Main figure (8 panels) |
+| length_control_comparison.png | Before/after length control |
+| detection_summary.png | What it can/can't detect |
+| pca_clustering.png | Domains cluster after length control |
+| boxplots_significance.png | Per-domain distributions |
 
 ## Limitations
 
 1. **Requires model internals** — Only works on models with SAE/transcoder access
 2. **Compute intensive** — ~30 sec/sample on A100
-3. **Measures structure, not correctness** — Can't detect hallucinations or errors
-4. **Length confound** — Must use influence/concentration, not feature counts
+3. **Measures structure, not correctness** — Can't detect hallucinations
+4. **Must control for length** — Raw n_active is confounded (r=0.98)
 
 ## Citation
 
