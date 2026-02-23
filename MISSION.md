@@ -190,10 +190,12 @@
   truthfulness_metrics.json → PENDING
 
 ●known_findings
-  length_confound: r=0.96 for n_active
-  mean_activation: least confounded (r=-0.224), best AUC (0.830)
-  partial_correlations: signal_preserved_after_length_control
-  underpowered: n=21 injection samples
+  length_confound: r=0.98 for n_active (features/char ~215 constant)
+  n_active: NOT diagnostic (just tracks length)
+  mean_influence: DIAGNOSTIC (d=3.22 grammar vs others, p<10^-50)
+  concentration: DIAGNOSTIC (d=2.36, p<10^-33)
+  grammar=focused/high_influence, reasoning=diffuse/low_influence
+  partial_correlations: influence/conc preserve signal after length control
 ```
 
 ---
