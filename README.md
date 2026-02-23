@@ -37,24 +37,41 @@ See `archive/disproved/` for our early experiments with honest disclaimers about
 ## Directory Structure
 
 ```
-notebooks/           # Main analysis notebooks (START HERE)
-experiments/         # Reproducible experiment scripts
-figures/             # All generated figures
-  paper/             # Publication-quality figures
-data/                # Input data and results
-  results/           # Computed metrics (JSON)
-scripts/             # Modal runners for GPU computation
-archive/             # Historical experiments
-  disproved/         # Early work superseded by length control
+notebooks/                    # START HERE - 5-part narrative series
+  01_introduction.ipynb       # What this project discovers
+  02_the_journey.ipynb        # From hallucination detection to task diagnostics
+  03_methodology.ipynb        # How we extract and analyze metrics
+  04_core_results.ipynb       # Main findings with visualizations
+  05_negative_results.ipynb   # What doesn't work (and why that matters)
+
+experiments/                  # Reproducible analysis code
+  core/                       # Main validated analyses
+  statistics/                 # Statistical tests
+  visualization/              # Figure generation
+  utilities/                  # Shared code
+  _archive/                   # Historical experiments
+
+figures/                      # Generated visualizations
+  paper/                      # Core figures
+
+data/results/                 # Computed metrics (JSON)
+scripts/                      # Modal GPU runners
+archive/disproved/            # Early work with honest disclaimers
 ```
 
 ## Quick Start
 
+**Read the notebooks first** - they tell the complete story:
+```bash
+jupyter notebook notebooks/01_introduction.ipynb
+```
+
+**Run the analysis:**
 ```bash
 pip install -e .
 
 # Generate figures (all length-controlled)
-python experiments/generate_all_figures.py
+python experiments/visualization/generate_figures.py
 
 # Compute attribution metrics (parallel, crash-safe)
 modal run scripts/modal_general_attribution.py \
