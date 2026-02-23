@@ -4,19 +4,21 @@
 
 **Activation topology measures HOW a model computes, not WHETHER it's correct.**
 
-| Detection Task | Effect Size | Works? |
-|----------------|-------------|--------|
-| Task type (grammar vs reasoning) | d=3.2 | Yes |
-| Computational complexity | d=2.4 | Yes |
-| Adversarial inputs | d=1.2 | Yes |
+| Detection Task | Effect Size (Length-Controlled) | Works? |
+|----------------|--------------------------------|--------|
+| Task type (grammar vs reasoning) | d=1.08 | Yes |
+| Computational complexity | d=0.87 | Yes |
+| Adversarial inputs | d~0.8 | Yes |
 | Truthfulness | d=0.05 | No |
+
+*Note: Raw effect sizes are higher (d=3.2 for task type) but those include length confounding. After residualizing out text length, these are the genuine effects.*
 
 ## Active Experiments
 
 | Script | Purpose | Key Result |
 |--------|---------|------------|
-| `domain_figures.py` | Generate paper figures | 5 figures in `figures/domain_analysis/` |
-| `domain_analysis.py` | Cross-domain comparison | d=3.2 grammar vs others |
+| `domain_figures.py` | Generate domain analysis figures | 5 figures in `figures/domain_analysis/` |
+| `domain_analysis.py` | Cross-domain comparison | d=1.08 grammar vs others (length-controlled) |
 | `truthfulness_analysis.py` | True vs false statements | No signal (d=0.05) |
 | `diagnostics.py` | Statistical analysis suite | Length confound analysis |
 
@@ -31,7 +33,7 @@
 ## Running
 
 ```bash
-# Generate figures for paper
+# Generate domain analysis figures
 python experiments/domain_figures.py
 
 # Compute new attribution metrics (parallel, crash-safe)
