@@ -1,5 +1,22 @@
 # Attack Cross Section Mapping
 
+> **IMPORTANT CONTEXT: These results are SUPERSEDED by length-controlled analysis.**
+>
+> This document was part of our early exploration of prompt injection detection. The apparent signal we found was largely driven by **text length confounding**:
+>
+> - `n_active` (feature count) correlates r=0.96+ with text length
+> - After regressing out length, injection detection collapses to d~0.1
+> - The "geometry" differences we observed were mostly longer-texts-activate-more-features
+>
+> **What we learned:**
+> 1. Raw feature counts are unreliable - they scale with input length
+> 2. True diagnostic signal requires length-controlled metrics (influence, concentration)
+> 3. Task-type detection works; injection-as-separate-category does not
+>
+> **Current approach:** See main `notebooks/` folder for length-controlled analysis.
+
+---
+
 **Concept:** Each attack type has a characteristic "cross section" — the probability of success given the attack vector and model state.
 
 ---
