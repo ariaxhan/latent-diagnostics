@@ -174,43 +174,60 @@ def main(
     print(f"Processing {len(samples)} samples in {len(batches)} batches ({batch_size} per batch)")
     print(f"Using up to {n_workers} parallel A100 containers")
 
-    # Process in parallel with .map()
-    batch_args = [(batch, i) for i, batch in enumerate(batches)]
-
-    all_results = []
-    all_failed = []
-
-    # Use starmap for parallel execution
-    for batch_result in process_batch.starmap(batch_args):
-        all_results.extend(batch_result["results"])
-        all_failed.extend(batch_result["failed"])
-        print(f"  Batch {batch_result['batch_id']} returned {len(batch_result['results'])} results")
-
-    # Sort by original index
-    all_results.sort(key=lambda x: x.get("idx", 0))
-
-    # Build output
-    output = {
-        "metadata": {
-            "date": datetime.now().isoformat(),
-            "model": "google/gemma-2-2b",
-            "transcoder_set": "gemma",
-            "n_samples": len(samples),
-            "n_computed": len(all_results),
-            "n_failed": len(all_failed),
-            "n_batches": len(batches),
-            "source_metadata": data.get("metadata", {}),
-        },
-        "samples": all_results,
-    }
-
-    # Save
+    # Output file
     if output_file is None:
         output_file = str(input_path.parent / f"{input_path.stem}_metrics.json")
 
-    with open(output_file, "w") as f:
-        json.dump(output, f, indent=2)
+    # Load existing results if resuming
+    all_results = []
+    all_failed = []
+    completed_batches = set()
 
-    print(f"\nDone! {len(all_results)}/{len(samples)} samples computed")
-    print(f"Failed: {len(all_failed)}")
+    try:
+        with open(output_file) as f:
+            existing = json.load(f)
+            all_results = existing.get("samples", [])
+            completed_batches = set(existing.get("metadata", {}).get("completed_batches", []))
+            if completed_batches:
+                print(f"Resuming: {len(all_results)} samples from batches {completed_batches}")
+    except (FileNotFoundError, json.JSONDecodeError):
+        pass
+
+    # Filter out already-completed batches
+    batch_args = [(batch, i) for i, batch in enumerate(batches) if i not in completed_batches]
+
+    if not batch_args:
+        print("All batches already completed!")
+        return
+
+    print(f"Running {len(batch_args)} remaining batches...")
+
+    # Process in parallel - SAVE AFTER EACH BATCH
+    for batch_result in process_batch.starmap(batch_args):
+        all_results.extend(batch_result["results"])
+        all_failed.extend(batch_result["failed"])
+        completed_batches.add(batch_result["batch_id"])
+
+        # Sort and save immediately
+        all_results.sort(key=lambda x: x.get("idx", 0))
+        output = {
+            "metadata": {
+                "date": datetime.now().isoformat(),
+                "model": "google/gemma-2-2b",
+                "transcoder_set": "gemma",
+                "n_samples": len(samples),
+                "n_computed": len(all_results),
+                "n_failed": len(all_failed),
+                "n_batches": len(batches),
+                "completed_batches": list(completed_batches),
+                "source_metadata": data.get("metadata", {}),
+            },
+            "samples": all_results,
+        }
+        with open(output_file, "w") as f:
+            json.dump(output, f, indent=2)
+
+        print(f"  Batch {batch_result['batch_id']}: +{len(batch_result['results'])} → {len(all_results)} total (saved)")
+
+    print(f"\nDone! {len(all_results)}/{len(samples)} samples")
     print(f"Saved to: {output_file}")
