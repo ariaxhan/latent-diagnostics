@@ -7802,23 +7802,28 @@ a.anchor-link {
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<h1 id="Latent-Diagnostics:-Activation-Topology-Analysis">Latent Diagnostics: Activation Topology Analysis<a class="anchor-link" href="#Latent-Diagnostics:-Activation-Topology-Analysis">¶</a></h1><p><strong>Representation-level analysis of internal activation structure in large language models.</strong></p>
-<p>This notebook documents all analyses, statistical validation, and figures for the Latent Diagnostics project. All effect sizes reported are <strong>length-controlled</strong> via residualization.</p>
+<h1 id="Latent-Diagnostics:-Activation-Topology-Analysis">Latent Diagnostics: Activation Topology Analysis<a class="anchor-link" href="#Latent-Diagnostics:-Activation-Topology-Analysis">¶</a></h1><p><strong>Can we tell what kind of thinking a language model is doing by looking at its internal activity patterns?</strong></p>
+<p>This notebook presents a complete analysis of how large language models (LLMs) process different types of tasks, measured through their internal activation patterns. We show that certain metrics reliably distinguish between task types (like grammar checking vs. reasoning), while others are misleading artifacts of input length.</p>
+<hr/>
+<h2 id="What-This-Notebook-Contains">What This Notebook Contains<a class="anchor-link" href="#What-This-Notebook-Contains">¶</a></h2><ol>
+<li><strong>Background</strong>: What are SAEs? What is attribution? Why does this matter?</li>
+<li><strong>The Problem</strong>: A critical confound (text length) that invalidates naive metrics</li>
+<li><strong>The Solution</strong>: Statistical methods to remove the confound</li>
+<li><strong>The Evidence</strong>: Multiple validation approaches proving the signal is real</li>
+<li><strong>The Implications</strong>: What this means for understanding AI systems</li>
+</ol>
+<p><strong>Target audience</strong>: Anyone interested in AI interpretability. All technical terms are explained. A motivated high school student should be able to follow the logic; an ML professor should find the methodology rigorous.</p>
 <hr/>
 <h2 id="Table-of-Contents">Table of Contents<a class="anchor-link" href="#Table-of-Contents">¶</a></h2><ol>
-<li><a href="#1-introduction">Introduction</a></li>
+<li><a href="#1-background">Background: How This Works</a></li>
 <li><a href="#2-data-loading">Data Loading</a></li>
 <li><a href="#3-the-length-confound">The Length Confound</a></li>
 <li><a href="#4-length-control-via-residualization">Length Control via Residualization</a></li>
 <li><a href="#5-core-finding-effect-sizes">Core Finding: Effect Sizes</a></li>
-<li><a href="#6-statistical-validation">Statistical Validation</a><ul>
-<li>6.1 Bootstrap Confidence Intervals</li>
-<li>6.2 Permutation Test (Shuffle Test)</li>
-</ul>
-</li>
+<li><a href="#6-statistical-validation">Statistical Validation</a></li>
 <li><a href="#7-geometric-structure">Geometric Structure (PCA/UMAP)</a></li>
 <li><a href="#8-variance-decomposition-anova">Variance Decomposition (ANOVA)</a></li>
-<li><a href="#9-feature-overlap-jaccard-similarity">Feature Overlap (Jaccard Similarity)</a></li>
+<li><a href="#9-feature-overlap">Feature Overlap</a></li>
 <li><a href="#10-residual-distributions-kde">Residual Distributions (KDE)</a></li>
 <li><a href="#11-conclusions">Conclusions</a></li>
 </ol>
@@ -7901,70 +7906,180 @@ a.anchor-link {
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
 <hr/>
-<h2 id="1.-Introduction">1. Introduction<a class="anchor-link" href="#1.-Introduction">¶</a></h2><h3 id="What-is-Latent-Diagnostics?">What is Latent Diagnostics?<a class="anchor-link" href="#What-is-Latent-Diagnostics?">¶</a></h3><p>Latent Diagnostics is a framework for analyzing the <strong>internal activation topology</strong> of large language models. By measuring how causal influence distributes across features in sparse autoencoder (SAE) representations, we can characterize what <em>kind</em> of computation a model is performing.</p>
-<h3 id="Core-Thesis">Core Thesis<a class="anchor-link" href="#Core-Thesis">¶</a></h3><p>Activation topology measures <strong>how</strong> a model computes, not <strong>whether</strong> it's correct.</p>
+<h2 id="1.-Background:-Tools,-Methods,-and-Why-They-Work">1. Background: Tools, Methods, and Why They Work<a class="anchor-link" href="#1.-Background:-Tools,-Methods,-and-Why-They-Work">¶</a></h2><h3 id="The-Big-Picture">The Big Picture<a class="anchor-link" href="#The-Big-Picture">¶</a></h3><p>When you ask a language model to check your grammar or solve a logic puzzle, <em>something different happens inside the model</em>. But what exactly?</p>
+<p>Modern language models are neural networks with billions of parameters. When text goes in, it gets transformed through many layers of computation before an answer comes out. <strong>Latent Diagnostics</strong> is about measuring the <em>shape</em> of that internal computation to understand what kind of processing is happening.</p>
+<p><strong>Analogy</strong>: Imagine watching someone's brain activity while they do different tasks. Checking spelling might light up different regions than solving a math problem. We're doing something similar for AI models.</p>
+<hr/>
+<h3 id="The-Interpretability-Stack">The Interpretability Stack<a class="anchor-link" href="#The-Interpretability-Stack">¶</a></h3><p>This research builds on a series of breakthroughs from Anthropic, Google DeepMind, and the open-source interpretability community. Here's exactly what we use:</p>
+<hr/>
+<h4 id="1.-Sparse-Autoencoders-(SAEs)">1. Sparse Autoencoders (SAEs)<a class="anchor-link" href="#1.-Sparse-Autoencoders-(SAEs)">¶</a></h4><p><strong>What they are</strong>: Neural networks that decompose a model's internal activations into interpretable "features."</p>
+<p><strong>The problem they solve</strong>: Inside a language model, individual neurons are <em>polysemantic</em>—they respond to multiple unrelated concepts. This makes it nearly impossible to understand what any single neuron "means."</p>
+<p><strong>How SAEs work</strong>:</p>
+<ol>
+<li>Take a dense activation vector from inside the model (e.g., 4096 numbers)</li>
+<li>Encode it into a much larger but <em>sparse</em> vector (e.g., 65,536 numbers, but only ~1% are non-zero)</li>
+<li>Train the encoder to minimize reconstruction error while enforcing sparsity</li>
+<li>Each non-zero entry represents a learned "feature" that tends to be <em>monosemantic</em>—responding to a single interpretable concept</li>
+</ol>
+<p><strong>Example</strong>: When processing "The cat sat on the mat", an SAE might activate features for:</p>
+<ul>
+<li>Feature #4521: "animal mention"</li>
+<li>Feature #12033: "simple sentence structure"</li>
+<li>Feature #8876: "spatial relationship"</li>
+</ul>
+<p><strong>Key papers</strong>:</p>
+<ul>
+<li><a href="https://transformer-circuits.pub/2023/monosemantic-features">Towards Monosemanticity</a> (Anthropic, October 2023) — First demonstration that SAEs extract interpretable features from transformers</li>
+<li><a href="https://transformer-circuits.pub/2024/scaling-monosemanticity/">Scaling Monosemanticity</a> (Anthropic, May 2024) — Scaled the approach to Claude 3 Sonnet, finding millions of interpretable features including safety-relevant ones</li>
+</ul>
+<hr/>
+<h4 id="2.-Gemma-Scope-(Pre-trained-SAEs)">2. Gemma Scope (Pre-trained SAEs)<a class="anchor-link" href="#2.-Gemma-Scope-(Pre-trained-SAEs)">¶</a></h4><p><strong>What it is</strong>: A comprehensive, open suite of pre-trained SAEs for Google's Gemma 2 models, released by Google DeepMind.</p>
+<p><strong>Why it matters</strong>: Training SAEs requires massive compute (about 15% of Gemma 2 9B's training compute). Gemma Scope provides ready-to-use SAEs so researchers don't need to train their own.</p>
+<p><strong>Technical details</strong>:</p>
+<ul>
+<li>Uses <strong>JumpReLU architecture</strong> — improves the balance between detecting which features are present and estimating their strength</li>
+<li>SAEs trained on all layers of Gemma 2 2B, 9B, and select layers of 27B</li>
+<li>Different "widths" available (16k, 65k, 131k features) trading off granularity vs. interpretability</li>
+</ul>
+<p><strong>In this project</strong>: We use <code>gemma-scope-2b-pt-res-canonical</code> with <code>layer_5/width_16k</code> — 16,384 features at layer 5 of Gemma 2 2B.</p>
+<p><strong>Paper</strong>: <a href="https://arxiv.org/abs/2408.05147">Gemma Scope: Open Sparse Autoencoders Everywhere All At Once on Gemma 2</a> (Lieberum et al., August 2024)</p>
+<p><strong>Resources</strong>: <a href="https://huggingface.co/google/gemma-scope">Hugging Face</a> | <a href="https://deepmind.google/models/gemma/gemma-scope/">DeepMind Blog</a></p>
+<hr/>
+<h4 id="3.-Cross-Layer-Transcoders-(CLTs)-and-Circuit-Tracing">3. Cross-Layer Transcoders (CLTs) and Circuit Tracing<a class="anchor-link" href="#3.-Cross-Layer-Transcoders-(CLTs)-and-Circuit-Tracing">¶</a></h4><p><strong>What they are</strong>: A more sophisticated replacement for standard SAEs that enables tracing causal relationships between features.</p>
+<p><strong>The problem they solve</strong>: Standard SAEs tell you <em>what</em> features are active, but not <em>how</em> they influence each other or the output. We need to trace the <em>computational graph</em>.</p>
+<p><strong>How CLTs work</strong>:</p>
+<ol>
+<li>Instead of encoding/decoding at a single layer, CLTs read from the residual stream at one layer and contribute to <em>all subsequent MLP layers</em></li>
+<li>This creates a "replacement model" where we can substitute interpretable features for the original MLPs</li>
+<li>Remarkably, this matches the original model's outputs in ~50% of cases while being much more interpretable</li>
+</ol>
+<p><strong>Attribution Graphs</strong>: By measuring how much each upstream feature contributes to each downstream feature, we construct an <em>attribution graph</em>:</p>
+<ul>
+<li><strong>Nodes</strong> = interpretable features</li>
+<li><strong>Edges</strong> = causal influence between features (how much does feature A contribute to feature B?)</li>
+<li><strong>Edge weights</strong> = magnitude of causal influence</li>
+</ul>
+<p><strong>Key insight</strong>: This lets us extract metrics like <code>mean_influence</code> (average edge weight) and <code>concentration</code> (how focused the influence is among top features).</p>
+<p><strong>Paper</strong>: <a href="https://transformer-circuits.pub/2025/attribution-graphs/methods.html">Circuit Tracing: Revealing Computational Graphs in Language Models</a> (Anthropic, March 2025)</p>
+<p><strong>Open-source</strong>: <a href="https://github.com/safety-research/circuit-tracer">circuit-tracer</a> library, with interactive visualization on <a href="https://www.neuronpedia.org/graph/info">Neuronpedia</a></p>
+<hr/>
+<h4 id="4.-Supporting-Libraries">4. Supporting Libraries<a class="anchor-link" href="#4.-Supporting-Libraries">¶</a></h4><p><strong>TransformerLens</strong> (<a href="https://github.com/TransformerLensOrg/TransformerLens">GitHub</a>)</p>
+<ul>
+<li>Created by Neel Nanda (formerly Anthropic interpretability team)</li>
+<li>Provides "hooks" to cache and modify any internal activation in a transformer</li>
+<li>Makes it easy to extract activations at specific layers for SAE analysis</li>
+<li>Loads 50+ open-source models with consistent interfaces</li>
+</ul>
+<p><strong>SAELens</strong> (<a href="https://github.com/decoderesearch/SAELens">GitHub</a>)</p>
+<ul>
+<li>Maintained by Joseph Bloom, Curt Tigges, Anthony Duong, David Chanin</li>
+<li>Library for training and loading SAEs</li>
+<li>Integrates with Gemma Scope and other pre-trained SAE releases</li>
+<li>Simple API: <code>SAE.from_pretrained(release="gemma-scope-2b-pt-res-canonical", sae_id="layer_5/width_16k/canonical")</code></li>
+</ul>
+<hr/>
+<h3 id="What-We-Measure-(The-Metrics)">What We Measure (The Metrics)<a class="anchor-link" href="#What-We-Measure-(The-Metrics)">¶</a></h3><p>From the attribution graph, we extract several metrics for each input text:</p>
 <table>
 <thead>
 <tr>
-<th>What It Detects</th>
+<th>Metric</th>
+<th>What It Measures</th>
+<th>How It's Computed</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>n_active</code></td>
+<td>Number of active features</td>
+<td>Count of features with non-zero activation</td>
+</tr>
+<tr>
+<td><code>n_edges</code></td>
+<td>Number of causal connections</td>
+<td>Count of edges in attribution graph above threshold</td>
+</tr>
+<tr>
+<td><code>mean_influence</code></td>
+<td>Average causal strength</td>
+<td>Mean absolute edge weight in the graph</td>
+</tr>
+<tr>
+<td><code>max_influence</code></td>
+<td>Peak causal strength</td>
+<td>Maximum edge weight</td>
+</tr>
+<tr>
+<td><code>top_100_concentration</code></td>
+<td>How focused is computation?</td>
+<td>Fraction of total influence in top 100 edges</td>
+</tr>
+<tr>
+<td><code>mean_activation</code></td>
+<td>Average feature strength</td>
+<td>Mean activation magnitude across active features</td>
+</tr>
+<tr>
+<td><code>logit_entropy</code></td>
+<td>Output uncertainty</td>
+<td>Entropy of output probability distribution</td>
+</tr>
+</tbody>
+</table>
+<hr/>
+<h3 id="The-Research-Question">The Research Question<a class="anchor-link" href="#The-Research-Question">¶</a></h3><p><strong>Core question</strong>: Can these metrics distinguish between different types of cognitive tasks?</p>
+<p><strong>Hypothesis</strong>: Different task types (grammar checking, logical reasoning, factual recall) should produce different activation patterns because they require fundamentally different computations:</p>
+<ul>
+<li><strong>Grammar checking</strong>: Should be focused, rule-based → high influence, high concentration</li>
+<li><strong>Reasoning</strong>: Should be diffuse, multi-step → lower influence, lower concentration</li>
+</ul>
+<p><strong>What we found</strong>:</p>
+<ul>
+<li><strong>YES</strong>: <code>mean_influence</code> (d=1.08) and <code>concentration</code> (d=0.87) reliably distinguish task types</li>
+<li><strong>NO</strong>: <code>n_active</code> (d=0.07 after length control) is confounded by text length</li>
+<li><strong>NO</strong>: We cannot detect truthfulness (d=0.05) — true and false statements have identical internal structure</li>
+</ul>
+<hr/>
+<h3 id="The-Critical-Confound-(Preview)">The Critical Confound (Preview)<a class="anchor-link" href="#The-Critical-Confound-(Preview)">¶</a></h3><p><strong>Warning</strong>: The most obvious metric (<code>n_active</code> = number of active features) is nearly useless.</p>
+<p>Why? Longer text activates more features simply because there's more content to process. If grammar tasks use shorter sentences than reasoning tasks, <code>n_active</code> will show a fake "difference" that's really just measuring text length.</p>
+<p><strong>This is why we need rigorous statistical controls</strong>, developed in Sections 3-4.</p>
+<hr/>
+<h3 id="Summary:-What-Activation-Topology-Can-Detect">Summary: What Activation Topology Can Detect<a class="anchor-link" href="#Summary:-What-Activation-Topology-Can-Detect">¶</a></h3><table>
+<thead>
+<tr>
+<th>Detection Task</th>
 <th>Effect Size (d)</th>
-<th>Status</th>
+<th>Works?</th>
+<th>Why</th>
 </tr>
 </thead>
 <tbody>
 <tr>
 <td>Task type (grammar vs reasoning)</td>
-<td>1.08</td>
-<td>Works</td>
+<td><strong>1.08</strong></td>
+<td>Yes</td>
+<td>Influence patterns differ genuinely</td>
 </tr>
 <tr>
 <td>Computational complexity</td>
-<td>0.87</td>
-<td>Works</td>
+<td><strong>0.87</strong></td>
+<td>Yes</td>
+<td>Concentration measures focus vs diffusion</td>
 </tr>
 <tr>
 <td>Adversarial inputs</td>
 <td>~0.8</td>
-<td>Works</td>
+<td>Yes</td>
+<td>Unusual inputs show anomalous patterns</td>
 </tr>
 <tr>
 <td>Truthfulness</td>
 <td>0.05</td>
-<td>Does not work</td>
+<td><strong>No</strong></td>
+<td>True/false statements look identical internally</td>
 </tr>
 </tbody>
 </table>
-<h3 id="Key-Metrics">Key Metrics<a class="anchor-link" href="#Key-Metrics">¶</a></h3><table>
-<thead>
-<tr>
-<th>Metric</th>
-<th>What It Captures</th>
-<th>Length-Controlled d</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><code>mean_influence</code></td>
-<td>Causal strength between features</td>
-<td>1.08 (genuine)</td>
-</tr>
-<tr>
-<td><code>top_100_concentration</code></td>
-<td>Focused vs diffuse computation</td>
-<td>0.87 (genuine)</td>
-</tr>
-<tr>
-<td><code>mean_activation</code></td>
-<td>Signal strength</td>
-<td>0.64 (medium)</td>
-</tr>
-<tr>
-<td><code>n_active</code></td>
-<td>Feature count</td>
-<td>0.07 (collapses)</td>
-</tr>
-</tbody>
-</table>
+<p><strong>Key insight</strong>: Activation topology measures <strong>how</strong> a model computes, not <strong>whether</strong> it's correct.</p>
 </div>
 </div>
 </div>
@@ -7976,11 +8091,60 @@ a.anchor-link {
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
 <hr/>
-<h2 id="2.-Data-Loading">2. Data Loading<a class="anchor-link" href="#2.-Data-Loading">¶</a></h2><p>We load two datasets:</p>
-<ol>
-<li><strong>Domain attribution metrics</strong> (210 samples across 5 task types)</li>
-<li><strong>Truthfulness metrics</strong> (200 samples from TruthfulQA)</li>
-</ol>
+<h2 id="2.-Data-Loading">2. Data Loading<a class="anchor-link" href="#2.-Data-Loading">¶</a></h2><h3 id="The-Datasets">The Datasets<a class="anchor-link" href="#The-Datasets">¶</a></h3><p>We analyze two datasets of text samples, each processed through a language model with SAE attribution:</p>
+<p><strong>1. Domain Attribution Dataset (210 samples)</strong>
+Samples from 5 different NLP benchmark tasks, each requiring different cognitive operations:</p>
+<table>
+<thead>
+<tr>
+<th>Dataset</th>
+<th>Task Type</th>
+<th>What It Tests</th>
+<th>Example</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>CoLA</strong></td>
+<td>Grammar</td>
+<td>Linguistic acceptability</td>
+<td>"The dog seems sleeping" (ungrammatical)</td>
+</tr>
+<tr>
+<td><strong>WinoGrande</strong></td>
+<td>Commonsense</td>
+<td>Pronoun resolution</td>
+<td>"The trophy doesn't fit in the suitcase because it's too big"</td>
+</tr>
+<tr>
+<td><strong>SNLI</strong></td>
+<td>Inference</td>
+<td>Logical entailment</td>
+<td>Does sentence A imply sentence B?</td>
+</tr>
+<tr>
+<td><strong>HellaSwag</strong></td>
+<td>Situational</td>
+<td>Sentence completion</td>
+<td>What happens next in a scenario?</td>
+</tr>
+<tr>
+<td><strong>PAWS</strong></td>
+<td>Paraphrase</td>
+<td>Semantic similarity</td>
+<td>Do these sentences mean the same thing?</td>
+</tr>
+</tbody>
+</table>
+<p><strong>2. Truthfulness Dataset (200 samples)</strong>
+Samples from TruthfulQA testing whether true vs. false statements produce different patterns.</p>
+<h3 id="What's-in-the-Data">What's in the Data<a class="anchor-link" href="#What's-in-the-Data">¶</a></h3><p>For each text sample, we have:</p>
+<ul>
+<li>The text itself</li>
+<li>Which task/dataset it came from</li>
+<li>Attribution metrics extracted from the model's internals</li>
+</ul>
+<p><strong>The goal</strong>: Do samples from different tasks produce systematically different attribution patterns?</p>
 </div>
 </div>
 </div>
@@ -8304,8 +8468,24 @@ Name: count, dtype: int64
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
 <hr/>
-<h2 id="3.-The-Length-Confound">3. The Length Confound<a class="anchor-link" href="#3.-The-Length-Confound">¶</a></h2><p>A critical finding: <strong>n_active (feature count) correlates r=0.98 with text length</strong>. This means raw n_active differences between domains are almost entirely explained by text length differences, not genuine computational regime differences.</p>
-<p>This section demonstrates the confound.</p>
+<h2 id="3.-The-Length-Confound">3. The Length Confound<a class="anchor-link" href="#3.-The-Length-Confound">¶</a></h2><h3 id="The-Problem">The Problem<a class="anchor-link" href="#The-Problem">¶</a></h3><p>Before we can trust any metric, we must check: <strong>Is this metric actually measuring task differences, or just text length?</strong></p>
+<p>This is critical because:</p>
+<ul>
+<li>Different tasks tend to have different average text lengths</li>
+<li>Grammar examples (CoLA) are typically short sentences</li>
+<li>Reasoning examples (HellaSwag) are typically longer paragraphs</li>
+<li>If a metric correlates with length, apparent "task differences" might be fake</li>
+</ul>
+<h3 id="What-We-Found">What We Found<a class="anchor-link" href="#What-We-Found">¶</a></h3><p><strong><code>n_active</code> (feature count) correlates r = 0.98 with text length.</strong></p>
+<p>This means 98% of the variation in <code>n_active</code> is explained by how long the text is. Any difference we see between tasks could just be because grammar sentences are shorter.</p>
+<p><strong>This is a classic confounding variable problem.</strong></p>
+<h3 id="The-Statistical-Issue">The Statistical Issue<a class="anchor-link" href="#The-Statistical-Issue">¶</a></h3><p>Imagine we observe:</p>
+<ul>
+<li>Grammar tasks: average n_active = 8,600</li>
+<li>Reasoning tasks: average n_active = 35,000</li>
+</ul>
+<p>This looks like a huge difference. But if grammar texts are ~40 characters and reasoning texts are ~175 characters, the "difference" might entirely be explained by: <em>longer text = more features activated</em>.</p>
+<p><strong>We need to remove the effect of length before comparing tasks.</strong></p>
 </div>
 </div>
 </div>
@@ -8461,7 +8641,34 @@ This is a confound that must be controlled for.
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
 <hr/>
-<h2 id="4.-Length-Control-via-Residualization">4. Length Control via Residualization<a class="anchor-link" href="#4.-Length-Control-via-Residualization">¶</a></h2><p>To remove the length confound, we use <strong>residualization</strong>: regress each metric on text length and use the residuals. This removes the linear relationship with length while preserving domain-specific variation.</p>
+<h2 id="4.-Length-Control-via-Residualization">4. Length Control via Residualization<a class="anchor-link" href="#4.-Length-Control-via-Residualization">¶</a></h2><h3 id="The-Solution:-Regression-Residuals">The Solution: Regression Residuals<a class="anchor-link" href="#The-Solution:-Regression-Residuals">¶</a></h3><p><strong>Residualization</strong> is a statistical technique to remove the influence of a confounding variable.</p>
+<p><strong>How it works:</strong></p>
+<ol>
+<li>Fit a line predicting each metric from text length: <code>metric = slope * length + intercept</code></li>
+<li>Compute how much each sample deviates from the prediction: <code>residual = actual - predicted</code></li>
+<li>Use these residuals for analysis instead of raw values</li>
+</ol>
+<p><strong>Intuition</strong>: The residual represents "the part of the metric that <em>isn't</em> explained by length." If a grammar sample has unusually high influence <em>for its length</em>, the residual will be positive.</p>
+<p><strong>Mathematical notation</strong>:</p>
+<pre><code>residual_i = y_i - (β₀ + β₁ * length_i)
+</code></pre>
+<p>Where:</p>
+<ul>
+<li><code>y_i</code> = observed metric value for sample i</li>
+<li><code>β₀, β₁</code> = intercept and slope from linear regression</li>
+<li><code>residual_i</code> = the length-controlled value</li>
+</ul>
+<h3 id="Why-This-Works">Why This Works<a class="anchor-link" href="#Why-This-Works">¶</a></h3><p>After residualization:</p>
+<ul>
+<li><strong>Correlation with length becomes exactly 0</strong> (by construction)</li>
+<li><strong>Any remaining differences between tasks are NOT due to length</strong></li>
+<li>We can now make valid comparisons between task types</li>
+</ul>
+<h3 id="The-Pivot-Experiment">The Pivot Experiment<a class="anchor-link" href="#The-Pivot-Experiment">¶</a></h3><p>The key test: <strong>Which metrics still show task differences after length control?</strong></p>
+<ul>
+<li>If a metric collapses to d ≈ 0 → it was just measuring length</li>
+<li>If a metric persists with large d → it's measuring something genuine</li>
+</ul>
 </div>
 </div>
 </div>
@@ -8605,12 +8812,47 @@ This is a confound that must be controlled for.
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
 <hr/>
-<h2 id="5.-Core-Finding:-Effect-Sizes">5. Core Finding: Effect Sizes<a class="anchor-link" href="#5.-Core-Finding:-Effect-Sizes">¶</a></h2><p>The <strong>pivot experiment</strong>: After regressing out text length, which metrics still show large effect sizes between grammar (CoLA) and reasoning tasks?</p>
+<h2 id="5.-Core-Finding:-Effect-Sizes">5. Core Finding: Effect Sizes<a class="anchor-link" href="#5.-Core-Finding:-Effect-Sizes">¶</a></h2><h3 id="What-is-Cohen's-d?">What is Cohen's d?<a class="anchor-link" href="#What-is-Cohen's-d?">¶</a></h3><p><strong>Cohen's d</strong> is a standardized measure of how different two groups are, expressed in standard deviation units.</p>
+<p><strong>Formula</strong>: <code>d = (mean₁ - mean₂) / pooled_standard_deviation</code></p>
+<p><strong>Interpretation</strong>:</p>
+<table>
+<thead>
+<tr>
+<th>Cohen's d</th>
+<th>Interpretation</th>
+<th>Example</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>0.2</td>
+<td>Small effect</td>
+<td>Barely noticeable</td>
+</tr>
+<tr>
+<td>0.5</td>
+<td>Medium effect</td>
+<td>Visible with careful measurement</td>
+</tr>
+<tr>
+<td>0.8</td>
+<td>Large effect</td>
+<td>Obvious difference</td>
+</tr>
+<tr>
+<td>&gt; 1.0</td>
+<td>Very large</td>
+<td>Groups barely overlap</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Why use it?</strong> Unlike p-values, Cohen's d tells you <em>how big</em> the difference is, not just whether it exists.</p>
+<h3 id="The-Pivot-Experiment">The Pivot Experiment<a class="anchor-link" href="#The-Pivot-Experiment">¶</a></h3><p>We compare <strong>Grammar (CoLA)</strong> vs <strong>Reasoning tasks (all others)</strong> using both:</p>
 <ul>
-<li><strong>Influence (d=1.08)</strong> and <strong>Concentration (d=0.87)</strong> persist</li>
-<li><strong>N_active (d=0.07)</strong> collapses</li>
+<li><strong>Raw metrics</strong> (potentially confounded by length)</li>
+<li><strong>Length-controlled metrics</strong> (residualized)</li>
 </ul>
-<p>This proves the signal is genuine regime difference, not length-driven scaling.</p>
+<p><strong>The critical question</strong>: Do effect sizes persist after removing length?</p>
 </div>
 </div>
 </div>
@@ -8776,11 +9018,29 @@ Key insight: N_active was entirely length-driven. Influence and Concentration ar
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
 <hr/>
-<h2 id="6.-Statistical-Validation">6. Statistical Validation<a class="anchor-link" href="#6.-Statistical-Validation">¶</a></h2><p>Two methods validate that the length-controlled signal is statistically significant:</p>
+<h2 id="6.-Statistical-Validation">6. Statistical Validation<a class="anchor-link" href="#6.-Statistical-Validation">¶</a></h2><p>We now have effect sizes, but how confident should we be? Two complementary methods:</p>
+<h3 id="Method-1:-Bootstrap-Confidence-Intervals">Method 1: Bootstrap Confidence Intervals<a class="anchor-link" href="#Method-1:-Bootstrap-Confidence-Intervals">¶</a></h3><p><strong>Problem</strong>: Our Cohen's d values are point estimates from 210 samples. How much would they vary with different samples?</p>
+<p><strong>Solution</strong>: Bootstrap resampling</p>
 <ol>
-<li><strong>Bootstrap confidence intervals</strong> - 95% CIs on Cohen's d</li>
-<li><strong>Permutation test</strong> - Shuffle labels to build null distribution</li>
+<li>Randomly resample our data (with replacement) 5000 times</li>
+<li>Compute Cohen's d for each resample</li>
+<li>The middle 95% of values gives our confidence interval</li>
 </ol>
+<p><strong>Interpretation</strong>: If the 95% CI excludes zero, we're confident the effect is real.</p>
+<h3 id="Method-2:-Permutation-Test-(Shuffle-Test)">Method 2: Permutation Test (Shuffle Test)<a class="anchor-link" href="#Method-2:-Permutation-Test-(Shuffle-Test)">¶</a></h3><p><strong>Problem</strong>: Could the observed effect be due to random chance?</p>
+<p><strong>Solution</strong>: Build a null distribution</p>
+<ol>
+<li>Shuffle the task labels randomly 1000 times</li>
+<li>Compute Cohen's d for each shuffle</li>
+<li>Compare our observed d to this null distribution</li>
+</ol>
+<p><strong>Interpretation</strong>:</p>
+<ul>
+<li>p-value = proportion of shuffles with d ≥ observed</li>
+<li>If p &lt; 0.05, the effect is statistically significant</li>
+<li>If p &lt; 0.001, it's highly significant</li>
+</ul>
+<p><strong>Why two methods?</strong> Bootstrap tells us about precision (confidence intervals). Permutation tells us about significance (p-values). Together they provide robust validation.</p>
 </div>
 </div>
 </div>
@@ -9154,7 +9414,25 @@ Significance: *** p&lt;0.001, ** p&lt;0.01, * p&lt;0.05
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
 <hr/>
-<h2 id="7.-Geometric-Structure-(PCA/UMAP)">7. Geometric Structure (PCA/UMAP)<a class="anchor-link" href="#7.-Geometric-Structure-(PCA/UMAP)">¶</a></h2><p>Do different task types occupy distinct regions in attribution feature space? We use PCA to visualize clustering.</p>
+<h2 id="7.-Geometric-Structure-(PCA/UMAP)">7. Geometric Structure (PCA/UMAP)<a class="anchor-link" href="#7.-Geometric-Structure-(PCA/UMAP)">¶</a></h2><h3 id="The-Question">The Question<a class="anchor-link" href="#The-Question">¶</a></h3><p>Do different task types occupy different regions in "metric space"? If we plot each sample as a point (where position = metric values), do tasks cluster together?</p>
+<h3 id="The-Methods">The Methods<a class="anchor-link" href="#The-Methods">¶</a></h3><p><strong>PCA (Principal Component Analysis)</strong></p>
+<ul>
+<li>Finds the directions of maximum variance in the data</li>
+<li>Reduces many dimensions (9 metrics) to 2-3 for visualization</li>
+<li>PC1 captures the most variance, PC2 the second-most, etc.</li>
+<li><em>Linear</em> method: preserves global structure</li>
+</ul>
+<p><strong>UMAP (Uniform Manifold Approximation and Projection)</strong></p>
+<ul>
+<li>A non-linear dimensionality reduction technique</li>
+<li>Better at preserving local cluster structure</li>
+<li>More sensitive to meaningful groupings in data</li>
+</ul>
+<h3 id="What-We're-Looking-For">What We're Looking For<a class="anchor-link" href="#What-We're-Looking-For">¶</a></h3><ul>
+<li><strong>Distinct clusters</strong> by task type = tasks have different computational signatures</li>
+<li><strong>Overlapping clusters</strong> = tasks are indistinguishable in metric space</li>
+<li><strong>Variance explained</strong> = how much information is captured in 2D</li>
+</ul>
 </div>
 </div>
 </div>
@@ -9370,7 +9648,36 @@ Variance explained:
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
 <hr/>
-<h2 id="8.-Variance-Decomposition-(ANOVA)">8. Variance Decomposition (ANOVA)<a class="anchor-link" href="#8.-Variance-Decomposition-(ANOVA)">¶</a></h2><p>How much of the variance in each metric is explained by task type (source) vs other factors?</p>
+<h2 id="8.-Variance-Decomposition-(ANOVA)">8. Variance Decomposition (ANOVA)<a class="anchor-link" href="#8.-Variance-Decomposition-(ANOVA)">¶</a></h2><h3 id="The-Question">The Question<a class="anchor-link" href="#The-Question">¶</a></h3><p>How much of the variance in each metric is explained by task type?</p>
+<h3 id="The-Method:-One-Way-ANOVA">The Method: One-Way ANOVA<a class="anchor-link" href="#The-Method:-One-Way-ANOVA">¶</a></h3><p><strong>ANOVA</strong> (Analysis of Variance) partitions total variance into:</p>
+<ul>
+<li><strong>Between-group variance</strong>: Differences between task means</li>
+<li><strong>Within-group variance</strong>: Variation within each task</li>
+</ul>
+<p><strong>Eta-squared (η²)</strong> = proportion of variance explained by task type</p>
+<table>
+<thead>
+<tr>
+<th>η² Value</th>
+<th>Interpretation</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>0.01</td>
+<td>Small effect (1% explained)</td>
+</tr>
+<tr>
+<td>0.06</td>
+<td>Medium effect (6% explained)</td>
+</tr>
+<tr>
+<td>0.14</td>
+<td>Large effect (14% explained)</td>
+</tr>
+</tbody>
+</table>
+<h3 id="What-This-Tells-Us">What This Tells Us<a class="anchor-link" href="#What-This-Tells-Us">¶</a></h3><p>If η² is large for a metric, that metric systematically differs across tasks. This complements Cohen's d (which only compared two groups) by considering all five task types simultaneously.</p>
 </div>
 </div>
 </div>
@@ -9494,7 +9801,20 @@ eta-squared interpretation: 0.01=small, 0.06=medium, 0.14=large
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
 <hr/>
-<h2 id="9.-Feature-Overlap-(Jaccard-Similarity)">9. Feature Overlap (Jaccard Similarity)<a class="anchor-link" href="#9.-Feature-Overlap-(Jaccard-Similarity)">¶</a></h2><p>How similar are the top activated features across different task types? Jaccard similarity measures the overlap between sets of top features.</p>
+<h2 id="9.-Domain-Profile-Similarity">9. Domain Profile Similarity<a class="anchor-link" href="#9.-Domain-Profile-Similarity">¶</a></h2><h3 id="The-Question">The Question<a class="anchor-link" href="#The-Question">¶</a></h3><p>Which task types have similar "computational profiles"?</p>
+<h3 id="The-Method">The Method<a class="anchor-link" href="#The-Method">¶</a></h3><p>Since we don't have individual feature IDs in this dataset, we compute <strong>profile similarity</strong> based on the aggregated metrics:</p>
+<ol>
+<li>For each task type, compute the mean of each length-controlled metric</li>
+<li>This gives a "profile vector" for each task</li>
+<li>Compute <strong>cosine similarity</strong> between all pairs of profiles</li>
+</ol>
+<p><strong>Cosine similarity</strong> ranges from -1 (opposite) to +1 (identical):</p>
+<ul>
+<li>+1.0 = Profiles point in the same direction</li>
+<li>0.0 = Profiles are orthogonal (unrelated)</li>
+<li>-1.0 = Profiles point in opposite directions</li>
+</ul>
+<h3 id="What-This-Tells-Us">What This Tells Us<a class="anchor-link" href="#What-This-Tells-Us">¶</a></h3><p>Tasks with similar profiles use features with similar statistical properties, suggesting they operate in similar "computational regimes."</p>
 </div>
 </div>
 </div>
@@ -9625,7 +9945,24 @@ eta-squared interpretation: 0.01=small, 0.06=medium, 0.14=large
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
 <hr/>
-<h2 id="10.-Residual-Distributions-(KDE)">10. Residual Distributions (KDE)<a class="anchor-link" href="#10.-Residual-Distributions-(KDE)">¶</a></h2><p>Visualize the full distribution of residualized metrics using kernel density estimation (KDE).</p>
+<h2 id="10.-Residual-Distributions-(KDE)">10. Residual Distributions (KDE)<a class="anchor-link" href="#10.-Residual-Distributions-(KDE)">¶</a></h2><h3 id="The-Question">The Question<a class="anchor-link" href="#The-Question">¶</a></h3><p>What do the full distributions look like after length control?</p>
+<h3 id="The-Method:-Kernel-Density-Estimation-(KDE)">The Method: Kernel Density Estimation (KDE)<a class="anchor-link" href="#The-Method:-Kernel-Density-Estimation-(KDE)">¶</a></h3><p><strong>KDE</strong> is a way to visualize the probability distribution of a variable:</p>
+<ul>
+<li>Smoother than histograms</li>
+<li>Shows the "shape" of each group's distribution</li>
+<li>Overlapping distributions = hard to distinguish</li>
+<li>Separated distributions = clear signal</li>
+</ul>
+<h3 id="What-We're-Looking-For">What We're Looking For<a class="anchor-link" href="#What-We're-Looking-For">¶</a></h3><p>For metrics with high effect sizes (influence, concentration):</p>
+<ul>
+<li>Distributions should be visibly separated by task type</li>
+<li>Grammar (CoLA) should be shifted relative to reasoning tasks</li>
+</ul>
+<p>For metrics with low effect sizes (n_active after control):</p>
+<ul>
+<li>Distributions should largely overlap</li>
+<li>No visible separation</li>
+</ul>
 </div>
 </div>
 </div>
@@ -9923,7 +10260,7 @@ FINAL SUMMARY: What Activation Topology Can Detect (Length-Controlled)
 <div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
 <div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain" tabindex="0">
 <pre>
-Analysis completed: 2026-02-23 09:40:09
+Analysis completed: 2026-02-23 09:50:12
 All effect sizes are LENGTH-CONTROLLED via residualization.
 </pre>
 </div>
