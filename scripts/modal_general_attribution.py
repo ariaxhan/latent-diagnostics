@@ -124,7 +124,10 @@ def compute_attribution_metrics(
     results = []
     failed = 0
     failed_indices = []
-    checkpoint_path = "/results/attribution_checkpoint.json"
+    # Unique checkpoint per dataset based on sample count + first domain
+    first_domain = samples[0].get('domain', 'unknown') if samples else 'unknown'
+    checkpoint_id = f"{len(samples)}_{first_domain.replace(' ', '_')[:20]}"
+    checkpoint_path = f"/results/checkpoint_{checkpoint_id}.json"
     start_idx = 0
 
     # Resume from checkpoint if exists
