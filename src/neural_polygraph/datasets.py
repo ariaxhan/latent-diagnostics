@@ -388,7 +388,11 @@ class DatasetLoader:
         )
 
     def _load_gsm8k(self, n_samples: int, split: str) -> list[Sample]:
-        """Load GSM8K - grade-school math word problems."""
+        """Load GSM8K - grade-school math word problems.
+
+        Truncates to prevent OOM during attribution while preserving
+        the math reasoning structure (problem + first solution steps).
+        """
         ds = load_dataset("gsm8k", "main", split="test" if split == "validation" else split)
         samples = []
 
@@ -396,22 +400,25 @@ class DatasetLoader:
             if len(samples) >= n_samples:
                 break
 
-            question = item["question"]
-            answer = item["answer"]
+            question = item["question"][:250]  # Truncate problem
+            answer = item["answer"][:200]  # Truncate solution
 
-            # Full chain-of-thought format
             samples.append(Sample(
                 text=f"Problem: {question}\nSolution: {answer}",
                 source="gsm8k",
                 domain="math_reasoning",
                 label="math_problem",
-                metadata={"question": question, "answer": answer},
+                metadata={"question": item["question"], "answer": item["answer"]},
             ))
 
         return samples
 
     def _load_humaneval(self, n_samples: int, split: str) -> list[Sample]:
-        """Load HumanEval - code synthesis problems."""
+        """Load HumanEval - code synthesis problems.
+
+        Truncates to prevent OOM during attribution while preserving
+        the code synthesis structure (signature + docstring + partial solution).
+        """
         ds = load_dataset("openai_humaneval", split="test")
         samples = []
 
@@ -419,23 +426,26 @@ class DatasetLoader:
             if len(samples) >= n_samples:
                 break
 
-            prompt = item["prompt"]
-            canonical = item.get("canonical_solution", "")
+            prompt = item["prompt"][:300]  # Truncate prompt
+            canonical = item.get("canonical_solution", "")[:200]  # Truncate solution
             task_id = item.get("task_id", "")
 
-            # Include the function signature and docstring
             samples.append(Sample(
                 text=f"{prompt}\n{canonical}",
                 source="humaneval",
                 domain="code_synthesis",
                 label=task_id,
-                metadata={"prompt": prompt, "solution": canonical, "task_id": task_id},
+                metadata={"prompt": item["prompt"], "solution": item.get("canonical_solution", ""), "task_id": task_id},
             ))
 
         return samples
 
     def _load_cnn_dailymail(self, n_samples: int, split: str) -> list[Sample]:
-        """Load CNN/DailyMail - summarization (long-context abstraction)."""
+        """Load CNN/DailyMail - summarization (long-context abstraction).
+
+        Note: Attribution is memory-intensive. We truncate aggressively
+        but still capture the abstraction regime (input → compressed output).
+        """
         ds = load_dataset("cnn_dailymail", "3.0.0", split=split)
         samples = []
 
@@ -446,9 +456,13 @@ class DatasetLoader:
             article = item["article"]
             highlights = item["highlights"]
 
-            # Truncate article for attribution (keep summary full)
+            # Aggressive truncation for attribution (OOM prevention)
+            # Still captures the compression regime: article excerpt → summary
+            article_excerpt = article[:300]
+            summary_excerpt = highlights[:200]
+
             samples.append(Sample(
-                text=f"Article: {article[:800]}\n\nSummary: {highlights}",
+                text=f"Article: {article_excerpt}\n\nSummary: {summary_excerpt}",
                 source="cnn_dailymail",
                 domain="summarization",
                 label="abstractive_summary",
