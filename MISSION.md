@@ -46,6 +46,31 @@
 
 ---
 
+## ψ:PIVOT_EXPERIMENT (Definitive Test)
+
+```
+●question
+  Does signal survive length regression?
+
+●results
+  BEFORE length control:
+    n_active:      d = -2.17  (r=0.98 with length)
+    influence:     d =  3.22  (r=-0.80 with length)
+    concentration: d =  2.36  (r=-0.63 with length)
+
+  AFTER length control (residualized):
+    n_active_resid:      d = 0.07  → COLLAPSES (was entirely length)
+    influence_resid:     d = 1.08  → PERSISTS ✓
+    concentration_resid: d = 0.87  → PERSISTS ✓
+
+●verdict
+  ✓ SIGNAL PERSISTS
+  genuine computational regime difference
+  NOT length-driven activation scaling
+```
+
+---
+
 ## ψ:FINDINGS
 
 ```
@@ -56,8 +81,8 @@
   HellaSwag:           influence=0.0038, conc=0.0013
   PAWS (paraphrase):   influence=0.0034, conc=0.0018 → DIFFUSE
 
-  effect_size: d=3.22 (grammar vs others), p<10^-50
-  signal_survives_length_control: partial_r=0.585
+  RAW effect_size: d=3.22 (grammar vs others)
+  AFTER LENGTH CONTROL: d=1.08 (still large, genuine signal)
 
 ●truthfulness_analysis (200 samples, TruthfulQA)
   truthful:  influence=0.00529, conc=0.00256

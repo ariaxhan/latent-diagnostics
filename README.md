@@ -13,14 +13,16 @@ We introduce a framework that analyzes **internal activation topology** to chara
 
 ## Key Results
 
-| Detection Task | Effect Size | Status |
-|----------------|-------------|--------|
-| Task type (grammar vs reasoning) | d=3.2 | **Works** |
-| Computational complexity | d=2.4 | **Works** |
-| Adversarial/anomalous inputs | d=1.2 | **Works** |
-| Truthfulness | d=0.05 | **Doesn't work** |
+| Detection Task | Raw d | After Length Control | Status |
+|----------------|-------|---------------------|--------|
+| Task type (grammar vs reasoning) | 3.2 | **1.08** | **Works** |
+| Computational complexity | 2.4 | **0.87** | **Works** |
+| Adversarial/anomalous inputs | 1.2 | — | Works |
+| Truthfulness | 0.05 | — | Doesn't work |
 
-**The finding:** Simple tasks (grammar) produce focused, high-influence computation. Complex tasks (reasoning) produce diffuse, low-influence computation. But true vs false statements look identical internally.
+**The pivot experiment:** Signal PERSISTS after regressing out text length. This is genuine computational regime difference, not length-driven scaling.
+
+**The finding:** Simple tasks (grammar) produce focused, high-influence computation. Complex tasks (reasoning) produce diffuse, low-influence computation. True vs false statements look identical internally.
 
 ## What We Measure
 
