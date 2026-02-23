@@ -1,47 +1,74 @@
 # Experiments
 
-## Active Experiments (Injection Detection)
+## Key Finding
 
-| Script | Purpose |
-|--------|---------|
-| `detection.py` | Main detection experiment — calibrate and evaluate on PINT benchmark |
-| `analyze.py` | Deep geometry analysis — entropy, distributions, extreme cases |
-| `visualize.py` | Generate figures — ROC, distributions, radar charts |
+**Activation topology measures HOW a model computes, not WHETHER it's correct.**
 
-### Core Data
+| Detection Task | Effect Size | Works? |
+|----------------|-------------|--------|
+| Task type (grammar vs reasoning) | d=3.2 | Yes |
+| Computational complexity | d=2.4 | Yes |
+| Adversarial inputs | d=1.2 | Yes |
+| Truthfulness | d=0.05 | No |
 
-- **Attribution metrics**: `../data/results/pint_attribution_metrics.json` (136 samples from PINT)
-- **Trained detector**: `injection_detection/runs/*/detector.json`
+## Active Experiments
 
-### Running
+| Script | Purpose | Key Result |
+|--------|---------|------------|
+| `domain_figures.py` | Generate paper figures | 5 figures in `figures/domain_analysis/` |
+| `domain_analysis.py` | Cross-domain comparison | d=3.2 grammar vs others |
+| `truthfulness_analysis.py` | True vs false statements | No signal (d=0.05) |
+| `diagnostics.py` | Statistical analysis suite | Length confound analysis |
+
+## Data
+
+| File | Samples | Finding |
+|------|---------|---------|
+| `data/results/domain_attribution_metrics.json` | 210 | Task type separates |
+| `data/results/truthfulness_metrics_clean.json` | 200 | No truthfulness signal |
+| `data/results/pint_attribution_metrics.json` | 136 | Injection separates |
+
+## Running
 
 ```bash
-# Step 1: Compute attribution metrics on Modal GPU
-modal run scripts/modal_pint_benchmark.py
+# Generate figures for paper
+python experiments/domain_figures.py
 
-# Step 2: Run detection experiment
-python experiments/detection.py
-
-# Step 3: Visualize results
-python experiments/visualize.py
-
-# Step 4: Deep analysis
-python experiments/analyze.py
+# Compute new attribution metrics (parallel, crash-safe)
+modal run scripts/modal_general_attribution.py \
+  --input-file data/domain_analysis/domain_samples.json \
+  --output-file data/results/domain_attribution_metrics.json
 ```
+
+## Robust Metrics
+
+**Use these:**
+- `mean_influence` — causal strength between features
+- `concentration` — focused vs diffuse computation
+- `mean_activation` — signal strength
+
+**Don't use (confounded by length):**
+- `n_active` — r=0.98 with text length
+- `n_edges` — r=0.96 with text length
+
+## Figures
+
+All in `figures/domain_analysis/`:
+
+| Figure | Shows |
+|--------|-------|
+| fig1_domain_radar.png | Radar chart of 5 domains |
+| fig2_influence_concentration.png | Scatter plot, domain clustering |
+| fig3_influence_gradient.png | Bar chart: focused → diffuse |
+| fig4_length_control.png | Proof that influence ≠ length |
+| fig5_effect_sizes.png | Cohen's d for all metrics |
 
 ## Archive
 
-The `archive/` directory contains historical experiments from hallucination detection research. These informed the pivot to injection detection but are not part of the active workflow.
+The `archive/` directory contains historical experiments that informed the current approach:
 
-**Key insight from archived work:** SAE activation patterns (spectroscopy) failed to discriminate hallucinations (Cohen's d < 0.1). The breakthrough came from switching to attribution graphs — measuring how features influence each other, not just which ones activate.
+- Hallucination detection (failed, d < 0.1)
+- SAE spectroscopy (failed)
+- Various geometry approaches (limited signal)
 
-### Archived Experiments
-
-| Experiment | Method | Result |
-|------------|--------|--------|
-| `01_spectroscopy.py` | L0 norm, reconstruction error, Gini | Failed (d < 0.1) |
-| `02_geometry.py` | Inertia tensor, sphericity | Limited signal |
-| `03_ghost_features.py` | Differential feature identification | Interesting but not detection |
-| `04-07_*.py` | Various approaches | See individual files |
-
-The archived work is preserved as research history — it shows why we pivoted from "what features activate" to "how features influence each other."
+The breakthrough came from switching to **influence distribution** (how features affect each other) rather than **feature counts** (which just track length).
