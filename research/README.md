@@ -1,132 +1,58 @@
-# Neural Polygraph: Prompt Injection Detection System
+# Research
 
-**Project:** SAE-based injection detection with physics foundations
-**Status:** Research → System transition
-**Last Updated:** 2026-02-20
+This directory documents the research methodology behind the latent diagnostics system.
 
----
+## What This System Actually Does
 
-## Vision
+The latent diagnostics system extracts and analyzes **SAE (Sparse Autoencoder) attribution metrics** from language model internals. It provides:
 
-A **three-layer defense system** for prompt injection:
+1. **Metric Extraction**: 9 graph-theoretic metrics from SAE attribution graphs
+   - `n_active`: Number of active features
+   - `mean_activation`: Average feature activation strength
+   - `max_activation`: Peak activation
+   - `total_activation`: Sum of all activations
+   - `activation_entropy`: Distribution entropy
+   - `top_10_concentration`: How concentrated in top features
+   - `sparsity`: Fraction of zero activations
+   - `mean_node_degree`: Graph connectivity
+   - `median_edge_weight`: Typical edge strength
 
-```
-EVOLUTION    → Self-improving defense (AlphaEvolve, regret minimization)
-ENFORCEMENT  → Multi-agent STL rules with penalties
-DETECTION    → SAE features, witnesses, cross sections
-```
+2. **Domain Profiling**: Comparing activation patterns across text types (code, prose, scientific, poetry)
 
----
+3. **Visualization**: PCA projections showing how different domains cluster in metric space
 
-## Theoretical Foundations (Six Frameworks)
+## What This System Does NOT Do
 
-| # | Framework | Application |
-|---|-----------|-------------|
-| 1 | **Wannier-Stark Localization** | Phase transitions (localized → ergodic) |
-| 2 | **GOE-S-Matrix** | Cross sections and probability tables |
-| 3 | **Hyperon Many-Body Effects** | Layered defense through collective stiffness |
-| 4 | **Knot Theory y-ification** | Topological signatures for disambiguation |
-| 5 | **Multi-Agent STL** | Temporal logic rules with penalties |
-| 6 | **AlphaEvolve/MARL** | Evolutionary defense, regret minimization |
+- **It does not detect prompt injections** (attempted, failed due to length confounding)
+- **It does not detect hallucinations** (attempted, failed - signal indistinguishable from noise)
+- **It does not detect truthfulness** (tested, d=0.05 effect size - no signal)
 
----
+## Key Findings
 
-## Document Index
+### Confirmed
+- Different text domains have measurably different SAE activation profiles
+- Metric extraction is reproducible and computationally tractable
+- PCA on metrics shows meaningful clustering by domain
 
-| Document | Purpose |
-|----------|---------|
-| [`injection-detection-framework.md`](./injection-detection-framework.md) | Two-stage detection pipeline |
-| [`physics-foundations.md`](./physics-foundations.md) | Frameworks 1-4 with AI mappings |
-| [`enforcement-evolution.md`](./enforcement-evolution.md) | Frameworks 5-6: STL + AlphaEvolve |
-| [`attack-cross-sections.md`](./attack-cross-sections.md) | Cross section mapping for 5 attack types |
-| [`witness-checklist.md`](./witness-checklist.md) | Operational decision tree |
-| [`open-questions.md`](./open-questions.md) | Research hypotheses |
-| [`2026-02-20-theory-benchmarks.md`](./2026-02-20-theory-benchmarks.md) | Physics papers, transcoders, PI benchmarks |
+### Disproved
+- "Injection detection via activation topology" - confounded by text length (r=0.96)
+- "Hallucination detection via ghost features" - signal too weak
+- "Physics-inspired witnesses (P, E, I)" - never implemented, likely wouldn't work
 
----
+## Archived Research
 
-## Handoffs
+See `_archived/` for speculative research directions that were not validated:
+- Neural Polygraph injection detection framework
+- Physics analogies (Wannier-Stark, GOE-S-Matrix)
+- Vector native notation experiments
 
-| Document | Purpose |
-|----------|---------|
-| [`../handoffs/2026-02-20-beat-lakera.md`](../handoffs/2026-02-20-beat-lakera.md) | Session handoff: Beat Lakera on PINT |
+These are preserved for historical context but should not be treated as working methodology.
 
----
+## Current Focus
 
-## Quick Reference
+The honest state of this research:
+1. **We can extract metrics** - this works reliably
+2. **We can see domain differences** - real signal exists
+3. **We cannot classify** - detection claims were premature
 
-### The Three Witnesses
-```
-P(t) = Survival Probability (system prompt preserved?)
-E(t) = Entanglement (user input mixing with core logic?)
-I(t) = Imbalance (model focus shifted to injection?)
-```
-
-### Phase Classification
-```
-Localized: P > 0.8, E < 0.2, I < 0.2  → Safe
-Critical:  (in between)               → Warning
-Ergodic:   P < 0.4 or E > 0.6 or I > 0.6  → Compromised
-```
-
-### Two-Stage Architecture
-```
-Stage 1: Pre-generation screening (cross section lookup)
-Stage 2: Runtime monitoring (witness computation)
-```
-
----
-
-## Implementation Status
-
-### Layer 1: Detection
-| Component | Status | Location |
-|-----------|--------|----------|
-| SAE feature extraction | ✅ Done | `src/hallucination_detector/sae_utils.py` |
-| Geometric analysis | ✅ Done | `src/hallucination_detector/geometry.py` |
-| Survival probability | ❌ Not implemented | `witness_metrics.py` |
-| Three witnesses | ❌ Not implemented | `witness_metrics.py` |
-| Cross section tables | ❌ Not implemented | `probability_tables.py` |
-| IPI-1000 benchmark | ❌ Not created | `experiments/data/` |
-
-### Layer 2: Enforcement
-| Component | Status | Location |
-|-----------|--------|----------|
-| STL rule parser | ❌ Not implemented | `stl_checker.py` |
-| Penalty functions | ❌ Not implemented | `penalty.py` |
-| Security Agent | ❌ Not designed | — |
-| Multi-agent coordinator | ❌ Not implemented | — |
-
-### Layer 3: Evolution
-| Component | Status | Location |
-|-----------|--------|----------|
-| Defense evolver | ❌ Not implemented | `evolve.py` |
-| Regret tracker | ❌ Not implemented | `regret.py` |
-| Attack co-evolution | ❌ Not implemented | — |
-
----
-
-## Key Hypotheses
-
-1. Successful injection = localized→ergodic phase transition
-2. Attack prompts cluster in high-σ regions (resonances)
-3. Multi-layer defense > single-layer (stiffness)
-4. Topological signatures distinguish similar-looking prompts
-
----
-
-## Related Work
-
-**Physics Sources:**
-- arXiv:2602.01835 — GOE-S-Matrix probability tables
-- arXiv:2602.07939 — Hyperon puzzle
-- arXiv:2602.17435 — Knot theory y-ification
-
-**AI Security Sources:**
-- PromptArmor threat intelligence
-- OWASP LLM Top 10
-- CaMeL (Google)
-
-**SAE/Mech Interp:**
-- Anthropic SAE research
-- Apple instruction-following dimension
+The value is in the diagnostic toolkit, not in any classifier.

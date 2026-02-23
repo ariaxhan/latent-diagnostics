@@ -1,3 +1,8 @@
+> **ARCHIVED**: This document represents speculative research directions
+> that were not empirically validated. The "Neural Polygraph" injection
+> detection system described here was never fully implemented. For what
+> actually works, see the main experiments/ and notebooks/ directories.
+
 # Research Notes: Theory Foundations + Benchmark Survey
 
 **Date:** 2026-02-20

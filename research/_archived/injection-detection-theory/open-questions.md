@@ -1,3 +1,8 @@
+> **ARCHIVED**: This document represents speculative research directions
+> that were not empirically validated. The "Neural Polygraph" injection
+> detection system described here was never fully implemented. For what
+> actually works, see the main experiments/ and notebooks/ directories.
+
 # Open Research Questions
 
 **Source:** LOG entries from physics framework analysis

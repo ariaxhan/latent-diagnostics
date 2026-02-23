@@ -1,3 +1,9 @@
+> **ARCHIVED**: This document represents speculative research directions
+> that were not empirically validated. The "vector native" notation
+> experiments here were about prompt engineering aesthetics, not the
+> latent diagnostics system. For what actually works, see the main
+> experiments/ and notebooks/ directories.
+
 # Empirical Validation of Vector Native Hypothesis
 
 **Date:** 2026-02-22
