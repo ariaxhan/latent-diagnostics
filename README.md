@@ -1,6 +1,6 @@
 # Latent Diagnostics
 
-**Language models switch between different internal processing modes depending on the task type - and those modes are measurable.**
+**Language models switch between different internal processing modes depending on the task type, and those modes are measurable.**
 
 ## What This Does
 
