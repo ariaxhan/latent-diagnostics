@@ -1,12 +1,10 @@
 # Latent Diagnostics
 
-**Language models switch between different internal processing modes depending on the task type, and those modes are measurable.**
+Quantifying the internal processing modes large language models shift through depending on task type.
 
-## What This Does
+## What This Is
 
-We measure *how* a model computes, not *whether* it's correct. By extracting attribution graphs from model internals (via transcoders/SAEs), we compute metrics that characterize the computational regime: is the model doing focused grammatical processing, or diffuse multi-hop reasoning?
-
-This is like measuring heart rate and brain patterns: you can tell if someone is doing math versus poetry (different patterns), and whether they're confused (elevated activity) - but you can't tell if they got the math right.
+A framework for measuring, calculating, and visualizing the distinct computational patterns that emerge across different LLM tasks. We extract attribution graphs from model internals (via transcoders/SAEs) and compute metrics that characterize each computational regime.
 
 ## Key Discovery
 
