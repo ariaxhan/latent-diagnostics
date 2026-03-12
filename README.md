@@ -1,115 +1,117 @@
 # Latent Diagnostics
 
-Quantifying the internal processing modes large language models shift through depending on task type.
+Measuring computational regimes inside LLMs via attribution graph geometry.
 
 ## What This Is
 
-A framework for measuring, calculating, and visualizing the distinct computational patterns that emerge across different LLM tasks. We extract attribution graphs from model internals (via transcoders/SAEs) and compute metrics that characterize each computational regime.
+We extract attribution graphs from model internals (via transcoders/SAEs) and compute metrics that characterize different computational patterns. Different task types produce measurably different geometric signatures.
 
-## Key Discovery
+## Key Findings
 
-After controlling for text length, we found:
+### 1. Length-Controlled Metric Effects
 
-| Metric | What It Measures | After Length Control |
-|--------|------------------|---------------------|
-| Influence | Causal strength between features | d=1.08 (genuine signal) |
-| Concentration | Focused vs diffuse computation | d=0.87 (genuine signal) |
-| N_active | Feature count | d=0.07 (COLLAPSES - was length artifact) |
+| Metric | What It Measures | Effect Size (Cohen's d) |
+|--------|------------------|------------------------|
+| Influence | Causal strength between features | d=1.08 |
+| Concentration | Focused vs diffuse computation | d=0.87 |
+| N_active | Feature count | d=0.07 (length artifact) |
 
-**The pattern:**
-- Grammar tasks (CoLA): High influence, high concentration = focused computation
-- Reasoning tasks (WinoGrande, HellaSwag): Low influence, low concentration = diffuse computation
-- Truthfulness (TruthfulQA): No signal (d=0.05) - true/false statements look identical internally
+### 2. Geometric Structure of Task Domains
+
+Using inertia tensor analysis (adapted from AIDA-TNG galaxy morphology):
+
+| Domain | Shape | Effective Dim | Interpretation |
+|--------|-------|---------------|----------------|
+| Grammar | Prolate | 2.19 | Focused along one computational axis |
+| Commonsense | Prolate | 2.26 | Slightly more distributed |
+| NLI | Prolate | 1.73 | Most concentrated variance |
+| Paraphrase | Prolate | 2.16 | Similar to grammar |
+
+All task domains are **prolate** (cigar-shaped in metric space) — variance concentrates along a dominant axis rather than spreading uniformly.
+
+### 3. What Works vs What Doesn't
+
+**Works:**
+- Task type classification (grammar vs reasoning)
+- Computational complexity estimation
+- Anomaly detection (out-of-distribution inputs)
+
+**Doesn't work:**
+- Hallucination detection
+- Truthfulness detection (d=0.05)
+- Output correctness prediction
+
+The model processes hallucinations with the same internal geometry as truthful statements.
 
 ## The Journey
 
-This repo documents our research journey:
+1. **Dec 2025:** Started with hallucination detection via feature spectroscopy
+2. **Jan 2026:** Discovered most "signal" was text length confounding (r=0.98)
+3. **Feb 2026:** Pivoted to task-type diagnostics with length control
+4. **Mar 2026:** Added geometric analysis — domain shapes in metric space
 
-1. **Started:** Hallucination detection via feature spectroscopy (Dec 2025)
-2. **Realized:** Most "signal" was text length confounding (Jan 2026)
-3. **Pivoted:** Task-type diagnostics with length control (Feb 2026)
-4. **Found:** Genuine computational regime differences
-
-See `archive/disproved/` for our early experiments with honest disclaimers about what didn't work.
+See `archive/disproved/` for early experiments with honest disclaimers.
 
 ## Directory Structure
 
 ```
-notebooks/                    # START HERE - 5-part narrative series
+notebooks/                    # START HERE - narrative series
   01_introduction.ipynb       # What this project discovers
   02_the_journey.ipynb        # From hallucination detection to task diagnostics
   03_methodology.ipynb        # How we extract and analyze metrics
   04_core_results.ipynb       # Main findings with visualizations
-  05_negative_results.ipynb   # What doesn't work (and why that matters)
+  05_negative_results.ipynb   # What doesn't work (and why)
 
-experiments/                  # Reproducible analysis code
-  core/                       # Main validated analyses
+experiments/
+  core/                       # Main analyses (geometric_analysis.py, etc.)
   statistics/                 # Statistical tests
   visualization/              # Figure generation
   utilities/                  # Shared code
   _archive/                   # Historical experiments
+  _runs/                      # Timestamped analysis outputs
 
-figures/                      # Generated visualizations
-  paper/                      # Core figures
-
+figures/paper/                # Core figures
 data/results/                 # Computed metrics (JSON)
 scripts/                      # Modal GPU runners
-archive/disproved/            # Early work with honest disclaimers
+archive/disproved/            # Early work with honest post-mortems
 ```
 
 ## Quick Start
 
-**Read the notebooks first** - they tell the complete story:
-```bash
-jupyter notebook notebooks/01_introduction.ipynb
-```
-
-**Run the analysis:**
 ```bash
 pip install -e .
 
-# Generate figures (all length-controlled)
+# Run geometric analysis
+python experiments/core/geometric_analysis.py --analyze
+
+# Generate figures
 python experiments/visualization/generate_figures.py
 
-# Compute attribution metrics (parallel, crash-safe)
+# Compute attribution metrics (GPU, parallel)
 modal run scripts/modal_general_attribution.py \
   --input-file data/domain_analysis/domain_samples.json \
   --output-file data/results/domain_attribution_metrics.json
 ```
 
-## What Works vs What Doesn't
+## Methodology
 
-**Works:**
-- Task type classification (grammar vs reasoning vs paraphrase)
-- Computational complexity estimation
-- Anomaly/adversarial input detection
+1. **Attribution Graphs:** Extract causal graphs via circuit-tracer showing feature→feature influence during inference
 
-**Doesn't Work:**
-- Hallucination detection
-- Truthfulness detection
-- Output correctness prediction
+2. **Metrics:**
+   - `mean_influence`: Average edge weight (causal strength)
+   - `concentration`: Gini coefficient of influence distribution
+   - `mean_activation`: Feature activation strength
 
-The model processes hallucinations and false statements with the same internal structure as truthful ones. This is a fundamental limitation: we measure computation type, not output quality.
+3. **Length Control:** Residualize against text length (raw n_active correlates r=0.98 with tokens)
 
-## How It Works
-
-1. **Attribution Graphs:** We use circuit-tracer to extract causal graphs showing how features influence each other during inference. Each node is a feature (sparse autoencoder direction), each edge is causal influence.
-
-2. **Metrics:** From these graphs we extract:
-   - `mean_influence`: Average edge weight (how strongly features drive each other)
-   - `concentration`: How focused the influence is (Gini coefficient)
-   - `mean_activation`: Average feature activation strength
-
-3. **Length Control:** Raw feature counts correlate r=0.98 with text length - longer inputs activate more features, trivially. We residualize metrics against length to isolate genuine computational differences.
-
-4. **The Signal:** After length control, grammar tasks still show d=1.08 higher influence than reasoning tasks. This isn't length - it's genuine regime difference.
+4. **Geometric Analysis:** Treat domain samples as point clouds in 6D metric space, compute shape via inertia tensor eigendecomposition (axis ratios, effective dimensionality)
 
 ## Limitations
 
-1. **Requires model internals** - Only works on models with SAE/transcoder access (currently Gemma 2 via Goodfire)
-2. **Compute intensive** - ~30 sec/sample on A100
-3. **Measures structure, not correctness** - Can't detect hallucinations or factual errors
-4. **Must control for length** - Raw n_active is confounded (r=0.98 with token count)
+- **Requires model internals** — SAE/transcoder access (currently Gemma 2 via Goodfire)
+- **Compute intensive** — ~30 sec/sample on A100
+- **Measures structure, not correctness** — can't detect hallucinations
+- **Length confounding** — must residualize (raw n_active is artifact)
 
 ## License
 
