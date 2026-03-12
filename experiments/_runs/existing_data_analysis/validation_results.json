@@ -1,0 +1,46 @@
+{
+  "timestamp": "2026-03-12T14:49:43.431626",
+  "classification": {
+    "accuracy_mean": 0.8223484848484848,
+    "accuracy_std": 0.02819744394110493,
+    "per_fold": [
+      0.7878787878787878,
+      0.8484848484848485,
+      0.7878787878787878,
+      0.84375,
+      0.84375
+    ],
+    "n_samples": 163,
+    "n_features": 6,
+    "feature_importances": {
+      "mean_influence_resid": 0.10622451832036446,
+      "max_influence_resid": 0.20725131336491295,
+      "top_100_concentration_resid": 0.09827031261653466,
+      "mean_activation_resid": 0.08242673870903344,
+      "logit_entropy_resid": 0.27661368293134014,
+      "max_logit_prob_resid": 0.22921343405781436
+    }
+  },
+  "bootstrap_cis": {
+    "grammar_vs_paraphrase_logit_entropy_resid": [
+      1.5799103622845374,
+      2.5656958035775173,
+      4.057454041988505
+    ],
+    "grammar_vs_paraphrase_mean_influence_resid": [
+      -0.8931878470887264,
+      -0.31973216180736896,
+      0.09763784565535878
+    ],
+    "commonsense_vs_paraphrase_logit_entropy_resid": [
+      3.123456929982726,
+      4.275945768001357,
+      5.682385102291984
+    ],
+    "commonsense_vs_paraphrase_mean_influence_resid": [
+      -5.220355419735309,
+      -3.446863772139886,
+      -2.3487084007792083
+    ]
+  }
+}

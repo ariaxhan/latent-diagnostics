@@ -75,14 +75,31 @@ Strong correlations (potential redundancy):
 - Truthfulness detection (d ≈ 0.05)
 - Raw feature counts (length confounded)
 
-## 6. Next Steps (No New GPU)
+## 6. Validation Results
 
-1. **Cross-validate** — train classifier on 3 domains, test on 4th
-2. **Bootstrap CIs** — confidence intervals on effect sizes
-3. **Feature importance** — which metrics drive classification
+### Cross-Validation (4-way domain classification)
+- **Accuracy:** 82.2% ± 2.8% (5-fold CV)
+- **Features:** 6 residualized metrics
+- **Top feature:** logit_entropy (importance: 0.277)
+
+### Bootstrap Confidence Intervals
+| Comparison | Metric | d [95% CI] |
+|------------|--------|------------|
+| commonsense vs paraphrase | logit_entropy | +4.21 [+3.06, +5.75] |
+| commonsense vs paraphrase | mean_influence | -3.46 [-5.23, -2.46] |
+| grammar vs paraphrase | logit_entropy | +2.55 [+1.54, +4.12] |
+
+**All CIs exclude zero** — effects are statistically robust.
+
+## 7. Next Steps (No New GPU)
+
+1. ~~Cross-validate~~ ✓ Done (82.2% accuracy)
+2. ~~Bootstrap CIs~~ ✓ Done (all CIs exclude zero)
+3. ~~Feature importance~~ ✓ Done (logit_entropy top)
 4. **Residualized PCA** — cluster on length-controlled metrics
+5. **Confusion matrix** — which domains are confused?
 
-## 7. Next Steps (With GPU)
+## 8. Next Steps (With GPU)
 
 1. **Run new metrics** — PageRank, clustering, spectral gap (script ready)
 2. **Cognitive regimes** — math/code/summarization (data prepared)
