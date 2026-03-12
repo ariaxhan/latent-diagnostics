@@ -121,6 +121,71 @@ def compute_length_correlations(df: pd.DataFrame, metrics: List[str]) -> Dict:
     return results
 
 
+def residualize_metrics(df: pd.DataFrame, metrics: List[str]) -> pd.DataFrame:
+    """
+    Remove length confounding from metrics via linear regression.
+    Returns df with new columns: {metric}_resid
+    """
+    if "text" not in df.columns:
+        return df
+
+    df = df.copy()
+    df["text_length"] = df["text"].str.len()
+
+    for metric in metrics:
+        y = df[metric].fillna(0).values
+        X = df["text_length"].values.reshape(-1, 1)
+
+        # Simple linear regression
+        X_mean = X.mean()
+        y_mean = y.mean()
+        beta = np.sum((X.flatten() - X_mean) * (y - y_mean)) / (np.sum((X.flatten() - X_mean)**2) + 1e-10)
+        alpha = y_mean - beta * X_mean
+
+        # Residuals = actual - predicted
+        predicted = alpha + beta * X.flatten()
+        residuals = y - predicted
+
+        df[f"{metric}_resid"] = residuals
+
+    return df
+
+
+def compute_residualized_effect_sizes(df: pd.DataFrame, metrics: List[str]) -> Dict:
+    """Compute Cohen's d on length-residualized metrics."""
+    df_resid = residualize_metrics(df, metrics)
+    resid_metrics = [f"{m}_resid" for m in metrics]
+
+    # Filter to metrics that exist
+    resid_metrics = [m for m in resid_metrics if m in df_resid.columns]
+
+    domains = df_resid["domain"].unique()
+    results = {}
+
+    for metric in resid_metrics:
+        base_metric = metric.replace("_resid", "")
+        results[base_metric] = {}
+
+        for i, d1 in enumerate(domains):
+            for d2 in domains[i+1:]:
+                x1 = df_resid[df_resid["domain"] == d1][metric].dropna()
+                x2 = df_resid[df_resid["domain"] == d2][metric].dropna()
+
+                if len(x1) < 5 or len(x2) < 5:
+                    continue
+
+                pooled_std = np.sqrt(((len(x1)-1)*x1.std()**2 + (len(x2)-1)*x2.std()**2) / (len(x1)+len(x2)-2))
+                d = (x1.mean() - x2.mean()) / (pooled_std + 1e-10)
+                t_stat, p_val = stats.ttest_ind(x1, x2)
+
+                results[base_metric][f"{d1}_vs_{d2}"] = {
+                    "cohens_d_resid": float(d),
+                    "p_value": float(p_val),
+                }
+
+    return results
+
+
 def compute_pca_projection(df: pd.DataFrame, metrics: List[str]) -> Tuple[np.ndarray, np.ndarray]:
     """PCA projection of samples in metric space."""
     from sklearn.decomposition import PCA
@@ -226,7 +291,7 @@ def generate_visualizations(df: pd.DataFrame, metrics: List[str], output_dir: Pa
 
 
 def generate_report(df: pd.DataFrame, metrics: List[str], effect_sizes: Dict,
-                   length_corrs: Dict, output_dir: Path) -> str:
+                   length_corrs: Dict, resid_effects: Dict, output_dir: Path) -> str:
     """Generate markdown analysis report."""
 
     lines = [
@@ -270,6 +335,22 @@ def generate_report(df: pd.DataFrame, metrics: List[str], effect_sizes: Dict,
     all_effects.sort(key=lambda x: -abs(x[2]))
 
     for metric, comp, d, p in all_effects[:20]:
+        sig = "***" if p < 0.001 else "**" if p < 0.01 else "*" if p < 0.05 else ""
+        lines.append(f"| {comp} | {metric} | {d:.2f} | {p:.4f}{sig} |")
+
+    # LENGTH-RESIDUALIZED EFFECT SIZES (THE REAL SIGNAL)
+    lines.append("\n## Length-Residualized Effect Sizes (CLEAN SIGNAL)")
+    lines.append("\n| Comparison | Metric | Cohen's d (resid) | p-value |")
+    lines.append("|------------|--------|-------------------|---------|")
+
+    resid_all = []
+    for metric, comparisons in resid_effects.items():
+        for comp, stats_dict in comparisons.items():
+            resid_all.append((metric, comp, stats_dict["cohens_d_resid"], stats_dict["p_value"]))
+
+    resid_all.sort(key=lambda x: -abs(x[2]))
+
+    for metric, comp, d, p in resid_all[:15]:
         sig = "***" if p < 0.001 else "**" if p < 0.01 else "*" if p < 0.05 else ""
         lines.append(f"| {comp} | {metric} | {d:.2f} | {p:.4f}{sig} |")
 
@@ -324,6 +405,7 @@ def main():
     print("\nComputing statistics...")
     effect_sizes = compute_effect_sizes(df, available_metrics)
     length_corrs = compute_length_correlations(df, available_metrics)
+    resid_effects = compute_residualized_effect_sizes(df, available_metrics)
 
     # Generate visualizations
     print("\nGenerating visualizations...")
@@ -331,7 +413,7 @@ def main():
 
     # Generate report
     print("\nGenerating report...")
-    report = generate_report(df, available_metrics, effect_sizes, length_corrs, run_dir)
+    report = generate_report(df, available_metrics, effect_sizes, length_corrs, resid_effects, run_dir)
 
     with open(run_dir / "analysis_report.md", "w") as f:
         f.write(report)
@@ -345,7 +427,8 @@ def main():
             "metrics": available_metrics,
             "domains": list(df["domain"].unique()),
         },
-        "effect_sizes": effect_sizes,
+        "effect_sizes_raw": effect_sizes,
+        "effect_sizes_residualized": resid_effects,
         "length_correlations": length_corrs,
         "correlation_matrix": compute_correlation_matrix(df, available_metrics).to_dict(),
     }
