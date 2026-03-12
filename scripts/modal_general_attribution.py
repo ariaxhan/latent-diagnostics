@@ -1,21 +1,26 @@
 """
-Modal Runner for General Attribution Analysis (BULLETPROOF + GRAPH METRICS)
+Modal Runner for General Attribution Analysis (BULLETPROOF + GRAPH METRICS v3)
 
 - Parallel batches (model loads once per container)
 - Saves to Modal Volume after EVERY sample
 - Volume persists even if crash
 - Can pull data from volume anytime
 
-NEW METRICS (v2):
-- Degree distribution: out/in degree mean, std, max, skew
-- Hub analysis: top-k hub concentration
-- Spectral metrics: top eigenvalues, spectral gap, eigenvalue entropy, effective rank
-- Influence distribution: median, std, Gini coefficient
+METRICS (v3):
+  Basic: n_active, n_edges, mean/max influence, concentration
+  Degree: out/in degree mean, std, max, skew
+  Hub: top-k hub concentration, hub indices
+  Spectral: singular values, spectral gap, entropy, effective rank
+  Influence: median, std, p90, p99, Gini coefficient
+  PageRank: max, entropy, top-k mass, Gini, top indices
+  Reciprocity: bidirectional edge fraction, asymmetry
+  Clustering: local clustering coefficient (mean, std, max, weighted)
+  Diameter: reachability at distances 2-5, approximate diameter
 
 Usage:
     modal run scripts/modal_general_attribution.py \
-        --input-file data/cognitive_regimes/samples.json \
-        --output-file data/results/cognitive_regimes_metrics.json
+        --input-file data/domain_analysis/domain_samples.json \
+        --output-file data/results/domain_metrics_v3.json
 """
 
 import modal
@@ -256,6 +261,107 @@ def process_batch(batch: list, batch_id: int, run_id: str, max_tokens: int = 200
                             metrics['influence_gini'] = float(gini.item())
                     except Exception as e:
                         metrics['_error_influence_dist'] = str(e)[:50]
+
+                    # === PAGERANK (Power Iteration) ===
+                    try:
+                        # Normalize adjacency to transition matrix
+                        row_sums = adj_abs.sum(dim=1, keepdim=True)
+                        row_sums = torch.where(row_sums > 1e-10, row_sums, torch.ones_like(row_sums))
+                        P = adj_abs / row_sums
+
+                        n_nodes = P.shape[0]
+                        pr = torch.ones(n_nodes, device=P.device) / n_nodes
+                        damping = 0.85
+                        teleport = (1 - damping) / n_nodes
+
+                        # 20 iterations usually sufficient
+                        for _ in range(20):
+                            pr = damping * (P.T @ pr) + teleport
+
+                        pr_sorted, pr_indices = pr.sort(descending=True)
+                        metrics['pagerank_max'] = float(pr_sorted[0].item())
+                        metrics['pagerank_entropy'] = float(-(pr * (pr + 1e-10).log()).sum().item())
+                        metrics['pagerank_top10_mass'] = float(pr_sorted[:10].sum().item())
+                        metrics['pagerank_top50_mass'] = float(pr_sorted[:50].sum().item())
+
+                        # PageRank Gini (how concentrated is centrality?)
+                        pr_sorted_asc = pr.sort().values
+                        n_pr = len(pr_sorted_asc)
+                        pr_indices_gini = torch.arange(1, n_pr + 1, device=pr.device, dtype=torch.float32)
+                        pr_gini = (2 * (pr_indices_gini @ pr_sorted_asc) - (n_pr + 1) * pr_sorted_asc.sum()) / (n_pr * pr_sorted_asc.sum() + 1e-10)
+                        metrics['pagerank_gini'] = float(pr_gini.item())
+
+                        # Top PageRank feature indices (for intervention)
+                        metrics['top_10_pagerank_indices'] = pr_indices[:10].tolist()
+                    except Exception as e:
+                        metrics['_error_pagerank'] = str(e)[:50]
+
+                    # === RECIPROCITY (Bidirectional edges) ===
+                    try:
+                        # How symmetric is the causal graph?
+                        threshold = 0.01
+                        binary = (adj_abs > threshold).float()
+                        n_edges_total = binary.sum().item()
+
+                        # Reciprocal edges: A[i,j] > 0 AND A[j,i] > 0
+                        reciprocal = (binary * binary.T).sum().item()
+                        metrics['reciprocity'] = float(reciprocal / (n_edges_total + 1e-10))
+
+                        # Asymmetry: Frobenius norm of (A - A.T) / norm of A
+                        asymmetry = torch.norm(adj_abs - adj_abs.T) / (torch.norm(adj_abs) + 1e-10)
+                        metrics['asymmetry'] = float(asymmetry.item())
+                    except Exception as e:
+                        metrics['_error_reciprocity'] = str(e)[:50]
+
+                    # === LOCAL CLUSTERING COEFFICIENT ===
+                    try:
+                        # For weighted graphs: geometric mean of edge weights in triangles
+                        # Approximation: sample top-k nodes by degree
+                        threshold = 0.01
+                        binary = (adj_abs > threshold).float()
+
+                        # Number of triangles through each node
+                        # triangles[i] = sum_j,k A[i,j] * A[j,k] * A[k,i]
+                        A2 = binary @ binary
+                        triangles = (A2 * binary.T).sum(dim=1)
+
+                        # Possible triangles: degree * (degree - 1)
+                        degrees = binary.sum(dim=1)
+                        possible = degrees * (degrees - 1)
+
+                        # Local clustering coefficient per node
+                        cc = torch.where(possible > 0, triangles / possible, torch.zeros_like(triangles))
+
+                        metrics['clustering_coeff_mean'] = float(cc.mean().item())
+                        metrics['clustering_coeff_std'] = float(cc.std().item())
+                        metrics['clustering_coeff_max'] = float(cc.max().item())
+
+                        # Weighted by degree (larger hubs matter more)
+                        weighted_cc = (cc * degrees).sum() / (degrees.sum() + 1e-10)
+                        metrics['clustering_coeff_weighted'] = float(weighted_cc.item())
+                    except Exception as e:
+                        metrics['_error_clustering'] = str(e)[:50]
+
+                    # === GRAPH DIAMETER APPROXIMATION ===
+                    try:
+                        # Use matrix powers to estimate reachability
+                        # A^k[i,j] > 0 means path of length k exists
+                        threshold = 0.01
+                        binary = (adj_abs > threshold).float()
+
+                        # Check reachability at increasing distances
+                        reach = binary.clone()
+                        for k in range(2, 6):  # Check up to distance 5
+                            reach = torch.clamp(reach @ binary + reach, 0, 1)
+                            reachable_frac = (reach > 0).float().mean().item()
+                            metrics[f'reachable_at_dist_{k}'] = float(reachable_frac)
+                            if reachable_frac > 0.99:
+                                metrics['approx_diameter'] = k
+                                break
+                        else:
+                            metrics['approx_diameter'] = 6  # >5
+                    except Exception as e:
+                        metrics['_error_diameter'] = str(e)[:50]
 
             except Exception as e:
                 metrics['_error_adjacency'] = str(e)[:100]
