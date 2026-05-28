@@ -40,8 +40,8 @@ LABELS = {
     'paws': 'PAWS (Paraphrase)',
 }
 
-DATA_PATH = Path('/Users/ariaxhan/Downloads/Vaults/CodingVault/neural-polygraph/data/results/domain_attribution_metrics.json')
-OUTPUT_DIR = Path('/Users/ariaxhan/Downloads/Vaults/CodingVault/neural-polygraph/figures')
+DATA_PATH = Path('/Users/ariaxhan/Vaults/CodingVault/neural-polygraph/data/results/domain_attribution_metrics.json')
+OUTPUT_DIR = Path('/Users/ariaxhan/Vaults/CodingVault/neural-polygraph/figures')
 
 
 def load_domain_data():
