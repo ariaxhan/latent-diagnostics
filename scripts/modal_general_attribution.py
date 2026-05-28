@@ -165,6 +165,9 @@ def process_batch(batch: list, batch_id: int, run_id: str, max_tokens: int = 200
                     metrics['top_100_concentration'] = float(top_100 / (total + 1e-10))
                     metrics['top_1000_concentration'] = float(sorted_inf[:1000].sum().item() / (total + 1e-10))
 
+                    # === OUT INFLUENCE (used by hub analysis and spectral) ===
+                    out_influence = adj_abs.sum(dim=1)
+
                     # === DEGREE DISTRIBUTION ===
                     try:
                         threshold = 0.01
@@ -187,7 +190,6 @@ def process_batch(batch: list, batch_id: int, run_id: str, max_tokens: int = 200
 
                     # === HUB ANALYSIS ===
                     try:
-                        out_influence = adj_abs.sum(dim=1)
                         sorted_out, top_hub_indices = out_influence.sort(descending=True)
                         total_out = out_influence.sum().item()
 
@@ -214,7 +216,7 @@ def process_batch(batch: list, batch_id: int, run_id: str, max_tokens: int = 200
                             adj_sample = adj_abs
 
                         # SVD is more stable than eigendecomposition
-                        U, S, V = torch.linalg.svd(adj_sample, full_matrices=False)
+                        _, S, _ = torch.linalg.svd(adj_sample, full_matrices=False)
                         singular_values = S.sort(descending=True).values
 
                         metrics['singular_value_1'] = float(singular_values[0].item())
@@ -284,9 +286,21 @@ def process_batch(batch: list, batch_id: int, run_id: str, max_tokens: int = 200
             except Exception as e:
                 metrics['_error_feature_acts'] = str(e)[:50]
 
-            result = metrics
-            results.append(metrics)
-            print(f"[Batch {batch_id}] {i+1}/{len(batch)} idx={idx} OK")
+            # Validate we got real metrics (not just errors)
+            real_metrics = [k for k in metrics.keys() if not k.startswith('_') and k not in ('idx', 'text', 'source', 'domain', 'label', 'task_family', 'expected_topology', 'status')]
+            if len(real_metrics) < 3:
+                metrics['status'] = 'no_metrics'
+                metrics['_warning'] = f'Only {len(real_metrics)} metrics extracted'
+                failed.append(metrics)
+                result = metrics
+                print(f"[Batch {batch_id}] {i+1}/{len(batch)} idx={idx} NO_METRICS")
+            else:
+                result = metrics
+                results.append(metrics)
+                print(f"[Batch {batch_id}] {i+1}/{len(batch)} idx={idx} OK ({len(real_metrics)} metrics)")
+
+            # Always clear cache after each sample
+            torch.cuda.empty_cache()
 
         except torch.cuda.OutOfMemoryError:
             result = {**sample, "status": "oom", "error": "CUDA OOM"}
@@ -336,6 +350,15 @@ def main(
     if n_samples:
         samples = samples[:n_samples]
 
+    # PREFLIGHT: Validate unique idx values
+    idx_values = [s.get("idx") for s in samples]
+    if len(idx_values) != len(set(idx_values)):
+        from collections import Counter
+        duplicates = [idx for idx, count in Counter(idx_values).items() if count > 1]
+        print(f"ERROR: Duplicate idx values found: {duplicates[:10]}")
+        print("Fix your input data - each sample needs a unique idx")
+        return
+
     if batch_size is None:
         batch_size = max(1, len(samples) // n_workers)
 
@@ -350,12 +373,19 @@ def main(
     try:
         for item in results_volume.listdir(f"/{run_id}"):
             if item.path.endswith(".json"):
-                idx = int(item.path.split("_")[-1].replace(".json", ""))
-                completed_ids.add(idx)
+                # Safer parsing with try/except
+                try:
+                    filename = item.path.split("/")[-1]
+                    if filename.startswith("sample_") and filename.endswith(".json"):
+                        idx = int(filename.replace("sample_", "").replace(".json", ""))
+                        completed_ids.add(idx)
+                except (ValueError, IndexError):
+                    print(f"WARNING: Unexpected file in volume: {item.path}")
         if completed_ids:
             print(f"RESUMING: {len(completed_ids)} samples already on volume")
-    except Exception:
-        pass
+    except Exception as e:
+        print(f"WARNING: Could not check volume for resume: {e}")
+        print("Starting fresh - may reprocess some samples")
 
     # Filter out completed
     remaining = [s for s in samples if s.get("idx") not in completed_ids]
@@ -407,10 +437,16 @@ def pull_from_volume(run_id: str, output_file: str, source_metadata: dict, total
 
     with tempfile.TemporaryDirectory() as tmpdir:
         # Download from volume
-        subprocess.run([
+        result = subprocess.run([
             "modal", "volume", "get", "attribution-results",
             f"/{run_id}", tmpdir
-        ], check=True)
+        ], capture_output=True, text=True)
+
+        if result.returncode != 0:
+            print(f"ERROR pulling from volume: {result.stderr}")
+            print(f"Data still exists on volume. Manual recovery:")
+            print(f"  modal volume get attribution-results /{run_id} ./recovered/")
+            return
 
         # Collect all sample files
         results = []
