@@ -1,0 +1,74 @@
+{
+  "lens": "china_legibility",
+  "province": 1,
+  "comparison": "grammar vs commonsense",
+  "confound": "text length (chars)",
+  "n_class_a": 50,
+  "n_class_b": 50,
+  "threshold": {
+    "abs_floor": 0.3,
+    "retain_drop": 0.7,
+    "rule": "artifact if residual |d| < 0.3 OR effect retains < 30% of raw magnitude"
+  },
+  "verdicts": [
+    {
+      "metric": "n_active",
+      "raw_d": -3.1865,
+      "r_with_length": 0.9822,
+      "resid_d": 0.5504,
+      "pct_retained": 0.1727,
+      "verdict": "LEGIBILITY ARTIFACT",
+      "reason": "collapses after length-residualization: retained 17% (< 30%)"
+    },
+    {
+      "metric": "n_edges",
+      "raw_d": -2.8506,
+      "r_with_length": 0.9629,
+      "resid_d": 1.7663,
+      "pct_retained": 0.6196,
+      "verdict": "REAL SIGNAL",
+      "reason": "survives: residual |d|=1.77 >= floor 0.3 and retained 62% of raw effect"
+    },
+    {
+      "metric": "mean_influence",
+      "raw_d": 2.0887,
+      "r_with_length": -0.797,
+      "resid_d": 1.2528,
+      "pct_retained": 0.5998,
+      "verdict": "REAL SIGNAL",
+      "reason": "survives: residual |d|=1.25 >= floor 0.3 and retained 60% of raw effect"
+    },
+    {
+      "metric": "max_influence",
+      "raw_d": -0.3477,
+      "r_with_length": 0.4189,
+      "resid_d": 0.1432,
+      "pct_retained": 0.4119,
+      "verdict": "LEGIBILITY ARTIFACT",
+      "reason": "collapses after length-residualization: residual |d|=0.14 < floor 0.3"
+    },
+    {
+      "metric": "top_100_concentration",
+      "raw_d": 1.5353,
+      "r_with_length": -0.6289,
+      "resid_d": 0.9502,
+      "pct_retained": 0.6189,
+      "verdict": "REAL SIGNAL",
+      "reason": "survives: residual |d|=0.95 >= floor 0.3 and retained 62% of raw effect"
+    }
+  ],
+  "proof_check": {
+    "flagged_fake": {
+      "n_active": true
+    },
+    "cleared_real": {
+      "mean_influence": true,
+      "top_100_concentration": true
+    },
+    "watched": {
+      "n_edges": "REAL SIGNAL",
+      "max_influence": "LEGIBILITY ARTIFACT"
+    },
+    "proof_passed": true
+  }
+}
