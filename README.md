@@ -1,3 +1,12 @@
+> # ⚠️ ARCHIVED — superseded by [latent-diagnostics](https://github.com/ariaxhan/latent-diagnostics)
+>
+> This repository is the **older fork** of the same codebase (`src/` is byte-identical). It is
+> preserved as an archive for the **physics-era history** (the Wannier-Stark / GOE / knot theory
+> exploration under `research/`) — that is real provenance worth keeping.
+>
+> **Do not build here.** All active work — the cleaned-up successor with the self-gen probe protocol
+> and the Atlas Diagnostics work — lives in **[latent-diagnostics](https://github.com/ariaxhan/latent-diagnostics)**.
+
 # Latent Diagnostics
 
 Measuring computational regimes inside LLMs via attribution graph geometry.
