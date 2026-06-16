@@ -37,6 +37,20 @@ GEOMETRY_METRICS = (
 )
 OUTPUT_BASELINES = ("max_logit_prob", "logit_entropy", "answer_mean_logprob")
 
+# ---------------------------------------------------------------------------
+# Pre-registered decision thresholds — protocol.md "Success / kill criteria",
+# LOCKED 2026-06-12. The analysis layer below (bootstrap CIs + verdict()) was
+# added 2026-06-15 as parked-prep: it IMPLEMENTS the locked registration so the
+# run is one-command when GPU creds land. It does NOT tune thresholds. Authored
+# before any data exists, so it cannot be fit to results (the anti-p-hack point).
+# ---------------------------------------------------------------------------
+H1_RESIDUAL_AUC = 0.75    # H1: residual-stream probe AUC >= 0.75 (in-domain)
+H2_SAE_FRACTION = 0.90    # H2: top-k SAE (k<=64) reaches >= 90% of residual AUC
+H2_MAX_K = 64
+H3_GEOMETRY_TOL = 0.05    # H3: geometry metrics at chance, |AUC - 0.5| < 0.05
+BOOT_RESAMPLES = 1000     # protocol: bootstrap CIs, 1000 resamples
+BOOT_SEED = 0             # fixed seed -> deterministic CIs (reproducibility)
+
 
 @dataclass
 class SampleRecord:
@@ -128,6 +142,99 @@ def rank_auc(scores: list[float], labels: list[int]) -> float:
         rank_sum += sum(avg for k in range(i, j) if labels[order[k]] == 1)
         i = j
     return (rank_sum - pos * (pos + 1) / 2) / (pos * neg)
+
+
+def boot_ci(
+    scores: list[float], labels: list[int],
+    n_resamples: int = BOOT_RESAMPLES, seed: int = BOOT_SEED, alpha: float = 0.05,
+) -> list[float]:
+    """Percentile bootstrap 95% CI on rank AUC (protocol: 1000 resamples).
+
+    Resamples the pooled out-of-fold (score, label) predictions. Deterministic
+    via fixed seed. Resamples that lose a class are skipped.
+    """
+    if not scores or len(set(labels)) < 2:
+        return [float("nan"), float("nan")]
+    rng = random.Random(seed)
+    n = len(scores)
+    stats = []
+    for _ in range(n_resamples):
+        samp = [rng.randrange(n) for _ in range(n)]
+        s = [scores[i] for i in samp]
+        y = [labels[i] for i in samp]
+        if len(set(y)) < 2:
+            continue
+        a = rank_auc(s, y)
+        if not math.isnan(a):
+            stats.append(a)
+    if not stats:
+        return [float("nan"), float("nan")]
+    stats.sort()
+    lo = stats[int((alpha / 2) * len(stats))]
+    hi = stats[min(len(stats) - 1, int((1 - alpha / 2) * len(stats)))]
+    return [lo, hi]
+
+
+def _topk_from_key(key: str) -> int | None:
+    """Parse k out of a 'B_sae_top{k}_L{layer}' result key."""
+    try:
+        return int(key.split("B_sae_top")[1].split("_L")[0])
+    except (IndexError, ValueError):
+        return None
+
+
+def verdict(results: dict) -> dict:
+    """Apply the pre-registered decision rule (protocol.md). READS results only.
+
+    H1: best residual-arm AUC >= 0.75.
+    H2: best SAE top-k (k<=64) AUC >= 90% of the best residual AUC.
+    H3: every geometry-arm AUC within 0.05 of chance (control; reported, not gating).
+    -> ALIVE / PIVOT_DROP_SAE / DEAD_AT_THIS_SCALE.
+
+    NOTE: protocol also specifies a DeLong A-vs-B test; this stdlib skeleton
+    reports per-arm bootstrap CIs and the H2 fraction rule instead. A true paired
+    DeLong test should be added (scipy) at real-run time — flagged, not silently
+    dropped.
+    """
+    def aucs_with_prefix(prefix):
+        return [v["auc"] for kk, v in results.items()
+                if kk.startswith(prefix) and isinstance(v, dict) and not math.isnan(v.get("auc", float("nan")))]
+
+    res = aucs_with_prefix("A_residual_")
+    best_res = max(res, default=float("nan"))
+    sae = [v["auc"] for kk, v in results.items()
+           if kk.startswith("B_sae_top") and isinstance(v, dict)
+           and (_topk_from_key(kk) or 1e9) <= H2_MAX_K and not math.isnan(v.get("auc", float("nan")))]
+    best_sae = max(sae, default=float("nan"))
+    geo = aucs_with_prefix("C_geometry_")
+
+    h1 = (not math.isnan(best_res)) and best_res >= H1_RESIDUAL_AUC
+    h2 = (not math.isnan(best_sae)) and (not math.isnan(best_res)) and best_res > 0 \
+        and best_sae >= H2_SAE_FRACTION * best_res
+    h3 = bool(geo) and all(abs(a - 0.5) < H3_GEOMETRY_TOL for a in geo)
+
+    if not h1:
+        result = "DEAD_AT_THIS_SCALE"
+        reason = (f"H1 refuted: best residual AUC {best_res:.3f} < {H1_RESIDUAL_AUC}. "
+                  "No internals work at 2B; continuation moves to Gemma-2-9B or stops.")
+    elif not h2:
+        result = "PIVOT_DROP_SAE"
+        reason = (f"H1 holds (residual {best_res:.3f}) but H2 fails "
+                  f"(best SAE k<=64 {best_sae:.3f} < {H2_SAE_FRACTION:.0%} of residual). "
+                  "SAEs don't concentrate the signal at 2B (cf. Kantamneni ICML'25); drop the SAE arm.")
+    else:
+        result = "ALIVE"
+        reason = (f"H1 holds (residual {best_res:.3f}) and H2 holds (SAE {best_sae:.3f}). "
+                  "Write up 'where the signal lives' + the HB-1000/TruthfulQA negative-result section.")
+    return {
+        "result": result,
+        "H1_residual_ge_0.75": h1,
+        "H2_sae_topk_ge_90pct_of_residual": h2,
+        "H3_geometry_at_chance": h3,
+        "best_residual_auc": best_res,
+        "best_sae_topk_le64_auc": best_sae,
+        "reason": reason,
+    }
 
 
 def residualize(values: list[float], covariate: list[float]) -> list[float]:
@@ -236,8 +343,10 @@ def run_probes(
 
     results: dict[str, dict] = {}
 
-    def evaluate(arm: str, layer: int, k: int | None = None) -> float:
-        aucs = []
+    def evaluate(arm: str, layer: int, k: int | None = None) -> dict:
+        aucs: list[float] = []
+        pooled_s: list[float] = []
+        pooled_y: list[int] = []
         for f in range(n_folds):
             test_i = set(folds[f])
             train = [binary[i] for i in idx if i not in test_i]
@@ -256,14 +365,17 @@ def run_probes(
             Xtr = list(map(list, zip(*[residualize(col, lens_tr) for col in zip(*Xtr)]))) if Xtr and Xtr[0] else Xtr
             scores = fit_logistic(Xtr, ytr, Xte)
             aucs.append(rank_auc(scores, yte))
-        return st.mean(aucs)
+            pooled_s.extend(scores)
+            pooled_y.extend(yte)
+        # CI from pooled out-of-fold predictions (protocol: bootstrap, 1000 resamples)
+        return {"auc": st.mean(aucs), "ci95": boot_ci(pooled_s, pooled_y), "n": len(pooled_y)}
 
     for layer in LAYERS:
-        results[f"A_residual_L{layer}"] = {"auc": evaluate("A_residual", layer)}
+        results[f"A_residual_L{layer}"] = evaluate("A_residual", layer)
         for k in k_values:
-            results[f"B_sae_top{k}_L{layer}"] = {"auc": evaluate("B_sae_topk", layer, k)}
-        results[f"C_geometry_L{layer}"] = {"auc": evaluate("C_geometry", layer)}
-    results["D_output_baselines"] = {"auc": evaluate("D_output", LAYERS[0])}
+            results[f"B_sae_top{k}_L{layer}"] = evaluate("B_sae_topk", layer, k)
+        results[f"C_geometry_L{layer}"] = evaluate("C_geometry", layer)
+    results["D_output_baselines"] = evaluate("D_output", LAYERS[0])
 
     # transfer split: train high-popularity, test low (and reverse)
     for train_bucket, test_bucket in (("high", "low"), ("low", "high")):
@@ -272,9 +384,15 @@ def run_probes(
         for layer in LAYERS:
             Xtr = [featurize(r, "A_residual", layer, None) for r in train]
             Xte = [featurize(r, "A_residual", layer, None) for r in test]
+            yte = [1 if r.label == "incorrect" else 0 for r in test]
             scores = fit_logistic(Xtr, [1 if r.label == "incorrect" else 0 for r in train], Xte)
-            auc = rank_auc(scores, [1 if r.label == "incorrect" else 0 for r in test])
-            results[f"transfer_{train_bucket}->{test_bucket}_L{layer}"] = {"auc": auc}
+            auc = rank_auc(scores, yte)
+            results[f"transfer_{train_bucket}->{test_bucket}_L{layer}"] = {
+                "auc": auc, "ci95": boot_ci(scores, yte), "n": len(yte),
+            }
+
+    # pre-registered verdict (protocol.md decision rule, locked thresholds)
+    results["VERDICT"] = verdict(results)
 
     out = records_path.parent / "probe_results.json"
     out.write_text(json.dumps(results, indent=1))
