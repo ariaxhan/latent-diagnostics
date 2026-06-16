@@ -161,3 +161,7 @@ wandb/
 tmp/
 temp/
 *.tmp
+
+# self-generation probe: raw activations (22MB) + downloaded GemmaScope SAE weights — reproducible via extract_local.py
+data/results/self_generation_probe/records.json
+data/gemmascope/

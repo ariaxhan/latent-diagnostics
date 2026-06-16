@@ -1,0 +1,1282 @@
+[
+ {
+  "question_id": "high_0000",
+  "question": "In which year was Google founded?",
+  "entity": "Google",
+  "gold_answer": "1998",
+  "popularity_bucket": "high",
+  "template_idx": 0
+ },
+ {
+  "question_id": "high_0001",
+  "question": "In which year was Microsoft founded?",
+  "entity": "Microsoft",
+  "gold_answer": "1975",
+  "popularity_bucket": "high",
+  "template_idx": 0
+ },
+ {
+  "question_id": "high_0002",
+  "question": "In which year was Apple Inc. founded?",
+  "entity": "Apple Inc.",
+  "gold_answer": "1976",
+  "popularity_bucket": "high",
+  "template_idx": 0
+ },
+ {
+  "question_id": "high_0003",
+  "question": "In which year was Amazon founded?",
+  "entity": "Amazon",
+  "gold_answer": "1994",
+  "popularity_bucket": "high",
+  "template_idx": 0
+ },
+ {
+  "question_id": "high_0004",
+  "question": "In which year was Harvard University founded?",
+  "entity": "Harvard University",
+  "gold_answer": "1636",
+  "popularity_bucket": "high",
+  "template_idx": 0
+ },
+ {
+  "question_id": "high_0005",
+  "question": "In which year was the United Nations founded?",
+  "entity": "the United Nations",
+  "gold_answer": "1945",
+  "popularity_bucket": "high",
+  "template_idx": 0
+ },
+ {
+  "question_id": "high_0006",
+  "question": "In which year was NASA founded?",
+  "entity": "NASA",
+  "gold_answer": "1958",
+  "popularity_bucket": "high",
+  "template_idx": 0
+ },
+ {
+  "question_id": "high_0007",
+  "question": "In which year was Toyota founded?",
+  "entity": "Toyota",
+  "gold_answer": "1937",
+  "popularity_bucket": "high",
+  "template_idx": 0
+ },
+ {
+  "question_id": "high_0008",
+  "question": "In which year was the Ford Motor Company founded?",
+  "entity": "the Ford Motor Company",
+  "gold_answer": "1903",
+  "popularity_bucket": "high",
+  "template_idx": 0
+ },
+ {
+  "question_id": "high_0009",
+  "question": "In which year was Coca-Cola founded?",
+  "entity": "Coca-Cola",
+  "gold_answer": "1886",
+  "popularity_bucket": "high",
+  "template_idx": 0
+ },
+ {
+  "question_id": "high_0010",
+  "question": "In which year was IBM founded?",
+  "entity": "IBM",
+  "gold_answer": "1911",
+  "popularity_bucket": "high",
+  "template_idx": 0
+ },
+ {
+  "question_id": "high_0011",
+  "question": "In which year was Stanford University founded?",
+  "entity": "Stanford University",
+  "gold_answer": "1885",
+  "popularity_bucket": "high",
+  "template_idx": 0
+ },
+ {
+  "question_id": "high_0012",
+  "question": "In which year was the BBC founded?",
+  "entity": "the BBC",
+  "gold_answer": "1922",
+  "popularity_bucket": "high",
+  "template_idx": 0
+ },
+ {
+  "question_id": "high_0013",
+  "question": "In which year was Nintendo founded?",
+  "entity": "Nintendo",
+  "gold_answer": "1889",
+  "popularity_bucket": "high",
+  "template_idx": 0
+ },
+ {
+  "question_id": "high_0014",
+  "question": "In which year was Sony founded?",
+  "entity": "Sony",
+  "gold_answer": "1946",
+  "popularity_bucket": "high",
+  "template_idx": 0
+ },
+ {
+  "question_id": "high_0015",
+  "question": "In which year was Oxford University founded?",
+  "entity": "Oxford University",
+  "gold_answer": "1096",
+  "popularity_bucket": "high",
+  "template_idx": 0
+ },
+ {
+  "question_id": "high_0016",
+  "question": "In which year was McDonald's founded?",
+  "entity": "McDonald's",
+  "gold_answer": "1940",
+  "popularity_bucket": "high",
+  "template_idx": 0
+ },
+ {
+  "question_id": "high_0017",
+  "question": "In which year was Tesla, Inc. founded?",
+  "entity": "Tesla, Inc.",
+  "gold_answer": "2003",
+  "popularity_bucket": "high",
+  "template_idx": 0
+ },
+ {
+  "question_id": "high_0018",
+  "question": "In which year was the Red Cross founded?",
+  "entity": "the Red Cross",
+  "gold_answer": "1863",
+  "popularity_bucket": "high",
+  "template_idx": 0
+ },
+ {
+  "question_id": "high_0019",
+  "question": "In which year was Walmart founded?",
+  "entity": "Walmart",
+  "gold_answer": "1962",
+  "popularity_bucket": "high",
+  "template_idx": 0
+ },
+ {
+  "question_id": "low_0000",
+  "question": "In which year was Reed College founded?",
+  "entity": "Reed College",
+  "gold_answer": "1908",
+  "popularity_bucket": "low",
+  "template_idx": 0
+ },
+ {
+  "question_id": "low_0001",
+  "question": "In which year was Grinnell College founded?",
+  "entity": "Grinnell College",
+  "gold_answer": "1846",
+  "popularity_bucket": "low",
+  "template_idx": 0
+ },
+ {
+  "question_id": "low_0002",
+  "question": "In which year was Antioch College founded?",
+  "entity": "Antioch College",
+  "gold_answer": "1850",
+  "popularity_bucket": "low",
+  "template_idx": 0
+ },
+ {
+  "question_id": "low_0003",
+  "question": "In which year was Deep Springs College founded?",
+  "entity": "Deep Springs College",
+  "gold_answer": "1917",
+  "popularity_bucket": "low",
+  "template_idx": 0
+ },
+ {
+  "question_id": "low_0004",
+  "question": "In which year was the Santa Fe Institute founded?",
+  "entity": "the Santa Fe Institute",
+  "gold_answer": "1984",
+  "popularity_bucket": "low",
+  "template_idx": 0
+ },
+ {
+  "question_id": "low_0005",
+  "question": "In which year was Olin College founded?",
+  "entity": "Olin College",
+  "gold_answer": "1997",
+  "popularity_bucket": "low",
+  "template_idx": 0
+ },
+ {
+  "question_id": "low_0006",
+  "question": "In which year was Harvey Mudd College founded?",
+  "entity": "Harvey Mudd College",
+  "gold_answer": "1955",
+  "popularity_bucket": "low",
+  "template_idx": 0
+ },
+ {
+  "question_id": "low_0007",
+  "question": "In which year was Kenyon College founded?",
+  "entity": "Kenyon College",
+  "gold_answer": "1824",
+  "popularity_bucket": "low",
+  "template_idx": 0
+ },
+ {
+  "question_id": "low_0008",
+  "question": "In which year was Berea College founded?",
+  "entity": "Berea College",
+  "gold_answer": "1855",
+  "popularity_bucket": "low",
+  "template_idx": 0
+ },
+ {
+  "question_id": "low_0009",
+  "question": "In which year was Cooper Union founded?",
+  "entity": "Cooper Union",
+  "gold_answer": "1859",
+  "popularity_bucket": "low",
+  "template_idx": 0
+ },
+ {
+  "question_id": "low_0010",
+  "question": "In which year was the Carnegie Institution founded?",
+  "entity": "the Carnegie Institution",
+  "gold_answer": "1902",
+  "popularity_bucket": "low",
+  "template_idx": 0
+ },
+ {
+  "question_id": "low_0011",
+  "question": "In which year was Bell Labs founded?",
+  "entity": "Bell Labs",
+  "gold_answer": "1925",
+  "popularity_bucket": "low",
+  "template_idx": 0
+ },
+ {
+  "question_id": "low_0012",
+  "question": "In which year was Xerox PARC founded?",
+  "entity": "Xerox PARC",
+  "gold_answer": "1970",
+  "popularity_bucket": "low",
+  "template_idx": 0
+ },
+ {
+  "question_id": "low_0013",
+  "question": "In which year was the Brookings Institution founded?",
+  "entity": "the Brookings Institution",
+  "gold_answer": "1916",
+  "popularity_bucket": "low",
+  "template_idx": 0
+ },
+ {
+  "question_id": "low_0014",
+  "question": "In which year was Wittenberg University founded?",
+  "entity": "Wittenberg University",
+  "gold_answer": "1845",
+  "popularity_bucket": "low",
+  "template_idx": 0
+ },
+ {
+  "question_id": "low_0015",
+  "question": "In which year was Hillsdale College founded?",
+  "entity": "Hillsdale College",
+  "gold_answer": "1844",
+  "popularity_bucket": "low",
+  "template_idx": 0
+ },
+ {
+  "question_id": "low_0016",
+  "question": "In which year was the Marine Biological Laboratory founded?",
+  "entity": "the Marine Biological Laboratory",
+  "gold_answer": "1888",
+  "popularity_bucket": "low",
+  "template_idx": 0
+ },
+ {
+  "question_id": "low_0017",
+  "question": "In which year was the Cavendish Laboratory founded?",
+  "entity": "the Cavendish Laboratory",
+  "gold_answer": "1874",
+  "popularity_bucket": "low",
+  "template_idx": 0
+ },
+ {
+  "question_id": "low_0018",
+  "question": "In which year was Haverford College founded?",
+  "entity": "Haverford College",
+  "gold_answer": "1833",
+  "popularity_bucket": "low",
+  "template_idx": 0
+ },
+ {
+  "question_id": "low_0019",
+  "question": "In which year was Earlham College founded?",
+  "entity": "Earlham College",
+  "gold_answer": "1847",
+  "popularity_bucket": "low",
+  "template_idx": 0
+ },
+ {
+  "question_id": "high_0020",
+  "question": "Who directed the film Titanic?",
+  "entity": "Titanic",
+  "gold_answer": "James Cameron",
+  "popularity_bucket": "high",
+  "template_idx": 1
+ },
+ {
+  "question_id": "high_0021",
+  "question": "Who directed the film Pulp Fiction?",
+  "entity": "Pulp Fiction",
+  "gold_answer": "Quentin Tarantino",
+  "popularity_bucket": "high",
+  "template_idx": 1
+ },
+ {
+  "question_id": "high_0022",
+  "question": "Who directed the film Jaws?",
+  "entity": "Jaws",
+  "gold_answer": "Steven Spielberg",
+  "popularity_bucket": "high",
+  "template_idx": 1
+ },
+ {
+  "question_id": "high_0023",
+  "question": "Who directed the film Psycho?",
+  "entity": "Psycho",
+  "gold_answer": "Alfred Hitchcock",
+  "popularity_bucket": "high",
+  "template_idx": 1
+ },
+ {
+  "question_id": "high_0024",
+  "question": "Who directed the film The Godfather?",
+  "entity": "The Godfather",
+  "gold_answer": "Francis Ford Coppola",
+  "popularity_bucket": "high",
+  "template_idx": 1
+ },
+ {
+  "question_id": "high_0025",
+  "question": "Who directed the film Inception?",
+  "entity": "Inception",
+  "gold_answer": "Christopher Nolan",
+  "popularity_bucket": "high",
+  "template_idx": 1
+ },
+ {
+  "question_id": "high_0026",
+  "question": "Who directed the film Goodfellas?",
+  "entity": "Goodfellas",
+  "gold_answer": "Martin Scorsese",
+  "popularity_bucket": "high",
+  "template_idx": 1
+ },
+ {
+  "question_id": "high_0027",
+  "question": "Who directed the film Alien?",
+  "entity": "Alien",
+  "gold_answer": "Ridley Scott",
+  "popularity_bucket": "high",
+  "template_idx": 1
+ },
+ {
+  "question_id": "high_0028",
+  "question": "Who directed the film Parasite?",
+  "entity": "Parasite",
+  "gold_answer": "Bong Joon-ho",
+  "popularity_bucket": "high",
+  "template_idx": 1
+ },
+ {
+  "question_id": "high_0029",
+  "question": "Who directed the film La La Land?",
+  "entity": "La La Land",
+  "gold_answer": "Damien Chazelle",
+  "popularity_bucket": "high",
+  "template_idx": 1
+ },
+ {
+  "question_id": "high_0030",
+  "question": "Who directed the film Fargo?",
+  "entity": "Fargo",
+  "gold_answer": "the Coen brothers",
+  "popularity_bucket": "high",
+  "template_idx": 1
+ },
+ {
+  "question_id": "high_0031",
+  "question": "Who directed the film Gravity?",
+  "entity": "Gravity",
+  "gold_answer": "Alfonso Cuaron",
+  "popularity_bucket": "high",
+  "template_idx": 1
+ },
+ {
+  "question_id": "high_0032",
+  "question": "Who directed the film Birdman?",
+  "entity": "Birdman",
+  "gold_answer": "Alejandro Gonzalez Inarritu",
+  "popularity_bucket": "high",
+  "template_idx": 1
+ },
+ {
+  "question_id": "high_0033",
+  "question": "Who directed the film The Shape of Water?",
+  "entity": "The Shape of Water",
+  "gold_answer": "Guillermo del Toro",
+  "popularity_bucket": "high",
+  "template_idx": 1
+ },
+ {
+  "question_id": "high_0034",
+  "question": "Who directed the film Boyhood?",
+  "entity": "Boyhood",
+  "gold_answer": "Richard Linklater",
+  "popularity_bucket": "high",
+  "template_idx": 1
+ },
+ {
+  "question_id": "low_0020",
+  "question": "Who directed the film Moonlight?",
+  "entity": "Moonlight",
+  "gold_answer": "Barry Jenkins",
+  "popularity_bucket": "low",
+  "template_idx": 1
+ },
+ {
+  "question_id": "low_0021",
+  "question": "Who directed the film Primer?",
+  "entity": "Primer",
+  "gold_answer": "Shane Carruth",
+  "popularity_bucket": "low",
+  "template_idx": 1
+ },
+ {
+  "question_id": "low_0022",
+  "question": "Who directed the film Coherence?",
+  "entity": "Coherence",
+  "gold_answer": "James Ward Byrkit",
+  "popularity_bucket": "low",
+  "template_idx": 1
+ },
+ {
+  "question_id": "low_0023",
+  "question": "Who directed the film The Babadook?",
+  "entity": "The Babadook",
+  "gold_answer": "Jennifer Kent",
+  "popularity_bucket": "low",
+  "template_idx": 1
+ },
+ {
+  "question_id": "low_0024",
+  "question": "Who directed the film A Girl Walks Home Alone at Night?",
+  "entity": "A Girl Walks Home Alone at Night",
+  "gold_answer": "Ana Lily Amirpour",
+  "popularity_bucket": "low",
+  "template_idx": 1
+ },
+ {
+  "question_id": "low_0025",
+  "question": "Who directed the film Tangerine?",
+  "entity": "Tangerine",
+  "gold_answer": "Sean Baker",
+  "popularity_bucket": "low",
+  "template_idx": 1
+ },
+ {
+  "question_id": "low_0026",
+  "question": "Who directed the film Pi?",
+  "entity": "Pi",
+  "gold_answer": "Darren Aronofsky",
+  "popularity_bucket": "low",
+  "template_idx": 1
+ },
+ {
+  "question_id": "low_0027",
+  "question": "Who directed the film Brick?",
+  "entity": "Brick",
+  "gold_answer": "Rian Johnson",
+  "popularity_bucket": "low",
+  "template_idx": 1
+ },
+ {
+  "question_id": "low_0028",
+  "question": "Who directed the film Memories of Murder?",
+  "entity": "Memories of Murder",
+  "gold_answer": "Bong Joon-ho",
+  "popularity_bucket": "low",
+  "template_idx": 1
+ },
+ {
+  "question_id": "low_0029",
+  "question": "Who directed the film Following?",
+  "entity": "Following",
+  "gold_answer": "Christopher Nolan",
+  "popularity_bucket": "low",
+  "template_idx": 1
+ },
+ {
+  "question_id": "low_0030",
+  "question": "Who directed the film Pierrot le Fou?",
+  "entity": "Pierrot le Fou",
+  "gold_answer": "Jean-Luc Godard",
+  "popularity_bucket": "low",
+  "template_idx": 1
+ },
+ {
+  "question_id": "low_0031",
+  "question": "Who directed the film Stalker?",
+  "entity": "Stalker",
+  "gold_answer": "Andrei Tarkovsky",
+  "popularity_bucket": "low",
+  "template_idx": 1
+ },
+ {
+  "question_id": "low_0032",
+  "question": "Who directed the film Wings of Desire?",
+  "entity": "Wings of Desire",
+  "gold_answer": "Wim Wenders",
+  "popularity_bucket": "low",
+  "template_idx": 1
+ },
+ {
+  "question_id": "low_0033",
+  "question": "Who directed the film The Headless Woman?",
+  "entity": "The Headless Woman",
+  "gold_answer": "Lucrecia Martel",
+  "popularity_bucket": "low",
+  "template_idx": 1
+ },
+ {
+  "question_id": "low_0034",
+  "question": "Who directed the film Uncle Boonmee?",
+  "entity": "Uncle Boonmee",
+  "gold_answer": "Apichatpong Weerasethakul",
+  "popularity_bucket": "low",
+  "template_idx": 1
+ },
+ {
+  "question_id": "high_0035",
+  "question": "In which country is the Eiffel Tower located?",
+  "entity": "the Eiffel Tower",
+  "gold_answer": "France",
+  "popularity_bucket": "high",
+  "template_idx": 2
+ },
+ {
+  "question_id": "high_0036",
+  "question": "In which country is the Colosseum located?",
+  "entity": "the Colosseum",
+  "gold_answer": "Italy",
+  "popularity_bucket": "high",
+  "template_idx": 2
+ },
+ {
+  "question_id": "high_0037",
+  "question": "In which country is the Taj Mahal located?",
+  "entity": "the Taj Mahal",
+  "gold_answer": "India",
+  "popularity_bucket": "high",
+  "template_idx": 2
+ },
+ {
+  "question_id": "high_0038",
+  "question": "In which country is the Great Wall located?",
+  "entity": "the Great Wall",
+  "gold_answer": "China",
+  "popularity_bucket": "high",
+  "template_idx": 2
+ },
+ {
+  "question_id": "high_0039",
+  "question": "In which country is Machu Picchu located?",
+  "entity": "Machu Picchu",
+  "gold_answer": "Peru",
+  "popularity_bucket": "high",
+  "template_idx": 2
+ },
+ {
+  "question_id": "high_0040",
+  "question": "In which country is the Statue of Liberty located?",
+  "entity": "the Statue of Liberty",
+  "gold_answer": "the United States",
+  "popularity_bucket": "high",
+  "template_idx": 2
+ },
+ {
+  "question_id": "high_0041",
+  "question": "In which country is Big Ben located?",
+  "entity": "Big Ben",
+  "gold_answer": "the United Kingdom",
+  "popularity_bucket": "high",
+  "template_idx": 2
+ },
+ {
+  "question_id": "high_0042",
+  "question": "In which country is the Sydney Opera House located?",
+  "entity": "the Sydney Opera House",
+  "gold_answer": "Australia",
+  "popularity_bucket": "high",
+  "template_idx": 2
+ },
+ {
+  "question_id": "high_0043",
+  "question": "In which country is the Brandenburg Gate located?",
+  "entity": "the Brandenburg Gate",
+  "gold_answer": "Germany",
+  "popularity_bucket": "high",
+  "template_idx": 2
+ },
+ {
+  "question_id": "high_0044",
+  "question": "In which country is the Acropolis located?",
+  "entity": "the Acropolis",
+  "gold_answer": "Greece",
+  "popularity_bucket": "high",
+  "template_idx": 2
+ },
+ {
+  "question_id": "high_0045",
+  "question": "In which country is Petra located?",
+  "entity": "Petra",
+  "gold_answer": "Jordan",
+  "popularity_bucket": "high",
+  "template_idx": 2
+ },
+ {
+  "question_id": "high_0046",
+  "question": "In which country is Angkor Wat located?",
+  "entity": "Angkor Wat",
+  "gold_answer": "Cambodia",
+  "popularity_bucket": "high",
+  "template_idx": 2
+ },
+ {
+  "question_id": "high_0047",
+  "question": "In which country is Mount Fuji located?",
+  "entity": "Mount Fuji",
+  "gold_answer": "Japan",
+  "popularity_bucket": "high",
+  "template_idx": 2
+ },
+ {
+  "question_id": "high_0048",
+  "question": "In which country is the Kremlin located?",
+  "entity": "the Kremlin",
+  "gold_answer": "Russia",
+  "popularity_bucket": "high",
+  "template_idx": 2
+ },
+ {
+  "question_id": "high_0049",
+  "question": "In which country is Christ the Redeemer located?",
+  "entity": "Christ the Redeemer",
+  "gold_answer": "Brazil",
+  "popularity_bucket": "high",
+  "template_idx": 2
+ },
+ {
+  "question_id": "low_0035",
+  "question": "In which country is the Plitvice Lakes located?",
+  "entity": "the Plitvice Lakes",
+  "gold_answer": "Croatia",
+  "popularity_bucket": "low",
+  "template_idx": 2
+ },
+ {
+  "question_id": "low_0036",
+  "question": "In which country is the Sigiriya rock fortress located?",
+  "entity": "the Sigiriya rock fortress",
+  "gold_answer": "Sri Lanka",
+  "popularity_bucket": "low",
+  "template_idx": 2
+ },
+ {
+  "question_id": "low_0037",
+  "question": "In which country is the Tsingy de Bemaraha located?",
+  "entity": "the Tsingy de Bemaraha",
+  "gold_answer": "Madagascar",
+  "popularity_bucket": "low",
+  "template_idx": 2
+ },
+ {
+  "question_id": "low_0038",
+  "question": "In which country is the Goreme valley located?",
+  "entity": "the Goreme valley",
+  "gold_answer": "Turkey",
+  "popularity_bucket": "low",
+  "template_idx": 2
+ },
+ {
+  "question_id": "low_0039",
+  "question": "In which country is the Skeleton Coast located?",
+  "entity": "the Skeleton Coast",
+  "gold_answer": "Namibia",
+  "popularity_bucket": "low",
+  "template_idx": 2
+ },
+ {
+  "question_id": "low_0040",
+  "question": "In which country is the Salar de Uyuni located?",
+  "entity": "the Salar de Uyuni",
+  "gold_answer": "Bolivia",
+  "popularity_bucket": "low",
+  "template_idx": 2
+ },
+ {
+  "question_id": "low_0041",
+  "question": "In which country is Svalbard located?",
+  "entity": "Svalbard",
+  "gold_answer": "Norway",
+  "popularity_bucket": "low",
+  "template_idx": 2
+ },
+ {
+  "question_id": "low_0042",
+  "question": "In which country is the Pamukkale terraces located?",
+  "entity": "the Pamukkale terraces",
+  "gold_answer": "Turkey",
+  "popularity_bucket": "low",
+  "template_idx": 2
+ },
+ {
+  "question_id": "low_0043",
+  "question": "In which country is Lake Bled located?",
+  "entity": "Lake Bled",
+  "gold_answer": "Slovenia",
+  "popularity_bucket": "low",
+  "template_idx": 2
+ },
+ {
+  "question_id": "low_0044",
+  "question": "In which country is the Gjirokaster fortress located?",
+  "entity": "the Gjirokaster fortress",
+  "gold_answer": "Albania",
+  "popularity_bucket": "low",
+  "template_idx": 2
+ },
+ {
+  "question_id": "low_0045",
+  "question": "In which country is the Wieliczka Salt Mine located?",
+  "entity": "the Wieliczka Salt Mine",
+  "gold_answer": "Poland",
+  "popularity_bucket": "low",
+  "template_idx": 2
+ },
+ {
+  "question_id": "low_0046",
+  "question": "In which country is the Mostar Bridge located?",
+  "entity": "the Mostar Bridge",
+  "gold_answer": "Bosnia and Herzegovina",
+  "popularity_bucket": "low",
+  "template_idx": 2
+ },
+ {
+  "question_id": "low_0047",
+  "question": "In which country is the Tikal ruins located?",
+  "entity": "the Tikal ruins",
+  "gold_answer": "Guatemala",
+  "popularity_bucket": "low",
+  "template_idx": 2
+ },
+ {
+  "question_id": "low_0048",
+  "question": "In which country is the Bagan temples located?",
+  "entity": "the Bagan temples",
+  "gold_answer": "Myanmar",
+  "popularity_bucket": "low",
+  "template_idx": 2
+ },
+ {
+  "question_id": "low_0049",
+  "question": "In which country is the Erg Chebbi dunes located?",
+  "entity": "the Erg Chebbi dunes",
+  "gold_answer": "Morocco",
+  "popularity_bucket": "low",
+  "template_idx": 2
+ },
+ {
+  "question_id": "high_0050",
+  "question": "Who wrote Hamlet?",
+  "entity": "Hamlet",
+  "gold_answer": "William Shakespeare",
+  "popularity_bucket": "high",
+  "template_idx": 3
+ },
+ {
+  "question_id": "high_0051",
+  "question": "Who wrote Pride and Prejudice?",
+  "entity": "Pride and Prejudice",
+  "gold_answer": "Jane Austen",
+  "popularity_bucket": "high",
+  "template_idx": 3
+ },
+ {
+  "question_id": "high_0052",
+  "question": "Who wrote 1984?",
+  "entity": "1984",
+  "gold_answer": "George Orwell",
+  "popularity_bucket": "high",
+  "template_idx": 3
+ },
+ {
+  "question_id": "high_0053",
+  "question": "Who wrote Moby-Dick?",
+  "entity": "Moby-Dick",
+  "gold_answer": "Herman Melville",
+  "popularity_bucket": "high",
+  "template_idx": 3
+ },
+ {
+  "question_id": "high_0054",
+  "question": "Who wrote War and Peace?",
+  "entity": "War and Peace",
+  "gold_answer": "Leo Tolstoy",
+  "popularity_bucket": "high",
+  "template_idx": 3
+ },
+ {
+  "question_id": "high_0055",
+  "question": "Who wrote The Great Gatsby?",
+  "entity": "The Great Gatsby",
+  "gold_answer": "F. Scott Fitzgerald",
+  "popularity_bucket": "high",
+  "template_idx": 3
+ },
+ {
+  "question_id": "high_0056",
+  "question": "Who wrote Crime and Punishment?",
+  "entity": "Crime and Punishment",
+  "gold_answer": "Fyodor Dostoevsky",
+  "popularity_bucket": "high",
+  "template_idx": 3
+ },
+ {
+  "question_id": "high_0057",
+  "question": "Who wrote Don Quixote?",
+  "entity": "Don Quixote",
+  "gold_answer": "Miguel de Cervantes",
+  "popularity_bucket": "high",
+  "template_idx": 3
+ },
+ {
+  "question_id": "high_0058",
+  "question": "Who wrote The Odyssey?",
+  "entity": "The Odyssey",
+  "gold_answer": "Homer",
+  "popularity_bucket": "high",
+  "template_idx": 3
+ },
+ {
+  "question_id": "high_0059",
+  "question": "Who wrote Frankenstein?",
+  "entity": "Frankenstein",
+  "gold_answer": "Mary Shelley",
+  "popularity_bucket": "high",
+  "template_idx": 3
+ },
+ {
+  "question_id": "high_0060",
+  "question": "Who wrote Brave New World?",
+  "entity": "Brave New World",
+  "gold_answer": "Aldous Huxley",
+  "popularity_bucket": "high",
+  "template_idx": 3
+ },
+ {
+  "question_id": "high_0061",
+  "question": "Who wrote The Catcher in the Rye?",
+  "entity": "The Catcher in the Rye",
+  "gold_answer": "J. D. Salinger",
+  "popularity_bucket": "high",
+  "template_idx": 3
+ },
+ {
+  "question_id": "high_0062",
+  "question": "Who wrote Ulysses?",
+  "entity": "Ulysses",
+  "gold_answer": "James Joyce",
+  "popularity_bucket": "high",
+  "template_idx": 3
+ },
+ {
+  "question_id": "high_0063",
+  "question": "Who wrote Beloved?",
+  "entity": "Beloved",
+  "gold_answer": "Toni Morrison",
+  "popularity_bucket": "high",
+  "template_idx": 3
+ },
+ {
+  "question_id": "high_0064",
+  "question": "Who wrote The Trial?",
+  "entity": "The Trial",
+  "gold_answer": "Franz Kafka",
+  "popularity_bucket": "high",
+  "template_idx": 3
+ },
+ {
+  "question_id": "low_0050",
+  "question": "Who wrote Gravity's Rainbow?",
+  "entity": "Gravity's Rainbow",
+  "gold_answer": "Thomas Pynchon",
+  "popularity_bucket": "low",
+  "template_idx": 3
+ },
+ {
+  "question_id": "low_0051",
+  "question": "Who wrote Blood Meridian?",
+  "entity": "Blood Meridian",
+  "gold_answer": "Cormac McCarthy",
+  "popularity_bucket": "low",
+  "template_idx": 3
+ },
+ {
+  "question_id": "low_0052",
+  "question": "Who wrote The Recognitions?",
+  "entity": "The Recognitions",
+  "gold_answer": "William Gaddis",
+  "popularity_bucket": "low",
+  "template_idx": 3
+ },
+ {
+  "question_id": "low_0053",
+  "question": "Who wrote Stoner?",
+  "entity": "Stoner",
+  "gold_answer": "John Williams",
+  "popularity_bucket": "low",
+  "template_idx": 3
+ },
+ {
+  "question_id": "low_0054",
+  "question": "Who wrote Petersburg?",
+  "entity": "Petersburg",
+  "gold_answer": "Andrei Bely",
+  "popularity_bucket": "low",
+  "template_idx": 3
+ },
+ {
+  "question_id": "low_0055",
+  "question": "Who wrote The Tartar Steppe?",
+  "entity": "The Tartar Steppe",
+  "gold_answer": "Dino Buzzati",
+  "popularity_bucket": "low",
+  "template_idx": 3
+ },
+ {
+  "question_id": "low_0056",
+  "question": "Who wrote The Man Without Qualities?",
+  "entity": "The Man Without Qualities",
+  "gold_answer": "Robert Musil",
+  "popularity_bucket": "low",
+  "template_idx": 3
+ },
+ {
+  "question_id": "low_0057",
+  "question": "Who wrote Independent People?",
+  "entity": "Independent People",
+  "gold_answer": "Halldor Laxness",
+  "popularity_bucket": "low",
+  "template_idx": 3
+ },
+ {
+  "question_id": "low_0058",
+  "question": "Who wrote The Death of Virgil?",
+  "entity": "The Death of Virgil",
+  "gold_answer": "Hermann Broch",
+  "popularity_bucket": "low",
+  "template_idx": 3
+ },
+ {
+  "question_id": "low_0059",
+  "question": "Who wrote Hopscotch?",
+  "entity": "Hopscotch",
+  "gold_answer": "Julio Cortazar",
+  "popularity_bucket": "low",
+  "template_idx": 3
+ },
+ {
+  "question_id": "low_0060",
+  "question": "Who wrote Nightwood?",
+  "entity": "Nightwood",
+  "gold_answer": "Djuna Barnes",
+  "popularity_bucket": "low",
+  "template_idx": 3
+ },
+ {
+  "question_id": "low_0061",
+  "question": "Who wrote The Sleepwalkers?",
+  "entity": "The Sleepwalkers",
+  "gold_answer": "Hermann Broch",
+  "popularity_bucket": "low",
+  "template_idx": 3
+ },
+ {
+  "question_id": "low_0062",
+  "question": "Who wrote A Brief History of Seven Killings?",
+  "entity": "A Brief History of Seven Killings",
+  "gold_answer": "Marlon James",
+  "popularity_bucket": "low",
+  "template_idx": 3
+ },
+ {
+  "question_id": "low_0063",
+  "question": "Who wrote The Vegetarian?",
+  "entity": "The Vegetarian",
+  "gold_answer": "Han Kang",
+  "popularity_bucket": "low",
+  "template_idx": 3
+ },
+ {
+  "question_id": "low_0064",
+  "question": "Who wrote Austerlitz?",
+  "entity": "Austerlitz",
+  "gold_answer": "W. G. Sebald",
+  "popularity_bucket": "low",
+  "template_idx": 3
+ },
+ {
+  "question_id": "high_0065",
+  "question": "What is the capital of France?",
+  "entity": "France",
+  "gold_answer": "Paris",
+  "popularity_bucket": "high",
+  "template_idx": 4
+ },
+ {
+  "question_id": "high_0066",
+  "question": "What is the capital of Japan?",
+  "entity": "Japan",
+  "gold_answer": "Tokyo",
+  "popularity_bucket": "high",
+  "template_idx": 4
+ },
+ {
+  "question_id": "high_0067",
+  "question": "What is the capital of Egypt?",
+  "entity": "Egypt",
+  "gold_answer": "Cairo",
+  "popularity_bucket": "high",
+  "template_idx": 4
+ },
+ {
+  "question_id": "high_0068",
+  "question": "What is the capital of Brazil?",
+  "entity": "Brazil",
+  "gold_answer": "Brasilia",
+  "popularity_bucket": "high",
+  "template_idx": 4
+ },
+ {
+  "question_id": "high_0069",
+  "question": "What is the capital of Canada?",
+  "entity": "Canada",
+  "gold_answer": "Ottawa",
+  "popularity_bucket": "high",
+  "template_idx": 4
+ },
+ {
+  "question_id": "high_0070",
+  "question": "What is the capital of Australia?",
+  "entity": "Australia",
+  "gold_answer": "Canberra",
+  "popularity_bucket": "high",
+  "template_idx": 4
+ },
+ {
+  "question_id": "high_0071",
+  "question": "What is the capital of Russia?",
+  "entity": "Russia",
+  "gold_answer": "Moscow",
+  "popularity_bucket": "high",
+  "template_idx": 4
+ },
+ {
+  "question_id": "high_0072",
+  "question": "What is the capital of India?",
+  "entity": "India",
+  "gold_answer": "New Delhi",
+  "popularity_bucket": "high",
+  "template_idx": 4
+ },
+ {
+  "question_id": "high_0073",
+  "question": "What is the capital of Spain?",
+  "entity": "Spain",
+  "gold_answer": "Madrid",
+  "popularity_bucket": "high",
+  "template_idx": 4
+ },
+ {
+  "question_id": "high_0074",
+  "question": "What is the capital of Germany?",
+  "entity": "Germany",
+  "gold_answer": "Berlin",
+  "popularity_bucket": "high",
+  "template_idx": 4
+ },
+ {
+  "question_id": "high_0075",
+  "question": "What is the capital of Italy?",
+  "entity": "Italy",
+  "gold_answer": "Rome",
+  "popularity_bucket": "high",
+  "template_idx": 4
+ },
+ {
+  "question_id": "high_0076",
+  "question": "What is the capital of Greece?",
+  "entity": "Greece",
+  "gold_answer": "Athens",
+  "popularity_bucket": "high",
+  "template_idx": 4
+ },
+ {
+  "question_id": "high_0077",
+  "question": "What is the capital of Turkey?",
+  "entity": "Turkey",
+  "gold_answer": "Ankara",
+  "popularity_bucket": "high",
+  "template_idx": 4
+ },
+ {
+  "question_id": "high_0078",
+  "question": "What is the capital of Argentina?",
+  "entity": "Argentina",
+  "gold_answer": "Buenos Aires",
+  "popularity_bucket": "high",
+  "template_idx": 4
+ },
+ {
+  "question_id": "high_0079",
+  "question": "What is the capital of South Africa?",
+  "entity": "South Africa",
+  "gold_answer": "Pretoria",
+  "popularity_bucket": "high",
+  "template_idx": 4
+ },
+ {
+  "question_id": "low_0065",
+  "question": "What is the capital of Bhutan?",
+  "entity": "Bhutan",
+  "gold_answer": "Thimphu",
+  "popularity_bucket": "low",
+  "template_idx": 4
+ },
+ {
+  "question_id": "low_0066",
+  "question": "What is the capital of Kazakhstan?",
+  "entity": "Kazakhstan",
+  "gold_answer": "Astana",
+  "popularity_bucket": "low",
+  "template_idx": 4
+ },
+ {
+  "question_id": "low_0067",
+  "question": "What is the capital of Suriname?",
+  "entity": "Suriname",
+  "gold_answer": "Paramaribo",
+  "popularity_bucket": "low",
+  "template_idx": 4
+ },
+ {
+  "question_id": "low_0068",
+  "question": "What is the capital of Eritrea?",
+  "entity": "Eritrea",
+  "gold_answer": "Asmara",
+  "popularity_bucket": "low",
+  "template_idx": 4
+ },
+ {
+  "question_id": "low_0069",
+  "question": "What is the capital of Brunei?",
+  "entity": "Brunei",
+  "gold_answer": "Bandar Seri Begawan",
+  "popularity_bucket": "low",
+  "template_idx": 4
+ },
+ {
+  "question_id": "low_0070",
+  "question": "What is the capital of Vanuatu?",
+  "entity": "Vanuatu",
+  "gold_answer": "Port Vila",
+  "popularity_bucket": "low",
+  "template_idx": 4
+ },
+ {
+  "question_id": "low_0071",
+  "question": "What is the capital of Kyrgyzstan?",
+  "entity": "Kyrgyzstan",
+  "gold_answer": "Bishkek",
+  "popularity_bucket": "low",
+  "template_idx": 4
+ },
+ {
+  "question_id": "low_0072",
+  "question": "What is the capital of Moldova?",
+  "entity": "Moldova",
+  "gold_answer": "Chisinau",
+  "popularity_bucket": "low",
+  "template_idx": 4
+ },
+ {
+  "question_id": "low_0073",
+  "question": "What is the capital of Turkmenistan?",
+  "entity": "Turkmenistan",
+  "gold_answer": "Ashgabat",
+  "popularity_bucket": "low",
+  "template_idx": 4
+ },
+ {
+  "question_id": "low_0074",
+  "question": "What is the capital of Tajikistan?",
+  "entity": "Tajikistan",
+  "gold_answer": "Dushanbe",
+  "popularity_bucket": "low",
+  "template_idx": 4
+ },
+ {
+  "question_id": "low_0075",
+  "question": "What is the capital of Lesotho?",
+  "entity": "Lesotho",
+  "gold_answer": "Maseru",
+  "popularity_bucket": "low",
+  "template_idx": 4
+ },
+ {
+  "question_id": "low_0076",
+  "question": "What is the capital of Djibouti?",
+  "entity": "Djibouti",
+  "gold_answer": "Djibouti",
+  "popularity_bucket": "low",
+  "template_idx": 4
+ },
+ {
+  "question_id": "low_0077",
+  "question": "What is the capital of Comoros?",
+  "entity": "Comoros",
+  "gold_answer": "Moroni",
+  "popularity_bucket": "low",
+  "template_idx": 4
+ },
+ {
+  "question_id": "low_0078",
+  "question": "What is the capital of Kiribati?",
+  "entity": "Kiribati",
+  "gold_answer": "Tarawa",
+  "popularity_bucket": "low",
+  "template_idx": 4
+ },
+ {
+  "question_id": "low_0079",
+  "question": "What is the capital of Palau?",
+  "entity": "Palau",
+  "gold_answer": "Ngerulmud",
+  "popularity_bucket": "low",
+  "template_idx": 4
+ }
+]
