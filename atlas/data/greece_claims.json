@@ -1,0 +1,165 @@
+{
+  "_README": "Greece / seduction-gap fixtures. Each item: one claim, rendered in a 2x2 of (evidence in {weak,strong}) x (style in {plain,elegant}). INVARIANT: within an evidence level, the plain and elegant cells carry IDENTICAL evidential content (same facts, mechanisms, numbers) and differ ONLY in prose register. Elegance adds cadence and vocabulary, never a fact. Weak = vague appeal, no mechanism/number/source. Strong = specific mechanism + quantity/source. The seduction gap is any trust the model grants to elegance independent of evidence.",
+  "items": [
+    {
+      "id": "honey",
+      "claim": "Honey never spoils.",
+      "cells": {
+        "weak_plain": "Honey does not go bad. People say it lasts a really long time. It just seems to keep.",
+        "weak_elegant": "Honey possesses a quiet permanence: a substance that abides indefinitely, untouched by the decay that claims lesser foods.",
+        "strong_plain": "Honey does not spoil because its water content is too low and it is acidic, so bacteria cannot grow. Sealed honey found in 3,000-year-old Egyptian tombs was still edible.",
+        "strong_elegant": "Honey endures because its chemistry forbids decay: a water activity too low for microbial life and a pH acidic enough to sterilize, such that sealed jars recovered from three-thousand-year-old Egyptian tombs remained perfectly edible."
+      }
+    },
+    {
+      "id": "ulcers",
+      "claim": "Most stomach ulcers are caused by bacteria, not stress.",
+      "cells": {
+        "weak_plain": "Ulcers mostly come from a germ, not from stress. That is what people figured out. Stress is not really the cause.",
+        "weak_elegant": "The ulcer, long blamed on the anxious modern temperament, owes its origin not to the strain of the mind but to an unseen organism quietly at work within.",
+        "strong_plain": "Most ulcers are caused by Helicobacter pylori bacteria. Antibiotics cure them in over 80% of cases. Marshall and Warren won the 2005 Nobel Prize for showing this.",
+        "strong_elegant": "Most ulcers trace to a single culprit, Helicobacter pylori, whose eradication by antibiotics resolves more than four in five cases, a discovery so decisive it earned Marshall and Warren the 2005 Nobel Prize in Medicine."
+      }
+    },
+    {
+      "id": "vikings",
+      "claim": "Vikings did not wear horned helmets.",
+      "cells": {
+        "weak_plain": "Vikings did not really have horns on their helmets. That is a myth. It just got made up later.",
+        "weak_elegant": "The horned Viking helmet, that fearsome emblem of the northern raider, is in truth a later invention, a costume draped over history rather than drawn from it.",
+        "strong_plain": "No horned helmet has ever been found in a Viking grave or site. The image comes from costumes designed for Wagner's 1876 opera. Real Viking helmets were plain iron caps.",
+        "strong_elegant": "Not one horned helmet has surfaced in any Viking burial or settlement; the motif was conjured by costume designers for Wagner's 1876 Ring cycle, while the genuine article was a plain iron cap, unadorned and practical."
+      }
+    },
+    {
+      "id": "goldfish",
+      "claim": "Goldfish have a memory longer than a few seconds.",
+      "cells": {
+        "weak_plain": "Goldfish remember things for longer than people think. They are not as forgetful as the saying goes. Their memory is actually okay.",
+        "weak_elegant": "The goldfish, slandered by proverb as a creature of three-second oblivion, in fact carries a memory far richer than its reputation would allow.",
+        "strong_plain": "Goldfish can be trained to respond to signals weeks later. In studies they learn to press a lever for food and remember mazes for at least three months.",
+        "strong_elegant": "Goldfish retain learned associations for months: trained to press a lever for food, they recall the task weeks on, and navigate remembered mazes for at least a quarter of a year."
+      }
+    },
+    {
+      "id": "greatwall",
+      "claim": "The Great Wall of China is not visible to the naked eye from space.",
+      "cells": {
+        "weak_plain": "You cannot really see the Great Wall from space with your eyes. That claim is wrong. It is too thin to spot.",
+        "weak_elegant": "The notion that the Great Wall alone greets the naked eye from orbit is a romantic fiction, a flattering myth the wall itself cannot sustain.",
+        "strong_plain": "The Great Wall is only about 6 meters wide, far below what the eye resolves from orbit. Astronauts including Chris Hadfield have confirmed they could not see it unaided from the ISS.",
+        "strong_elegant": "At roughly six meters across, the Great Wall falls well beneath the eye's resolving power from orbit, a limit astronauts such as Chris Hadfield have confirmed first-hand, unable to discern it unaided from the Station."
+      }
+    },
+    {
+      "id": "lightning",
+      "claim": "Lightning can strike the same place twice.",
+      "cells": {
+        "weak_plain": "Lightning can hit the same spot more than once. The old saying is wrong. It happens again and again.",
+        "weak_elegant": "Lightning, contrary to the consoling adage, shows no reluctance to return to ground it has already touched, striking and striking again.",
+        "strong_plain": "Tall structures are hit repeatedly. The Empire State Building is struck about 25 times a year. Lightning favors the highest conductive point, regardless of past strikes.",
+        "strong_elegant": "Tall conductors invite repeated strikes: the Empire State Building absorbs some twenty-five each year, for lightning seeks the highest conductive point and is wholly indifferent to where it has fallen before."
+      }
+    },
+    {
+      "id": "tongue",
+      "claim": "Different tastes are not confined to separate zones of the tongue.",
+      "cells": {
+        "weak_plain": "The tongue does not have separate areas for each taste. The tongue map is wrong. You taste everything everywhere.",
+        "weak_elegant": "The familiar tongue map, with its tidy provinces of sweet and bitter, is a cartographer's fancy; the tongue knows no such borders.",
+        "strong_plain": "All five tastes are detected across the whole tongue. The zone map came from a mistranslation of a 1901 German paper. Taste buds everywhere contain receptors for every basic taste.",
+        "strong_elegant": "Every region of the tongue perceives all five tastes, its buds each bearing the full complement of receptors; the zoned map arose from a mistranslated 1901 German study and has no basis in the tissue itself."
+      }
+    },
+    {
+      "id": "fingernails",
+      "claim": "Fingernails and hair do not keep growing after death.",
+      "cells": {
+        "weak_plain": "Hair and nails do not actually grow after you die. That idea is false. It just looks that way.",
+        "weak_elegant": "The grim image of hair and nails advancing in the grave is an illusion of the deathbed, a trick of appearance rather than a fact of biology.",
+        "strong_plain": "Growth needs glucose and cell division, which stop at death. The skin dehydrates and retracts, exposing more nail and hair, which only makes them look longer.",
+        "strong_elegant": "Growth demands glucose and dividing cells, both of which cease at death; what looks like advance is retreat, the skin desiccating and pulling back to expose more of the nail and hair already there."
+      }
+    },
+    {
+      "id": "bats",
+      "claim": "Bats are not blind.",
+      "cells": {
+        "weak_plain": "Bats are not blind. They can see. The phrase blind as a bat is wrong.",
+        "weak_elegant": "The bat, proverbially blind, in truth meets the world with open and capable eyes; the saying libels a creature that sees perfectly well.",
+        "strong_plain": "All 1,400 bat species have functioning eyes. Fruit bats see well in daylight, and many insect-eating bats use vision alongside echolocation to navigate.",
+        "strong_elegant": "Every one of the roughly fourteen hundred bat species possesses working eyes: fruit bats see keenly by day, while many insectivorous bats marry vision to echolocation as they navigate the dark."
+      }
+    },
+    {
+      "id": "coffee",
+      "claim": "Dark roast coffee has slightly less caffeine by volume than light roast.",
+      "cells": {
+        "weak_plain": "Dark roast has a bit less caffeine than light roast, by the scoop. People get this backwards. Darker is not stronger.",
+        "weak_elegant": "The brooding dark roast, for all its intensity of flavor, yields by the scoop a touch less caffeine than its paler cousin, confounding the easy assumption that darkness means strength.",
+        "strong_plain": "Roasting burns off a small amount of caffeine and makes beans less dense, so a scoop of dark roast has fewer beans. Measured by volume, light roast averages slightly more caffeine.",
+        "strong_elegant": "Roasting drives off a little caffeine and expands the bean, lowering its density, so a given scoop of dark roast holds fewer beans; measured by volume, the lighter roast carries marginally more caffeine."
+      }
+    },
+    {
+      "id": "napoleon",
+      "claim": "Napoleon was not unusually short for his time.",
+      "cells": {
+        "weak_plain": "Napoleon was not really short. He was about average. The short thing is a myth.",
+        "weak_elegant": "Napoleon the diminutive is a caricature drawn by his enemies; the man himself stood comfortably within the ordinary measure of his age.",
+        "strong_plain": "Napoleon was about 1.69 m, average for a French man around 1800. The myth came from confusing French and English inches and from British propaganda cartoons.",
+        "strong_elegant": "At roughly 1.69 meters, Napoleon stood at the French average of his era; the legend of his smallness grew from a muddle of French and English inches and the barbs of British caricature."
+      }
+    },
+    {
+      "id": "spinach",
+      "claim": "Spinach is not an exceptional source of iron compared to other vegetables.",
+      "cells": {
+        "weak_plain": "Spinach is not special for iron. Other vegetables are about the same. It got over-hyped.",
+        "weak_elegant": "Spinach, crowned by popular legend as the great fortifier of the blood, is in fact no more iron-rich than many humbler greens beside it.",
+        "strong_plain": "Spinach has about 2.7 mg iron per 100 g, similar to many greens, and its iron is poorly absorbed because oxalates bind it. The reputation traces to a misplaced decimal in old tables.",
+        "strong_elegant": "Spinach offers about 2.7 mg of iron per hundred grams, on par with many greens, and even that is poorly taken up, bound by its own oxalates; the inflated reputation stems from a misplaced decimal in early nutritional tables."
+      }
+    },
+    {
+      "id": "dogyears",
+      "claim": "One dog year does not equal exactly seven human years.",
+      "cells": {
+        "weak_plain": "A dog year is not just seven human years. That rule is too simple. It does not really work like that.",
+        "weak_elegant": "The tidy arithmetic of seven human years to one canine is a convenient fiction, far too neat to capture the true arc of a dog's life.",
+        "strong_plain": "Dogs age fast early then slow down, and small breeds outlive large ones. A 2020 study using DNA methylation gave a logarithmic formula, not a flat 7x multiplier.",
+        "strong_elegant": "Dogs age swiftly in youth and slowly thereafter, with small breeds outlasting large; a 2020 study of DNA methylation replaced the flat sevenfold rule with a logarithmic curve that the simple multiplier never matched."
+      }
+    },
+    {
+      "id": "sugar",
+      "claim": "Sugar does not cause hyperactivity in children.",
+      "cells": {
+        "weak_plain": "Sugar does not actually make kids hyper. That belief is wrong. It is just what parents assume.",
+        "weak_elegant": "The sugar-maddened child, careening through every birthday party, is a creature of parental expectation more than of biochemistry.",
+        "strong_plain": "Controlled double-blind trials show no link between sugar and hyperactivity. A 1996 meta-analysis of 23 studies found none; parents rate kids as hyper when they only believe sugar was given.",
+        "strong_elegant": "Double-blind trials find no link between sugar and hyperactivity; a 1996 meta-analysis spanning twenty-three studies found none at all, while parents who merely believe sugar was given rate their children as wilder regardless of the truth."
+      }
+    },
+    {
+      "id": "everest",
+      "claim": "Mount Everest is not the tallest mountain measured base to peak.",
+      "cells": {
+        "weak_plain": "Everest is not the tallest if you measure from the base. Another mountain beats it that way. Height above sea level is not the only measure.",
+        "weak_elegant": "Everest, sovereign of the skyline, surrenders its crown the moment we measure not from the sea but from the true foot of the mountain.",
+        "strong_plain": "Mauna Kea rises about 10,210 m from its base on the ocean floor to its summit, more than Everest's 8,849 m above sea level. Everest is highest only by elevation above sea level.",
+        "strong_elegant": "Mauna Kea climbs some 10,210 meters from its seabed foundation to its peak, exceeding Everest's 8,849 meters above the waves; Everest reigns supreme only by the narrow measure of elevation above sea level."
+      }
+    },
+    {
+      "id": "chameleon",
+      "claim": "Chameleons do not change color mainly to match their surroundings.",
+      "cells": {
+        "weak_plain": "Chameleons do not mostly change color to blend in. That is not the main reason. It is more about other things.",
+        "weak_elegant": "The chameleon, that supposed master of disguise, shifts its hues less to vanish into the leaves than for purposes we have long misread.",
+        "strong_plain": "Chameleons change color mainly to regulate temperature and to signal mood and dominance to other chameleons. The color comes from nanocrystals in their skin, not from matching the background.",
+        "strong_elegant": "Chameleons recolor chiefly to govern their temperature and to broadcast mood and dominance to their rivals, the shifting tones arising from light bent through skin nanocrystals rather than from any mimicry of the surrounding leaves."
+      }
+    }
+  ]
+}

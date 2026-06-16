@@ -1,0 +1,168 @@
+{
+  "lens": "greece_seduction",
+  "province": 2,
+  "axis": "I (claim-level epistemic diagnostic)",
+  "model": "mlx-community/Qwen2.5-1.5B-Instruct-4bit",
+  "n_items": 16,
+  "trust_readout": "P(Yes)/(P(Yes)+P(No)) on first answer token, deterministic",
+  "cell_means": {
+    "weak_plain": 0.9604500656897363,
+    "weak_elegant": 0.9676660270050668,
+    "strong_plain": 0.9741275258445511,
+    "strong_elegant": 0.97898447080237
+  },
+  "effects": {
+    "evidence_effect": {
+      "mean": 0.012497951976059019,
+      "ci95": [
+        -0.019590216555340486,
+        0.04904729981824548
+      ],
+      "note": "real-work channel + instrument check"
+    },
+    "elegance_effect_SEDUCTION_GAP": {
+      "mean": 0.006036453136574645,
+      "ci95": [
+        -0.029211619370782038,
+        0.03481841624417404
+      ],
+      "note": "trust bought by pure form (identical evidence)"
+    },
+    "seduction_at_weak": {
+      "mean": 0.007215961315330352,
+      "ci95": [
+        -0.059868320524271684,
+        0.05872378083921253
+      ],
+      "note": "marble over nothing: elegance on weak evidence"
+    }
+  },
+  "thresholds": {
+    "instrument_floor": 0.02,
+    "seduction_floor": 0.02,
+    "rule": "instrument_ok = evidence effect > floor AND CI>0; seduction_detected = |elegance effect| > floor AND CI excludes 0"
+  },
+  "proof_of_method": {
+    "instrument_ok": false,
+    "seduction_detected": false
+  },
+  "verdict": {
+    "result": "VOID-AT-THIS-MODEL",
+    "survives": false,
+    "reason": "instrument check FAILED: the rater does not reliably trust strong evidence more than weak (evidence effect +0.012, 95% CI [-0.020, +0.049]). A seduction gap measured on an evidence-blind rater is indistinguishable from noise. KILL at this model size; escalate to a larger rater or a human rater study before claiming the province."
+  },
+  "items": [
+    {
+      "id": "honey",
+      "weak_plain": 0.979669706025636,
+      "weak_elegant": 0.9943589562884686,
+      "strong_plain": 0.9976406433183805,
+      "strong_elegant": 0.9983519474569341
+    },
+    {
+      "id": "ulcers",
+      "weak_plain": 0.9977128699301361,
+      "weak_elegant": 0.9926549914247351,
+      "strong_plain": 0.9963503868611479,
+      "strong_elegant": 0.9828254296745809
+    },
+    {
+      "id": "vikings",
+      "weak_plain": 0.9632326073870244,
+      "weak_elegant": 0.9907328074287315,
+      "strong_plain": 0.9857187268505109,
+      "strong_elegant": 0.9441853387515906
+    },
+    {
+      "id": "goldfish",
+      "weak_plain": 0.996234922697879,
+      "weak_elegant": 0.9988487276076919,
+      "strong_plain": 0.9996647055754251,
+      "strong_elegant": 0.9994024649914046
+    },
+    {
+      "id": "greatwall",
+      "weak_plain": 0.8774835081250629,
+      "weak_elegant": 0.9867786358680116,
+      "strong_plain": 0.9976034674264798,
+      "strong_elegant": 0.9953188844537056
+    },
+    {
+      "id": "lightning",
+      "weak_plain": 0.9814554588152802,
+      "weak_elegant": 0.9974887910478328,
+      "strong_plain": 0.9923049716904888,
+      "strong_elegant": 0.9962352075155194
+    },
+    {
+      "id": "tongue",
+      "weak_plain": 0.9539702752055237,
+      "weak_elegant": 0.9989516546611902,
+      "strong_plain": 0.9960550876955714,
+      "strong_elegant": 0.9930980016886178
+    },
+    {
+      "id": "fingernails",
+      "weak_plain": 0.9928788823636929,
+      "weak_elegant": 0.9966758259307809,
+      "strong_plain": 0.9511468426136479,
+      "strong_elegant": 0.9425164421669591
+    },
+    {
+      "id": "bats",
+      "weak_plain": 0.9991441290544621,
+      "weak_elegant": 0.9986750963472821,
+      "strong_plain": 0.9995197425022203,
+      "strong_elegant": 0.9995827288422456
+    },
+    {
+      "id": "coffee",
+      "weak_plain": 0.7826847450203657,
+      "weak_elegant": 0.9966761378262147,
+      "strong_plain": 0.9971554627296892,
+      "strong_elegant": 0.9983517212008358
+    },
+    {
+      "id": "napoleon",
+      "weak_plain": 0.995801399963371,
+      "weak_elegant": 0.9935121481805378,
+      "strong_plain": 0.9971106849345653,
+      "strong_elegant": 0.9961162259534635
+    },
+    {
+      "id": "spinach",
+      "weak_plain": 0.8706077037888201,
+      "weak_elegant": 0.9907332075802451,
+      "strong_plain": 0.8577853104357605,
+      "strong_elegant": 0.9566442803304656
+    },
+    {
+      "id": "dogyears",
+      "weak_plain": 0.9990601047731975,
+      "weak_elegant": 0.9993333745395659,
+      "strong_plain": 0.9993638479366304,
+      "strong_elegant": 0.9992904039551769
+    },
+    {
+      "id": "sugar",
+      "weak_plain": 0.9871796000377584,
+      "weak_elegant": 0.5889241266872697,
+      "strong_plain": 0.9986956885081788,
+      "strong_elegant": 0.9981901706612762
+    },
+    {
+      "id": "everest",
+      "weak_plain": 0.9967776987099414,
+      "weak_elegant": 0.9871801906256046,
+      "strong_plain": 0.9932031594025182,
+      "strong_elegant": 0.986153078793401
+    },
+    {
+      "id": "chameleon",
+      "weak_plain": 0.9933074391376311,
+      "weak_elegant": 0.9711317600369057,
+      "strong_plain": 0.826721685031603,
+      "strong_elegant": 0.8774892064017444
+    }
+  ]
+}
