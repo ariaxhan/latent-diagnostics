@@ -1,3 +1,9 @@
+---
+type: note
+status: active
+created: 2026-02-21
+---
+
 # CONTEXT HANDOFF: Repo Restructure + README Reframe
 
 **Summary**: neural-polygraph evolved from hallucination detection (failed) to injection detection via attribution graphs (succeeded) — repo structure doesn't reflect this pivot.

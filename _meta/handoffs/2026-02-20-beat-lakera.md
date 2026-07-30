@@ -1,3 +1,9 @@
+---
+type: note
+status: active
+created: 2026-02-20
+---
+
 # CONTEXT HANDOFF: Beat Lakera on PINT Benchmark
 
 **Date:** 2026-02-20

@@ -1,3 +1,9 @@
+---
+type: note
+status: active
+created: 2026-02-20
+---
+
 ## CONTEXT HANDOFF
 
 **Summary**: Explored using SAE spectroscopy to detect prompt injection attacks, built extensive research docs, then tore it down to identify what's actually useful vs metaphor overhead.

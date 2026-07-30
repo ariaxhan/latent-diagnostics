@@ -1,3 +1,9 @@
+---
+type: note
+status: active
+created: 2026-02-21
+---
+
 # Tear Down: Neural Polygraph Injection Detection Framework
 
 **Date:** 2026-02-20
