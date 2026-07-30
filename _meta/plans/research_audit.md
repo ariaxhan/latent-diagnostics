@@ -1,3 +1,9 @@
+---
+type: note
+status: active
+created: 2026-02-23
+---
+
 # Research Folder Audit Plan
 
 **Contract:** CR-20260223132602-68611-C

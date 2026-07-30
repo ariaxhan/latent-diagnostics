@@ -1,5 +1,7 @@
 # Latent Diagnostics
 
+*(Active source of truth — supersedes [neural-polygraph](https://github.com/ariaxhan/neural-polygraph), the archived physics-era fork.)*
+
 Measuring computational regimes inside LLMs via attribution graph geometry.
 
 ## What This Is

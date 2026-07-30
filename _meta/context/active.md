@@ -1,3 +1,9 @@
+---
+type: note
+status: active
+created: 2026-03-12
+---
+
 # Active Context
 
 **Project:** latent-diagnostics (neural-polygraph)

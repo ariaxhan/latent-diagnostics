@@ -1,3 +1,9 @@
+---
+type: note
+status: active
+created: 2026-02-23
+---
+
 # Novel Contributions Plan
 
 ## Current State (Not Novel)

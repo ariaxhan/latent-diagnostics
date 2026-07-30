@@ -1,3 +1,9 @@
+---
+type: note
+status: active
+created: 2026-02-21
+---
+
 # Handoff: Attribution Graph Injection Detection Breakthrough
 
 **Date:** 2026-02-21
